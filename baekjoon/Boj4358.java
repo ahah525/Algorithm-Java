@@ -1,9 +1,7 @@
 package baekjoon;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 public class Boj4358 {
     public static void main(String[] args) throws IOException {
@@ -17,7 +15,7 @@ public class Boj4358 {
         while(true) {
             String s = br.readLine();
             // 종료조건(입력 없음)
-            if(s == null) break;
+            if(s == null || s.equals("")) break;
             if (!trees.containsKey(s)) {
                 // 1. 입력한 종이 없으면 새로 넣기
                 trees.put(s, 1);
