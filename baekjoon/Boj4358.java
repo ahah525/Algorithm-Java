@@ -13,7 +13,7 @@ public class Boj4358 {
         ArrayList<String> arr = new ArrayList<>();
         // 입력이 없으면 종료
         while(true) {
-            String s = br.readLine();
+            String s = br.readLine();   // 종이름
             // 종료조건(입력 없음)
             if(s == null || s.equals("")) break;
             if (!trees.containsKey(s)) {
