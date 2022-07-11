@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// 이진 탐색 트리의 전위 순회 결과 -> 중위 순회, 후위 순회 결과 구하기
 public class Boj5639 {
     static BufferedWriter bw;
     static List<Integer> nodeList;  // 전위 순회 결과
