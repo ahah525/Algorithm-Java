@@ -12,7 +12,7 @@ public class Boj16953 {
     private static long b;  // 목표값
 
     static class Node {
-        long value; // 값
+        long value; // 값(10**9 이하)
         int depth;  // 깊이
 
         public Node(long value, int depth) {
@@ -33,11 +33,12 @@ public class Boj16953 {
         q.add(new Node(a, 1));
         // 큐가 비지않을 때까지 반복
         while (!q.isEmpty()) {
-            Node node = q.poll();
+            Node node = q.poll();   // 하나 꺼내기
             long v = node.value;
             int d = node.depth;
-            long v1 = v * 2;    // * 2
+            long v1 = v * 2;        // * 2
             long v2 = v * 10 + 1;   // 뒤에 1 붙이기
+            // 두 연산의 결과값 중 하나가 목표값과 같으면 결과 출력 후 종료
             if(v1 == b || v2 == b) {
                 System.out.println(d + 1);
                 return;
