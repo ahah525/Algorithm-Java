@@ -51,6 +51,7 @@ public class Boj16953 {
                 q.add(new Node(v2, d + 1));
             }
         }
+        // 목표값을 찾을 수 없는 경우
         System.out.println(-1);
     }
 }
