@@ -23,29 +23,26 @@ public class Boj18427 {
                 a[i].add(Integer.parseInt(st.nextToken()));
             }
         }
-        // d[i][j]
+        // d[i][j] : i번째 학생까지 블록을 사용해 높이가 j인 블록을 만드는 경우의 수
         long[][] d = new long[n + 1][h + 1];
         // 초기화
-        for (int i = 1; i <= n; i++) {
+        for (int i = 0; i <= n; i++) {
+            // 높이가 h인 블록 1개를 사용하는 경우의 수 = 1
             d[i][0] = 1;
         }
-        for (int i = 0; i < a[1].size(); i++) {
-            d[1][a[1].get(i)] = 1;
-        }
 
-        for (int i = 2; i <= n; i++) {
+        for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= h; j++) {
-                // 1. 블록 선택X
+                // 1. 현재 블록 선택X
                 d[i][j] = d[i - 1][j];
-                for (int k = 0; k < a[i].size(); k++) {
-                    int blockH = a[i].get(k);   // 블록 높이
-                    // 2. 블록 선택O
+                // i번째 학생이 갖고있는 각 블록에 대한 경우의 수 계산
+                for (int blockH : a[i]) {
+                    // 2. 현재 블록 선택O
                     if (j >= blockH) {
                         d[i][j] = (d[i][j] + d[i - 1][j - blockH]) % 10007;
                     }
                 }
             }
-
         }
         System.out.println(d[n][h] % 10007);
     }
