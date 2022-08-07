@@ -25,7 +25,7 @@ public class Boj20922 {
         int[] cnt = new int[max + 1];   // cnt[i]: 부분 수열에서 i의 개수
         while (true) {
             // end가 끝에 도달하면 종료(start를 오른쪽으로 옮겨봤자 최댓값 아님)
-            if (end == a.length) {
+            if (end == n) {
                 break;
             }
             if (cnt[a[end]] < k) {
