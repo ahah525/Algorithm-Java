@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Boj1260 {
+    private static boolean[] visited;
+    private static ArrayList<Integer>[] graph;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -13,9 +15,9 @@ public class Boj1260 {
         int n = Integer.parseInt(st.nextToken());   // 정점 개수
         int m = Integer.parseInt(st.nextToken());   // 간선 개수
         int start = Integer.parseInt(st.nextToken());   // 탐색 시작 번호
-        boolean[] visited = new boolean[n + 1]; // 방문 여부
+        visited = new boolean[n + 1]; // 방문 여부
         // 인접 리스트
-        ArrayList<Integer>[] graph = new ArrayList[n + 1];
+        graph = new ArrayList[n + 1];
         for (int i = 0; i <= n; i++) {
             graph[i] = new ArrayList<>();
         }
@@ -31,13 +33,13 @@ public class Boj1260 {
             Collections.sort(graph[i]);
         }
         // dfs, bfs 결과
-        dfs(graph, start, visited);
+        dfs(start);
         visited = new boolean[n + 1];
         System.out.println();
-        bfs(graph, start, visited);
+        bfs(start);
     }
 
-    public static void dfs(ArrayList<Integer>[] graph, int v, boolean[] visited) {
+    public static void dfs(int v) {
         // 현재 노드 방문 처리
         visited[v] = true;
         System.out.print(v + " ");
@@ -45,11 +47,11 @@ public class Boj1260 {
         for (int i : graph[v]) {
             // 방문하지 않았다면
             if (!visited[i]) {
-                dfs(graph, i, visited);
+                dfs(i);
             }
         }
     }
-    public static void bfs(ArrayList<Integer>[] graph, int start, boolean[] visited) {
+    public static void bfs(int start) {
         Queue<Integer> q = new LinkedList<>();
         q.offer(start);
         visited[start] = true;
