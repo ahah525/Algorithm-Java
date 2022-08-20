@@ -68,19 +68,19 @@ public class Boj1600 {
             P p = q.poll();
             int x = p.x;
             int y = p.y;
-            int skill = p.cnt;
+            int cnt = p.cnt;
 
             // 현재 좌표에 오는데 k번보다 작게 스킬을 사용했으면 말 스킬 사용 가능
-            if (skill < k) {
+            if (cnt < k) {
                 for (int i = 0; i < 8; i++) {
                     int nx = x + hx[i];
                     int ny = y + hy[i];
                     // 범위 내이고 (방문한적 없거나 / 방문한적 있는데 현재값 + 1보다 더 큰값이라면)
                     if (0 <= nx && nx < h && 0 <= ny && ny < w) {
                         // 1. 빈 곳이고 방문한적 없으면
-                        if (arr[nx][ny] == 0 && visited[nx][ny][skill + 1] == 0) {
-                            q.offer(new P(nx, ny, skill + 1));
-                            visited[nx][ny][skill + 1] = visited[x][y][skill] + 1;
+                        if (arr[nx][ny] == 0 && visited[nx][ny][cnt + 1] == 0) {
+                            q.offer(new P(nx, ny, cnt + 1));
+                            visited[nx][ny][cnt + 1] = visited[x][y][cnt] + 1;
                         }
                     }
                 }
@@ -91,9 +91,9 @@ public class Boj1600 {
                 // 범위 내이고 (방문한적 없거나 / 방문한적 있는데 현재값 + 1보다 더 큰값이라면)
                 if (0 <= nx && nx < h && 0 <= ny && ny < w) {
                     // 1. 빈 곳이고 방문한적 없으면
-                    if (arr[nx][ny] == 0 && visited[nx][ny][skill] == 0) {
-                        q.offer(new P(nx, ny, skill));
-                        visited[nx][ny][skill] = visited[x][y][skill] + 1;
+                    if (arr[nx][ny] == 0 && visited[nx][ny][cnt] == 0) {
+                        q.offer(new P(nx, ny, cnt));
+                        visited[nx][ny][cnt] = visited[x][y][cnt] + 1;
                     }
                 }
             }
