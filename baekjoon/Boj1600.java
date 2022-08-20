@@ -10,12 +10,12 @@ import java.util.StringTokenizer;
 class P {
     int x;
     int y;
-    int skill;  // 스킬 사용 횟수
+    int cnt;  // 스킬 사용 횟수
 
-    public P(int x, int y, int skill) {
+    public P(int x, int y, int cnt) {
         this.x = x;
         this.y = y;
-        this.skill = skill;
+        this.cnt = cnt;
     }
 }
 
@@ -62,13 +62,13 @@ public class Boj1600 {
         Queue<P> q = new LinkedList<>();
         // 시작 좌표 큐에 삽입, 방문 처리
         q.offer(start);
-        visited[start.x][start.y][start.skill] = 1;
+        visited[start.x][start.y][start.cnt] = 1;
 
         while (!q.isEmpty()) {
             P p = q.poll();
             int x = p.x;
             int y = p.y;
-            int skill = p.skill;
+            int skill = p.cnt;
 
             // 현재 좌표에 오는데 k번보다 작게 스킬을 사용했으면 말 스킬 사용 가능
             if (skill < k) {
