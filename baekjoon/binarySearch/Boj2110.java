@@ -28,7 +28,7 @@ public class Boj2110 {
     public static int binarySearch(List<Integer> arr, int start, int end) {
         int res = 0;
         while (start <= end) {
-            int mid = (int) ((start + end) / 2);
+            int mid = (start + end) / 2;
             int prev = 0;  // 이전 집 좌표
             int cnt = 1;    // 설치한 공유기 개수(0번째 집 선택)
             for(int i = 1; i < n; i++) {
