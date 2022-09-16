@@ -45,7 +45,7 @@ public class Boj19637 {
     }
     public static String binarySearch(List<Level> arr, int target, int start, int end) {
         while (start <= end) {
-            int mid = (int) ((start + end) / 2);
+            int mid = (start + end) / 2;
             if(target <= arr.get(mid).power) {
                 end = mid - 1;
             } else {
