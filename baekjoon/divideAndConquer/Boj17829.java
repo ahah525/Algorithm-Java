@@ -3,9 +3,7 @@ package baekjoon.divideAndConquer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 /**
@@ -30,25 +28,26 @@ public class Boj17829 {
         System.out.println(res);
     }
     public static int divide(int r, int c, int size) {
-        List<Integer> list = new ArrayList<>();
+        int[] list = new int[4];
         if(size == 2) {
+            int idx = 0;
             for (int i = r; i < r + 2; i++) {
                 for (int j = c; j < c + 2; j++) {
-                    list.add(arr[i][j]);
+                    list[idx++] = arr[i][j];
                 }
             }
             // 내림차순 정렬 후 2번째로 큰 수 리턴
-            Collections.sort(list, Collections.reverseOrder());
-            return list.get(1);
+            Arrays.sort(list);
+            return list[2];
         }
 
         size /= 2;
-        list.add(divide(r, c, size));
-        list.add(divide(r, c + size, size));
-        list.add(divide(r + size, c, size));
-        list.add(divide(r + size, c + size, size));
+        list[0] = divide(r, c, size);
+        list[1] = divide(r, c + size, size);
+        list[2] = divide(r + size, c, size);
+        list[3] = divide(r + size, c + size, size);
         // 내림차순 정렬 후 2번째로 큰 수 리턴
-        Collections.sort(list, Collections.reverseOrder());
-        return list.get(1);
+        Arrays.sort(list);
+        return list[2];
     }
 }
