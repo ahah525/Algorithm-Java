@@ -82,6 +82,8 @@ public class MergeSort {
         // left ~ right 구간 정렬한 부분을 원래 배열 arr에 저장한다.
         for(int i = left; i <= right; i++) {
             arr[i] = tmp[i];
+            System.out.print(arr[i] + " ");
         }
+        System.out.println();
     }
 }

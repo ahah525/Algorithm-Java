@@ -41,7 +41,7 @@ public class QuickSort {
         int i = left;   // 왼쪽에서부터 찾는 작은값 인덱스
         int j = right;  // 오른쪽에서부터 찾는 큰 값 인덱스
 
-        // 왼쪽에서 찾는 값과 오른쪽에서 찾는 값의 위치가 서로 엇갈리면 swap(pivot, 작은 값)
+        // 왼쪽에서 찾는 값과 오른쪽에서 찾는 값의 위치가 서로 엇갈리면 swap(pivo작은 값t, )
         while(i < j) {
             while(arr[j] > pivot&& i<j) {
                 j--;
