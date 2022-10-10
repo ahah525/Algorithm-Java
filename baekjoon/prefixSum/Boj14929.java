@@ -10,16 +10,21 @@ public class Boj14929 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
         int[] arr = new int[n + 1];
+        int[] sum = new int[n + 1];
+        long res = 0;
+
         StringTokenizer st = new StringTokenizer(br.readLine());
         for(int i = 1; i <= n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        int res = 0;
+        sum[n] = arr[n];
+        for(int i = n - 1; i >= 2; i--) {
+            sum[i] = sum[i + 1] + arr[i];
+        }
+
         for(int i = 1; i <= n - 1; i++) {
-            for(int j = i + 1; j <= n; j++) {
-                res += arr[i] * arr[j];
-            }
+            res += arr[i] * sum[i + 1];
         }
 
         System.out.println(res);
