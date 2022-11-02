@@ -35,7 +35,8 @@ class Solution42586 {
         // 1. 각 작업 끝내는데 걸리는 일 수 계산해서 큐에 넣기
         Queue<Integer> q = new LinkedList<>();
         for(int i = 0; i < n; i++) {
-            int days = (int) Math.ceil((100 - progresses[i]) / speeds[i]);   // 소요 일수
+            // int days = (int) Math.ceil((100 - progresses[i]) / speeds[i]);   // / 결과가 이미 int 값이라 올림을 해도 소용이 없었던 오류
+            int days = (int) Math.ceil((double) (100 - progresses[i]) / speeds[i]);   // 소요 일수
             q.add(days);
         }
 
