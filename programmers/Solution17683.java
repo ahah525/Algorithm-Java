@@ -1,8 +1,5 @@
 package programmers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * m: 멜로디를 담은 문자열
  * musicinfos: 방송된 곡의 정보를 담고 있는 배열(시작 시각, 끝 시각, 음악 제목, 악보 정보)
@@ -31,18 +28,16 @@ class Solution17683 {
     }
 
     public static String solution(String m, String[] musicinfos) {
-        String answer = "";
-        List<String> list = new ArrayList<>();
-        m = change(m);
         String answerTitle = "";
         int answerPlayTime = -1;
+        m = change(m);
 
         for(String musicinfo : musicinfos) {
             String[] info = musicinfo.split(",");
             String[] start = info[0].split(":");    // 시작 시각
             String[] end = info[1].split(":");      // 끝 시각
             // 재생 시간
-            int playTime = Integer.parseInt(end[0]) * 60 + Integer.parseInt(end[1]) - Integer.parseInt(start[0]) * 60 + Integer.parseInt(start[1]);
+            int playTime = (Integer.parseInt(end[0]) * 60 + Integer.parseInt(end[1])) - (Integer.parseInt(start[0]) * 60 + Integer.parseInt(start[1]));
 
             String title = info[2];         // 제목
             String music = change(info[3]); // 악보 정보
@@ -75,12 +70,10 @@ class Solution17683 {
     }
 
     public static String change(String m) {
-        m = m.replaceAll("C#", "H")
+        return m.replaceAll("C#", "H")
                 .replaceAll("D#", "I")
                 .replaceAll("F#", "J")
                 .replaceAll("G#", "K")
                 .replaceAll("A#", "L");
-
-        return m;
     }
 }
