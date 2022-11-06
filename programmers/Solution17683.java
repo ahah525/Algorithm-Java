@@ -7,7 +7,7 @@ package programmers;
  * - 조건이 일치하는 음악이 여러 개일 때에는 라디오에서 재생된 시간이 제일 긴 음악 제목을 반환
  * - 재생된 시간도 같을 경우 먼저 입력된 음악 제목을 반환
  * - 조건이 일치하는 음악이 없을 때에는 “(None)”을 반환
- * ---------------------------------------
+ * ----------------------------------------------------------------------
  * - 음악 제목, 재생이 시작되고 끝난 시각, 악보
  * - 멜로디와 악보에 사용되는 음은 C, C#, D, D#, E, F, F#, G, G#, A, A#, B 12개
  */
@@ -22,14 +22,15 @@ class Solution17683 {
         String m3 = "ABC";
         String[] musicinfos3 = {"12:00,12:14,HELLO,C#DEFGAB", "13:00,13:05,WORLD,ABCDEF"};
 
-        String answer = solution(m3, musicinfos3);
-        // HELLO
+        String answer = solution(m2, musicinfos2);
+        // FOO
         System.out.println(answer);
     }
 
     public static String solution(String m, String[] musicinfos) {
         String answerTitle = "";
         int answerPlayTime = -1;
+        // 멜로디 변환
         m = change(m);
 
         for(String musicinfo : musicinfos) {
@@ -37,7 +38,8 @@ class Solution17683 {
             String[] start = info[0].split(":");    // 시작 시각
             String[] end = info[1].split(":");      // 끝 시각
             // 재생 시간
-            int playTime = (Integer.parseInt(end[0]) * 60 + Integer.parseInt(end[1])) - (Integer.parseInt(start[0]) * 60 + Integer.parseInt(start[1]));
+            int playTime = (Integer.parseInt(end[0]) * 60 + Integer.parseInt(end[1]))
+                    - (Integer.parseInt(start[0]) * 60 + Integer.parseInt(start[1]));
 
             String title = info[2];         // 제목
             String music = change(info[3]); // 악보 정보
@@ -62,6 +64,11 @@ class Solution17683 {
                     answerTitle = title;
                 }
             }
+
+            System.out.println("title = " + title);
+            System.out.println("musicTime = " + musicTime);
+            System.out.println("realMusic = " + realMusic);
+            System.out.println("======================================");
         }
         if(answerTitle.equals("")) {
             return "(None)";
