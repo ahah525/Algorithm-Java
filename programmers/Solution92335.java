@@ -52,8 +52,8 @@ class Solution92335 {
     // 소수인지 판별
     public static boolean isPrime(long n) {
         if(n == 1) return false;
-
-        for(int i = 2; i < n; i++) {
+        // 2 ~ 루트 n 까지 확인 -> 시간 초과 해결
+        for(int i = 2; i <= Math.sqrt(n); i++) {
             if(n % i == 0) {
                 return false;
             }
