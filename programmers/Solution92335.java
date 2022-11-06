@@ -41,7 +41,8 @@ class Solution92335 {
         String[] nums = s.split("0");
         // 3. 소수 판별 개수 세기
         for(String num : nums) {
-            if(!num.isEmpty() && isPrime(Integer.parseInt(num))) {
+            // Long 으로 변환하지 않으면 오류
+            if(!num.isEmpty() && isPrime(Long.parseLong(num))) {
                 answer++;
             }
         }
@@ -49,7 +50,7 @@ class Solution92335 {
     }
 
     // 소수인지 판별
-    public static boolean isPrime(int n) {
+    public static boolean isPrime(long n) {
         if(n == 1) return false;
 
         for(int i = 2; i < n; i++) {
