@@ -1,9 +1,9 @@
 package programmers.level1;
 
 /**
- * 약수를 구할 때는
+ * 약수를 구할 때
  * v1. 1 ~ n 반복
- * v2. 1 ~ n/2 반복
+ * v2. 1 ~ n/2 반복(추천)
  * v3. 1 ~ 루트 n 반복
  */
 class Solution12928 {
@@ -26,12 +26,17 @@ class Solution12928 {
     public static int solution(int n) {
         int answer = 0;
 
-        for(int i = 1; i <= n / 2; i++) {
+        for(int i = 1; i * i <= n; i++) {
             if(n % i == 0) {
                 answer += i;
+                answer += n / i;
             }
         }
-
-        return answer + n;
+        // 제곱근인지 비교
+        Double sqrt = Math.sqrt(n);
+        if(sqrt == sqrt.intValue()) {
+            answer -= sqrt;
+        }
+        return answer;
     }
 }
