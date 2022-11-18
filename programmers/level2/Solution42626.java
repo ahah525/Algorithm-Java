@@ -5,6 +5,8 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**
+ * [한줄평] 매번 최솟값 2개를 구해야한다는 부분에서 최소힙 풀이를 쉽게 떠올렸던 문제였다.
+ *
  * v1. PriorityQueue(최소힙) 사용
  */
 class Solution42626 {
