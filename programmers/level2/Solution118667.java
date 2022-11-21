@@ -7,7 +7,11 @@ import java.util.Queue;
 /**
  * [한줄평] 문제 명에서 큐를 쓰면 된다고 친절하게 알려줘서 구현만하면 됬던 문제였다.
  * v1. -1 리턴 조건 부족(실패: 테스트 11, 28 시간초과)
- * v2. (성공)
+ * v2. -1 리턴 조건 완성(성공)
+ * 1) 두 배열 원소의 총합이 홀수인 경우
+ * 2) 큐가 하나라도 비었을 경우
+ * 3) 두 큐가 원상복귀될 경우(여기서 처리를 하지 않으면 무한루프 케이스가 생길 수 있음)
+ * - 큐의 길이 = n 이라고 했을 때, 원상복귀될 때까지 작업 횟수 = 4 * n
  */
 class Solution118667 {
     public static void main(String[] args) {
@@ -39,33 +43,28 @@ class Solution118667 {
      */
     public static int solution(int[] queue1, int[] queue2) {
         int answer = 0;
-        long sum1 = 0;    // 두 배열 원소의 총 합
-        long sum2 = 0;    // 두 배열 원소의 총 합
+        long s1 = 0;    // q1의 합
+        long s2 = 0;    // q2의 합
+        int n = queue1.length;  // 큐 길이
         Queue<Integer> q1 = new LinkedList<>();
         Queue<Integer> q2 = new LinkedList<>();
         for(int i = 0; i < queue1.length; i++) {
             q1.add(queue1[i]);
             q2.add(queue2[i]);
-            sum1 += queue1[i];
-            sum2 += queue2[i];
+            s1 += queue1[i];
+            s2 += queue2[i];
         }
 
-        // 원소의 합이 홀수이면 -1
-        if((sum1 + sum2) % 2 != 0) {
+        // 원소의 총합이 홀수이면 -1 리턴
+        if((s1 + s2) % 2 != 0) {
             return -1;
         }
-        //
-        long s1 = sum1;    // q1의 합
-        long s2 = sum2;    // q2의 합
-        while(!q1.isEmpty() && ! q2.isEmpty()) {
+        // 큐가 하나라도 비거나 두 큐가 원상복귀될 경우 -1 리턴
+        while(!q1.isEmpty() && ! q2.isEmpty() && answer <= n * 4) {
             if(s1 == s2) {
                 return answer;
             }
-
-//            if(s1 == sum2 && s2 == sum1) {
-//                return -1;
-//            }
-
+            // 합이 큰 쪽에서 한 개를 pop 하고, 작은 쪽으로 insert 한다.
             if(s1 > s2) {
                 // q1 pop -> q2 insert
                 int v = q1.poll();
