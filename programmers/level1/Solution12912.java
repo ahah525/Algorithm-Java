@@ -32,9 +32,9 @@ class Solution12912 {
 
     /**
      * for 문을 이용한 a ~ b 합 구하기
-     * @param a
-     * @param b
-     * @return
+     * @param a -10,000,000 이상 10,000,000 이하인 정수
+     * @param b -10,000,000 이상 10,000,000 이하인 정수
+     * @return 두 정수 a, b가 주어졌을 때 a와 b 사이에 속한 모든 정수의 합을 리턴
      */
     public static long solution1(int a, int b) {
         int min = Math.min(a, b);
@@ -45,5 +45,15 @@ class Solution12912 {
             answer += i;
         }
         return answer;
+    }
+
+    /**
+     * 등차수열 공식을 이용한 a ~ b 합 구하기
+     */
+    public static long solution2(int a, int b) {
+        int min = Math.min(a, b);
+        int max = Math.max(a, b);
+
+        return (long)(max - min + 1) * (min + max) / 2;
     }
 }
