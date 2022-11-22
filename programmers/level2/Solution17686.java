@@ -5,10 +5,20 @@ import java.util.*;
 
 /**
  * [문제명] [3차] 파일명 정렬
- * [한줄평]
- * v1. List<String>를 Comparator 로 정렬하기(실패 - 6, 7, 8, 9)
+ * [한줄평] 구현만하면 되는 쉬운문제에 속했지만 문제 조건을 꼼꼼하게 체크하지 않아 틀렸던 문제였다. 숫자를 판별하는 로직 부분이 다양할 것 같다.
+ * v1. List<String>을 Comparator 로 정렬하기(실패 - 6, 7, 8, 9)
+ * - HEAD는 숫자가 아닌 문자로 이루어져 있다는 사실을 간과함(공백, 마침표, 빼기 부호에 대한 처리가 없음)
+ * v2. List<String>을 Comparator 로 정렬하기(성공)
+ * - HEAD 는 숫자가 아닌 모든 문자, NUMBER 는 HEAD 발견 이후 최초로 발견된 연속 숫자
+ *
+ * >> 숫자 판별법
+ * 1. 아스키코드 조건문
+ * 2. Character.isDigit(?)
+ * 3. 정규 표현식
  *
  * @See <a href="https://school.programmers.co.kr/questions/33195">반례</a>
+ * @See <a href="https://wonit.tistory.com/143">Comparable vs Comparator</a>
+ * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/17686/solution_groups?language=java">다른 풀이</a>
  */
 class Solution17686 {
     public static void main(String[] args) {
@@ -45,13 +55,13 @@ class Solution17686 {
             boolean findNumber = false; // 숫자 찾음 여부
             for(int i = 0; i < o1.length(); i++) {
                 char c = o1.charAt(i);
-                if(('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z')) {
+                if('0' <= c && c <= '9') {
+                    sbn.append(c);
+                    findNumber = true;
+                } else {
                     if(findNumber)
                         break;
                     sbh.append(c);
-                } else if('0' <= c && c <= '9') {
-                    sbn.append(c);
-                    findNumber = true;
                 }
             }
             String head1 = sbh.toString().toUpperCase();
@@ -62,13 +72,13 @@ class Solution17686 {
             findNumber = false; // 숫자 찾음 여부
             for(int i = 0; i < o2.length(); i++) {
                 char c = o2.charAt(i);
-                if(('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z')) {
+                if('0' <= c && c <= '9') {
+                    sbn.append(c);
+                    findNumber = true;
+                } else {
                     if(findNumber)
                         break;
                     sbh.append(c);
-                } else if('0' <= c && c <= '9') {
-                    sbn.append(c);
-                    findNumber = true;
                 }
             }
             String head2 = sbh.toString().toUpperCase();
