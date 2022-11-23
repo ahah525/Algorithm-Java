@@ -1,32 +1,41 @@
-package programmers;
+package programmers.level2;
 
 /**
- * m: 멜로디를 담은 문자열
- * musicinfos: 방송된 곡의 정보를 담고 있는 배열(시작 시각, 끝 시각, 음악 제목, 악보 정보)
- * answer: 조건과 일치하는 음악 제목
- * - 조건이 일치하는 음악이 여러 개일 때에는 라디오에서 재생된 시간이 제일 긴 음악 제목을 반환
- * - 재생된 시간도 같을 경우 먼저 입력된 음악 제목을 반환
- * - 조건이 일치하는 음악이 없을 때에는 “(None)”을 반환
- * ----------------------------------------------------------------------
- * - 음악 제목, 재생이 시작되고 끝난 시각, 악보
- * - 멜로디와 악보에 사용되는 음은 C, C#, D, D#, E, F, F#, G, G#, A, A#, B 12개
+ * [문제명] [3차] 방금그곡
+ * [햔줄평] #이 붙은 음을 하나의 다른 음으로 치환해서 풀어야한다는 힌트를 받고 풀었던 문제였다. 이것만 알면 쉽게 풀 수 있는 구현 문제였다.
+ * v1. replaceAll()로 #이 붙은 모든 음 -> 1문자로 치환(성공)
  */
-class Solution17683 {
+public class Solution17683 {
     public static void main(String[] args) {
+        // HELLO
         String m1 = "ABCDEFG";
         String[] musicinfos1 = {"12:00,12:14,HELLO,CDEFGAB", "13:00,13:05,WORLD,ABCDEF"};
+        String answer1 = solution(m1, musicinfos1);
+        System.out.println(answer1);
 
+        // FOO
         String m2 = "CC#BCC#BCC#BCC#B";
         String[] musicinfos2 = {"03:00,03:30,FOO,CC#B", "04:00,04:08,BAR,CC#BCC#BCC#B"};
+        String answer2 = solution(m2, musicinfos2);
+        System.out.println(answer2);
 
+        // WORLD
         String m3 = "ABC";
         String[] musicinfos3 = {"12:00,12:14,HELLO,C#DEFGAB", "13:00,13:05,WORLD,ABCDEF"};
-
-        String answer = solution(m2, musicinfos2);
-        // FOO
-        System.out.println(answer);
+        String answer3 = solution(m3, musicinfos3);
+        System.out.println(answer3);
     }
 
+    /**
+     *
+     * @param m 멜로디를 담은 문자열
+     * @param musicinfos 방송된 곡의 정보를 담고 있는 배열(시작 시각, 끝 시각, 음악 제목, 악보 정보)
+     * - 멜로디와 악보에 사용되는 음은 C, C#, D, D#, E, F, F#, G, G#, A, A#, B 12개
+     * @return 조건과 일치하는 음악 제목
+     * - 조건이 일치하는 음악이 여러 개일 때에는 라디오에서 재생된 시간이 제일 긴 음악 제목을 반환
+     * - 재생된 시간도 같을 경우 먼저 입력된 음악 제목을 반환
+     * - 조건이 일치하는 음악이 없을 때에는 “(None)”을 반환
+     */
     public static String solution(String m, String[] musicinfos) {
         String answerTitle = "";
         int answerPlayTime = -1;
@@ -65,10 +74,10 @@ class Solution17683 {
                 }
             }
 
-            System.out.println("title = " + title);
-            System.out.println("musicTime = " + musicTime);
-            System.out.println("realMusic = " + realMusic);
-            System.out.println("======================================");
+//            System.out.println("title = " + title);
+//            System.out.println("musicTime = " + musicTime);
+//            System.out.println("realMusic = " + realMusic);
+//            System.out.println("======================================");
         }
         if(answerTitle.equals("")) {
             return "(None)";
