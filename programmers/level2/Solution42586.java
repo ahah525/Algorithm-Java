@@ -1,4 +1,4 @@
-package programmers;
+package programmers.level2;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -6,28 +6,34 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * progresses: 각 작업의 진도
- * speeds: 각 작업의 개발 속도
- * answer: 각 배포마다 배포되는 기능의 수
- * -----------------------
- * - 배포되어야 하는 순서대로 작업이 주어짐
- * - 배포는 하루에 한 번만 가능
- *
- * 반례)
- * 95, 94
- * 3, 3
- * 2
+ * [문제명] 기능개발
+ * [한줄평] 큐를 이용해야겠다는 것은 쉽게 떠올렸지만 int 끼리 연산한 결과는 int 라는 것을 간과해서 틀렸던 문제였다.
+ * v1. 소요일수 구할 때 / 연산 결과가 int -> 올림 적용 안됨(실패)
+ * v2. 소요일수 구할 때 / 연산 결과가 double -> 올림 적용 성공(성공)
  */
 class Solution42586 {
     public static void main(String[] args) {
-        int[] progresses = {93, 30, 55};
-        int[] speeds = {1, 30, 5};
-
-        List<Integer> answer = solution(progresses, speeds);
         // [2, 1]
-        System.out.println(answer);
+        int[] progresses1 = {93, 30, 55};
+        int[] speeds1 = {1, 30, 5};
+        List<Integer> answer1 = solution(progresses1, speeds1);
+        System.out.println(answer1);
+
+        // 2(반례)
+        int[] progresses2 = {95, 94};
+        int[] speeds2 = {3, 3};
+        List<Integer> answer2 = solution(progresses2, speeds2);
+        System.out.println(answer2);
     }
 
+    /**
+     *
+     * @param progresses 각 작업의 진도
+     * @param speeds 각 작업의 개발 속도
+     * - 배포되어야 하는 순서대로 작업이 주어짐
+     * - 배포는 하루에 한 번만 가능
+     * @return 각 배포마다 배포되는 기능의 수
+     */
     public static List<Integer> solution(int[] progresses, int[] speeds) {
         List<Integer> answer = new ArrayList();
         int n = progresses.length;  // 작업 개수
