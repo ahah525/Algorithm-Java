@@ -1,30 +1,25 @@
-package programmers;
+package programmers.level2;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * priorities: 문서 중요도
- * location: 내가 인쇄를 요청한 문서 위치
- * answer: 내가 인쇄를 요청한 문서 순서의 실제 인쇄 순서
- * -----------------------
+ * [문제명] 프린터
+ * [한줄평] 큐를 이용해 풀었는데, 큐에서 값을 꺼내지 않고 탐색하기 위해 Iterator 사용법을 검색해서 풀었던 문제였다.
  * 1. 인쇄 대기목록의 가장 앞에 있는 문서(J)를 대기목록에서 꺼냅니다.
  * 2. 나머지 인쇄 대기목록에서 J보다 중요도가 높은 문서가 한 개라도 존재하면 J를 대기목록의 가장 마지막에 넣습니다.
  * 3. 그렇지 않으면 J를 인쇄합니다.
- *
- * 반례)
- *
  */
 class Solution42587 {
     public static void main(String[] args) {
+        // 1
         int[] priorities = {2, 1, 3, 2};
         int location = 2;
-
         int answer = solution(priorities, location);
-        // 1
         System.out.println(answer);
     }
+
     public static class Docs {
         int location;   // 원래 위치
         int priority;   // 중요도
@@ -42,6 +37,13 @@ class Solution42587 {
             return priority;
         }
     }
+
+    /**
+     *
+     * @param priorities 문서 중요도
+     * @param location 내가 인쇄를 요청한 문서 위치
+     * @return 내가 인쇄를 요청한 문서 순서의 실제 인쇄 순서
+     */
     public static int solution(int[] priorities, int location) {
         int answer = 0;
         Queue<Docs> q = new LinkedList<>();
@@ -51,7 +53,6 @@ class Solution42587 {
             q.add(new Docs(i, priorities[i]));
         }
 
-        //
         while(true) {
             // 1. 맨앞 문서 1개 꺼내기
             Docs now = q.poll();
