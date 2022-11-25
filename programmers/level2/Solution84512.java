@@ -6,12 +6,13 @@ import java.util.Map;
 
 /**
  * [문제명] 모음사전
- * [한줄평] DFS 로 풀어야겠다고 빨리 떠올려서 쉽게 풀 수 있었던 문제였다. 수학적으로 규칙을 찾아서 풀 수 있다는 것을 다른 풀이를 보고 알게되었다.
+ * [한줄평] DFS 로 풀어야겠다고 빨리 떠올려서 쉽게 풀 수 있었던 문제였다. 수학적으로 규칙을 찾아서 풀면 시간단축을 할 수 있기 떄문에 알아두면 좋을 것 같다.
  * v1. DFS(성공)
  * >> answer 을 0이 아닌 -1 로 초기화한 이유
  * - 최초에 dfs 가 호출될 때 즉, depth = 0 일 때 answer 값이 0이어야 하기 때문이다.
  * - 만약 0으로 초기화했다면 dfs(0, ,) 이 호출됬을 때 이미 answer 값이 1으로 시작하기 때문에 실제 값보다 1 크게 나오는 문제가 생긴다.
  * v2. 수학적 접근(더 빠른 방법)
+ * - 각 자리수의 문자가 바뀔때마다 얼마의 값이 증가하는지 규칙을 찾아 수학적으로 접근
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/84512/solution_groups?language=java">다른 풀이</a>
  */
 class Solution84512 {
@@ -22,25 +23,25 @@ class Solution84512 {
     public static void main(String[] args) {
         // 6
         String word1 = "AAAAE";
-        int answer1 = solution1(word1);
+        int answer1 = solution2(word1);
         System.out.println(answer1);
 
         // 10
         reset();
         String word2 = "AAAE";
-        int answer2 = solution1(word2);
+        int answer2 = solution2(word2);
         System.out.println(answer2);
 
         // 1563
         reset();
         String word3 = "I";
-        int answer3 = solution1(word3);
+        int answer3 = solution2(word3);
         System.out.println(answer3);
 
         // 1189
         reset();
         String word4 = "EIO";
-        int answer4 = solution1(word4);
+        int answer4 = solution2(word4);
         System.out.println(answer4);
     }
 
@@ -68,6 +69,32 @@ class Solution84512 {
         for(char c : alpha) {
             dfs(depth + 1, word + c, target);
         }
+    }
+
+    /**
+     * EIO 의 비교대상 = AAA(원래 문자를 모두 A로 바꾼 것)
+     * EIO -> AAA 의 각 자리수의 차 = 1, 2, 3
+     * EIO 순서 = AAA 의 순서 + (EIO, AAA)의 차이
+     */
+    public static int solution2(String word) {
+        // 각 자리수가 바뀔 때마다 증가하는 수
+        int[] arr = {781, 156, 31, 6, 1};
+        // 'A' 과의 차이
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('A', 0);
+        map.put('E', 1);
+        map.put('I', 2);
+        map.put('O', 3);
+        map.put('U', 4);
+
+        // word 길이로 answer 값 초기화
+        int len = word.length();
+        int answer = len;
+        // word 의 각 자리수의 차 구하기
+        for(int i = 0; i < len; i++) {
+            answer += map.get(word.charAt(i)) * arr[i];
+        }
+        return answer;
     }
 
     // 출력 테스트를 위한 메서드
