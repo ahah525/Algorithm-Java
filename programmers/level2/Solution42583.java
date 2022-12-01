@@ -13,6 +13,9 @@ import java.util.Queue;
  * - 진입완료: 다리에 완전히 오름
  * - 진출: 다리를 빠져나가기 시작함
  * - 진출완료: 다리를 완전히 빠져나감
+ * v2. (성공)
+ * - 진출 -> 진입 순서로 진행해야한다.
+ * <a href="https://school.programmers.co.kr/questions/39010">반례</a>
  */
 class Solution42583 {
     public static void main(String[] args) {
@@ -33,6 +36,18 @@ class Solution42583 {
         int weight3 = 100;
         int[] truckWeights3 = {10,10,10,10,10,10,10,10,10,10};
         System.out.println(solution(bridgeLength3, weight3, truckWeights3));
+
+        // 19
+        int bridgeLength4 = 5;
+        int weight4 = 5;
+        int[] truckWeights4 = {2, 2, 2, 2, 1, 1, 1, 1, 1};
+        System.out.println(solution(bridgeLength4, weight4, truckWeights4));
+
+        // 4(반례)
+        int bridgeLength5 = 1;
+        int weight5 = 2;
+        int[] truckWeights5 = {1, 1, 1};
+        System.out.println(solution(bridgeLength5, weight5, truckWeights5));
     }
 
     /**
@@ -44,7 +59,7 @@ class Solution42583 {
      * @return 모든 트럭이 다리를 건너려면 최소 몇 초가 걸리는지 return
      */
     public static int solution(int bridgeLength, int weight, int[] truckWeights) {
-        int truck = truckWeights.length;    // 진입 가능한 최대 트럭수
+        int truck = truckWeights.length;    // 트럭수
         int t = 0;  // 경과 시간
         int n = 0;  // 진출 완료된 트럭 개수
         int w = 0;  // 진입 완료된 트럭의 무게
@@ -55,41 +70,33 @@ class Solution42583 {
         }
         // 모든 트럭이 진출 완료할 때 까지
         while(n < truck) {
-            boolean isOut = false;  // 진출 트럭 여부
+            // 1. 진입 완료된 트럭 중에서 진출할 트럭이 있는지 검사
             if(pass.size() > 0) {
                 Truck peek = pass.peek();
                 // 진출 시점이 되었다면 진출 처리
                 if(peek.passTime == t) {
-                    isOut = true;
                     w -= peek.weight;
+                    // 진출 완료 처리(진입 완료된 트럭에서 삭제, 진출 완료 트럭수 1 증가)
+                    pass.poll();
+                    n++;
+//                    System.out.println("t = " + t);
                 }
             }
-            // 대기 중인 트럭이 있으면 진입할 수 있는지 검사
-            boolean isIn = false;   // 진입 트럭 여부
+            // 2. 대기 중인 트럭이 진입할 수 있는지 검사
             if(wait.size() > 0) {
                 // 진입 가능 조건 = 진입 완료된 트럭 무게, 트럭수 비교
                 if(pass.size() < bridgeLength && w + wait.peek() <= weight) {
-                    isIn = true;
-                }
-            }
-            t++;
-            // 진출 완료 처리
-            if(isOut) {
-                // 진입 완료된 트럭에서 삭제, 진출 완료 트럭수 1 증가
-                pass.poll();
-                n++;
-            }
-            // 진입 완료 처리
-            if(isIn) {
-                // 대기 트럭에서 삭제, 진입 완료에 추가
-                int nw = wait.poll();
-                int pt = t - 1 + bridgeLength;
-                pass.add(new Truck(nw, pt));
-                w += nw;
+                    // 진입 완료 처리(대기 트럭에서 삭제, 진입 완료에 추가)
+                    int nw = wait.poll();
+                    int pt = t + bridgeLength;
+                    pass.add(new Truck(nw, pt));
+                    w += nw;
 //                System.out.println("t = " + t);
 //                System.out.println("nw = " + nw);
 //                System.out.println("pt = " + pt);
+                }
             }
+            t++;
         }
         return t;
     }
