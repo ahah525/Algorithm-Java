@@ -69,7 +69,7 @@ class Solution77885 {
 
     public static long f2(long x) {
         // 1. 10진수(Long) -> 2진수(문자열) 변환
-        String s = Long.toBinaryString(x);
+        String s = Long.toString(x, 2);
         int len = s.length();
         // 1. 맨 끝 값이 0인 경우, 1로 바꾼 값 = 최솟값
         if(s.charAt(len - 1) == '0')
