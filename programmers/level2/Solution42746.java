@@ -25,6 +25,10 @@ class Solution42746 {
         // "0"
         int[] numbers5 = {0, 0, 0, 0};
         System.out.println(solution(numbers5));
+
+        // "100010001000"
+        int[] numbers6 = {1000, 1000, 1000};
+        System.out.println(solution(numbers6));
     }
 
     /**
@@ -44,21 +48,24 @@ class Solution42746 {
         }
         // 모두 0인 경우 "0" 바로 리턴
         if(zero == numbers.length) return "0";
+
+        /**
+         * 가정) o1 = 3, o2 = 30
+         * n1 = 330, n2 = 303
+         * n2 - n1 = -27 -> o1, o2 의 자리를 바꾸지 않는다
+         */
         // 1. 정렬 수행
         Collections.sort(list, (o1, o2) -> {
-            // 1-1. 2번째 수가 1번째 수를 포함하고 있으면, 2개 값을 이어 붙인 결과값으로 내림차순 정렬
-            if(o2.contains(o1) || o1.contains(o2)) {
-                int n1 = Integer.parseInt(o1 + o2);
-                int n2 = Integer.parseInt(o2 + o1);
-                return n2 - n1;
-            }
-            // 1-2. 2번째 수가 1번쨰 수를 포함하고 있지 않으면 내림차순 정렬
-            return o2.compareTo(o1);
+            // 이어 붙인 결과값으로 비교
+            int n1 = Integer.parseInt(o1 + o2);
+            int n2 = Integer.parseInt(o2 + o1);
+            // n2 - n1 < 0, n2 < n1 바꾸지 않는다
+            return n2 - n1;
         });
         // 2. 정렬된 결과를 이어 붙여 String 으로 반환
         StringBuilder sb = new StringBuilder();
         for(String s : list) {
-            System.out.println(s);
+//            System.out.println(s);
             sb.append(s);
         }
         return sb.toString();
