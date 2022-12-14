@@ -11,13 +11,17 @@ import java.util.Stack;
  * v1. stack(실패)
  * - 경우에 따라서 스택에 선택적으로 넣고 빼는 방식으로 구현했다가 실패했다.
  * v2. stack(성공)
- * - 스택에 넣기 전에 제거하는 과정을 거치고 경우의 수를 따지지 않고 일단 모두 넣는다는 점이 핵심이다.(순서 중요)
+ * - 1 -> 2 순서로 진행하고 경우의 수를 따지지 않고 일단 모두 넣는다는 점이 핵심이다.
+ * - 반례를 고려해서 3번 과정을 수행하는 것이 필수적이다!!
  * [로직]
  * 1. 스택에서 제거하기(1, 2 조건을 모두 만족할 때)
  *  1) 제거 가능한 횟수가 아직 0보다 큼
  *  2) 스택이 비어있지 않은 상태에서 스택의 peek() 값 > 현재값
  * 2. 다 제거했으면 현재값 넣기
+ * 3. 제거 가능한 횟수가 아직 0보다 크면 스택에서 k개 제거하기
+ * 4. 스택에 있는 값들을 string 으로 변환
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42883">문제</a>
+ * @See <a href="https://school.programmers.co.kr/questions/25858">반례</a>
  * @See <a href="https://velog.io/@soo5717/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%ED%81%B0-%EC%88%98-%EB%A7%8C%EB%93%A4%EA%B8%B0-%ED%8C%8C%EC%9D%B4%EC%8D%AC">문제 힌트</a>
  * @See <a href="https://mungto.tistory.com/45">다른 풀이 - for문</a>
  */
@@ -56,6 +60,15 @@ class Solution42883 {
             // 2. 다 제거했으면 현재값 넣기
             stack.push(c);
         }
-        return String.valueOf(stack);
+        // 3. 제거 가능한 횟수가 아직 0보다 크면 스택에서 k개 제거하기
+        for(int i = 0; i < k; i++) {
+            stack.pop();
+        }
+        // 4. 스택에 있는 값들을 string 으로 변환
+        StringBuilder sb = new StringBuilder();
+        for(char c : stack) {
+            sb.append(c);
+        }
+        return sb.toString();
     }
 }
