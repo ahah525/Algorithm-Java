@@ -10,8 +10,7 @@ import java.util.List;
  * [한줄평] 예전에 백준에서 비슷한 문제를 풀었던 적이 있었던 것 같다. 시계 반대방향으로 하나씩 값을 기록한 후 2차원 배열 값을 리스트에 옮기는 방식으로 구현했다.
  * 다만 각 경우에 따라 좌표값을 정확히 설정하지 않으면 인덱스 오류가 날 수 있기 때문에 정확한 수식을 도출해내는게 무엇보다 중요했던 문제였다!
  * v1. 구현(성공)
- * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12938">문제</a>
- * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12938/solution_groups?language=java">다른 풀이</a>
+ * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/68645">문제</a>
  */
 class Solution68645 {
     public static void main(String[] args) {
