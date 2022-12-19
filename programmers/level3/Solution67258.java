@@ -15,6 +15,7 @@ import java.util.Set;
  * - 시작 인덱스, 끝 인덱스를 바꿔가며 완전 탐색 수행
  * v2. Set, Map, 투포인터(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/15008/lessons/67258">문제</a>
+ * @See <a href="https://velog.io/@fantastik/48">풀이 참고</a>
  */
 class Solution67258 {
     public static void main(String[] args) {
