@@ -6,9 +6,12 @@ import java.util.List;
 
 /**
  * [문제명] [카카오 인턴] 수식 최대화
- * [풀이시간] (1시간 15분 + )
- * [한줄평]
- * v1. (실패 - 정확성 테스트: 11~15, 24, 27~29 실패)
+ * [풀이시간] 1시간 45분(1시간 15분 + 30분)
+ * [한줄평] 순열로 각 경우의 수에 따라 연산 결과를 모두 구하고 최댓값을 구해야겠다고 생각은 했는데 구현하는게 생각보다 조금 복잡했던 것 같다.
+ * 로직은 맞는 것 같은데 계속 실패가 떠서 결국 반례를 봤는데 조건을 생각안하고 자료형을 잘못사용해서 통과하지 못했다는게 정말 허무했다. 다시 한번 조건을 잘 읽자..
+ * v1. 순열로 완전탐색 + 구현(실패 - 정확성 테스트: 11~15, 24, 27~29 실패)
+ * v2. 순열로 완전탐색 + 구현(성공)
+ * - "expression의 중간 계산값과 최종 결괏값은 절댓값이 2^63 - 1 이하" 조건 -> int 대신 long 으로 변경
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/62757">문제</a>
  */
 class Solution62757 {
@@ -26,9 +29,9 @@ class Solution62757 {
         System.out.println(solution(expression3));
     }
 
-    static List<Integer> nums;  // 피연산자 리스트
+    static List<Long> nums;  // 피연산자 리스트
     static String cmds;         // 연산자 리스트
-    static int max;             // 연산 결과값(절댓값)의 최댓값
+    static long max;             // 연산 결과값(절댓값)의 최댓값
 
     /**
      * @param expression 공백문자, 괄호문자 없이 오로지 숫자와 3가지의 연산자(+, -, *) 만으로 이루어진 올바른 중위표기법(연산의 두 대상 사이에 연산기호를 사용하는 방식)으로 표현된 연산식
@@ -53,14 +56,14 @@ class Solution62757 {
                 sb.append(c);
             } else {
                 // StringBuilder 담긴 숫자를 정수로 변한하여 리스트에 추가
-                nums.add(Integer.parseInt(sb.toString()));
+                nums.add(Long.parseLong(sb.toString()));
                 sb = new StringBuilder();
                 // 연산자는 문자열 뒤에 추가
                 cmds += c;
             }
         }
         // StringBuilder 에 들어있는 마지막 숫자도 추가하기
-        nums.add(Integer.parseInt(sb.toString()));
+        nums.add(Long.parseLong(sb.toString()));
         // 3.
         char[] path = new char[n];          // 연산자 우선순위(앞에 있을 수록 우선순위가 크다)
         boolean[] visited = new boolean[n]; // 방문여부
@@ -79,17 +82,12 @@ class Solution62757 {
         if(depth == n) {
             System.out.print("*");
             // 1. 피연산자 리스트, 연산자 문자열 deep copy -> 원본 값을 유지해야하기 때문에
-            List<Integer> ns = new ArrayList<>();
+            List<Long> ns = new ArrayList<>();
             ns.addAll(nums);
             String cs = new String(cmds);
-//            System.out.print("path =");
-//            for(char c : path) {
-//                System.out.print(c);
-//            }
-//            System.out.println();
 
             // 2. 연산자 우선순위에 의한 연산 결과 구하기
-            int res = 0;
+            long res = 0;
             while(cs.length() != 0) {
                 // 2-1. 가장 우선순위가 높은 연산자와 해당 인덱스 구하기
                 int find = findIdx(path, cs);
@@ -106,9 +104,6 @@ class Solution62757 {
                         res = ns.get(find) * ns.get(find + 1);
                         break;
                 }
-//                System.out.println("ns = " + ns);
-//                System.out.println("cs = " + cs);
-//                System.out.println("res = " + res);
                 // 2-3. 피연산자 리스트에서 해당 인덱스 값을 연산 결과값으로 바꾸고 그 다음값은 제거하기
                 ns.set(find, res);
                 ns.remove(find + 1);
