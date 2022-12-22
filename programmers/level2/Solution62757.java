@@ -80,18 +80,16 @@ class Solution62757 {
      */
     public static void dfs(int depth, List<Character> list, boolean[] visited, char[] path, int n) {
         if(depth == n) {
-            System.out.print("*");
-            // 1. 피연산자 리스트, 연산자 문자열 deep copy -> 원본 값을 유지해야하기 때문에
-            List<Long> ns = new ArrayList<>();
-            ns.addAll(nums);
-            String cs = new String(cmds);
+            // 1. 피연산자 리스트, 연산자 문자열 생성자로 복사
+            List<Long> ns = new ArrayList<>(nums);
+            StringBuilder sb = new StringBuilder(cmds);
 
             // 2. 연산자 우선순위에 의한 연산 결과 구하기
             long res = 0;
-            while(cs.length() != 0) {
+            while(sb.length() != 0) {
                 // 2-1. 가장 우선순위가 높은 연산자와 해당 인덱스 구하기
-                int find = findIdx(path, cs);
-                char cmd = cs.charAt(find);
+                int find = findIdx(path, sb.toString());
+                char cmd = sb.charAt(find);
                 // 2-2. 연산 결과 구하기
                 switch (cmd) {
                     case '+':
@@ -108,9 +106,7 @@ class Solution62757 {
                 ns.set(find, res);
                 ns.remove(find + 1);
                 // 2-4. 해당 연산자를 연산자 문자열에서 삭제하기
-                StringBuilder sb = new StringBuilder(cs);
                 sb.deleteCharAt(find);
-                cs = sb.toString();
             }
             // 3. 최댓값 업데이트
             max = Math.max(max, Math.abs(res));
