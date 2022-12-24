@@ -4,7 +4,7 @@ package programmers.level2;
 /**
  * [문제명] JadenCase 문자열 만들기
  * [풀이시간] 15분
- * [한줄평] 간단한 문제였는데 생각보다 오래걸렸다.
+ * [한줄평] 간단했는데 어떻게 풀어야 더 효율적일지 고민하다가 시간이 좀 오래걸렸던 문제였다.
  * v1. StringBuilder 사용(성공)
  * - 경우에 따라 각 문자를 변환작업하여 넣어 새로운 문자열을 만드는 방식으로 해결
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12951">문제</a>
