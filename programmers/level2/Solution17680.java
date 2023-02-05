@@ -8,7 +8,10 @@ import java.util.*;
  * [풀이시간] (40분)
  * [한줄평]
  * v1. PriorityQueue(실패 - 7, 11, 15, 17, 18, 19)
+ * v2. PriorityQueue(실패 - 11, 15, 18, 19)
+ * - 캐시 크기가 0일 때 예외처리 추가
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/17680">문제</a>
+ * @See <a href="https://school.programmers.co.kr/questions/4969">반례</a>
  */
 class Solution17680 {
     public static void main(String[] args) {
@@ -41,6 +44,10 @@ class Solution17680 {
 
     public static int solution(int cacheSize, String[] cities) {
         int answer = 0;
+        // 캐시 크기가 0일 때 예외처리
+        if(cacheSize == 0) {
+            return 5 * cities.length;
+        }
         Queue<City> q = new PriorityQueue<>((o1, o2) -> o1.order - o2.order);    // 캐시에 있는 도시이름
         // 1. 도시명 소문자 변환
         for(int i = 0; i < cities.length; i++) {
