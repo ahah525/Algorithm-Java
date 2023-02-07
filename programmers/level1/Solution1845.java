@@ -6,9 +6,10 @@ import java.util.Set;
 
 /**
  * [문제명] 포켓몬
- * [풀이시간] 10분
+ * [풀이시간] 10분 / 3분
  * [한줄평] Set 을 사용해 풀 수 있는 아주 쉬운 문제였다.
- * v1. Set(성공)
+ * 1_v1. Set(성공)
+ * 2_v1. Set(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/1845">문제</a>
  */
 class Solution1845 {
