@@ -10,14 +10,16 @@ import java.util.Queue;
  * [문제명] 전력망을 둘로 나누기
  * [풀이시간] 30분
  * [한줄평] n 의 크기를 보니 완전탐색으로 풀 수 있겠다는 생각이 들어서 BFS 를 반복문을 돌려 풀었다. BFS 로 풀었지만 DFS 로 풀어도 되는 문제다.
+ * 이 문제에서는 간선정보를 계속 수정해줘야하기 때문에 인접행렬 방식으로 푸는 것도 나쁘지 않은 것 같다.
  * 1_v1. 인접리스트, BFS(성공)
+ * 1_v2. 인접행렬, BFS(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/86971">문제</a>
  */
 class Solution86971 {
     public static void main(String[] args) {
         // 3
         int[][] wires1 = {{1,3},{2,3},{3,4},{4,5},{4,6},{4,7},{7,8},{7,9}};
-        System.out.println(solution1(9, wires1));
+        System.out.println(solution2(9, wires1));
     }
 
     /**
@@ -62,6 +64,50 @@ class Solution86971 {
                 if(v == start && i == impossible || i == start && v == impossible)
                     continue;
                 if(!visited[i]) {
+                    q.add(i);
+                    visited[i] = true;
+                }
+            }
+        }
+        return cnt;
+    }
+
+    public static int solution2(int n, int[][] wires) {
+        int min = 100;
+        // 1. 인접행렬
+        boolean[][] graph = new boolean[n + 1][n + 1];
+        for(int[] wire : wires) {
+            graph[wire[0]][wire[1]] = true;
+            graph[wire[1]][wire[0]] = true;
+        }
+        // 2. 각 전선을 끊었을 때 경우의 수 모두 비교
+        for(int[] wire: wires) {
+            // 해당 전선을 끊었을 때 각 트리의 탑 개수의 차 구하기
+            // 간선 끊기
+            graph[wire[0]][wire[1]] = false;
+            graph[wire[1]][wire[0]] = false;
+            int v1 = bfs2(wire[0], n, graph);
+            int v2 = bfs2(wire[1], n, graph);
+            // 간선 원상복귀
+            graph[wire[0]][wire[1]] = true;
+            graph[wire[1]][wire[0]] = true;
+            min = Math.min(min, Math.abs(v1 - v2));
+        }
+        return min;
+    }
+
+    public static int bfs2(int start, int n, boolean[][] graph) {
+        int cnt = 0;    // 탑개수
+        boolean[] visited = new boolean[n + 1]; // 탑 방문 여부
+        Queue<Integer> q = new LinkedList<>();
+        q.add(start);
+        visited[start] = true;
+        while(!q.isEmpty()) {
+            int v = q.poll();
+            cnt++;
+            // 인접노드
+            for(int i = 1; i < n + 1; i++) {
+                if(graph[v][i] && !visited[i]) {
                     q.add(i);
                     visited[i] = true;
                 }
