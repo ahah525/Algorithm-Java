@@ -1,6 +1,9 @@
 package programmers.level3;
 
 
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 /**
  * [문제명] 배달
  * [풀이시간] 3시간
@@ -66,6 +69,56 @@ class Solution12978 {
                 // 1) 해당 노드를 거치는 것과 2) 거치지 않는 것 중 최솟값으로 갱신
                 if(d[idx] + map[idx][j] < d[j]) {
                     d[j] = d[idx] + map[idx][j];
+                }
+            }
+        }
+        // 5. N 개의 노드 중 최단거리가 K 이하인 노드 개수 구하기
+        for(int i = 1; i <= N; i++) {
+            if(d[i] <= K)
+                answer++;
+        }
+        return answer;
+    }
+
+    public int solution2(int N, int[][] road, int K) {
+        int answer = 0;
+        int INF = 500001;   // 거리 최댓값
+        int[][] map = new int[N + 1][N + 1];    // map[i][j]: i -> j 직선 거리
+        // 1. 노드 간 직선 거리 구하기
+        // 1-1. 무한대로 초기화(i == j 경우를 제외하고)
+        for(int i = 1; i <= N; i++) {
+            for(int j = 1; j <= N; j++) {
+                if(i == j) continue;    // i -> i 최단거리 = 0
+                map[i][j] = INF;
+            }
+        }
+        // 1-2. 간선 정보로부터 직선 거리 저장
+        for(int[] r : road) {
+            // 간선이 여러개 있을 수 있기 때문에 최솟값으로 저장
+            if(map[r[0]][r[1]] > r[2]) {
+                map[r[0]][r[1]] = r[2];
+                map[r[1]][r[0]] = r[2];
+            }
+        }
+        // 2. 시작 노드 설정하기
+        boolean[] visited = new boolean[N + 1]; // visited[i]: i 노드 방문 여부
+        visited[1] = true;
+        // 3. 시작 노드에 대한 최단 거리 배열 초기화
+        int[] d = new int[N + 1];   // d[i]: 1 -> i 로 가는 최단 거리
+        for(int i = 1; i <= N; i++) {
+            d[i] = map[1][i];
+        }
+        Queue<Integer> q = new PriorityQueue<>((o1, o2) -> d[o1] - d[o2]);
+        q.add(1);
+        // 시작 노드를 제외한 나머지 (N - 1)개의 노드에 대해 반복
+        while(!q.isEmpty()) {
+            int idx = q.poll(); // 현재 노드
+            // 현재노드와 인접한 노드 검사
+            for (int j = 1; j <= N; j++) {
+                // 갱신될 때 큐에 넣기
+                if (d[idx] + map[idx][j] < d[j]) {
+                    d[j] = d[idx] + map[idx][j];
+                    q.add(idx);
                 }
             }
         }
