@@ -4,9 +4,11 @@ package programmers.level1;
 /**
  * [문제명] 기사단원의 무기
  * [풀이시간] 8분
- * [한줄평] 그냥 있는 그대로 구현하기만 하면 되는 문제였다.
+ * [한줄평] 그냥 있는 그대로 구현하기만 하면 되는 문제였다. 다만 약수를 매번 구하면 효율성이 떨어져 2번 방식을 추천한다.
  * 1_v1. (성공)
- * - 각 숫자의 약수의 개수를 구하는 방식
+ * - 한 숫자의 약수의 개수를 구하는 메서드를 만들고 for 문을 돌리는 방식
+ * 1_v2. (성공)
+ * - 약수의 개수를 저장하는 배열을 이용하여 한 번에 구하는 방식
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/136798">문제</a>
  */
 class Solution136798 {
@@ -42,5 +44,23 @@ class Solution136798 {
                 cnt++;
         }
         return sqrt % ((int) sqrt) == 0 ? 2 * cnt - 1 : 2 * cnt;
+    }
+
+    public int solution2(int number, int limit, int power) {
+        int answer = 0;
+        // 약수 개수 배열
+        int[] count = new int[number + 1];
+        for(int i = 1; i <= number; i++) {
+            for(int j = 1; i * j <= number; j++) {
+                count[i * j]++;
+            }
+        }
+        for(int i = 1; i <= number; i++) {
+            if(count[i] <= limit)
+                answer += count[i];
+            else
+                answer += power;
+        }
+        return answer;
     }
 }
