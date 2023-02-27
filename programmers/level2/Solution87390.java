@@ -1,0 +1,59 @@
+package programmers.level2;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * [문제명] n^2 배열 자르기
+ * [풀이시간] / (15분)
+ * [한줄평]
+ * 1_v1. (성공)
+ * 2_v1. (실패 - 2, 3, 15~20 실패)
+ * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/87390">문제</a>
+ */
+class Solution87390 {
+    public static void main(String[] args) {
+        int n = 1000000;
+        long left = 100000;
+        long right = 199999;
+
+        List<Integer> answer = solution(n, left, right);
+        // [3,2,2,3]
+        System.out.println(answer);
+    }
+
+    public static List<Integer> solution(int n, long left, long right) {
+        List<Integer> answer = new ArrayList<>();
+
+        for(long i = left; i <= right; i++) {
+            // 행, 열 값 중 최댓값 + 1
+            answer.add((int) (Math.max(i / n, i % n) + 1));
+        }
+
+        return answer;
+    }
+
+    public List<Integer> solution2(int n, long left, long right) {
+        List<Integer> answer = new ArrayList<>();
+        int a = (int) (left / n);
+        int b = (int) (left % n);
+        int c = (int) (right / n);
+        int d = (int) (right % n);
+
+        // a행 b열 이후
+        for(int i = b; i < n; i++) {
+            answer.add(Math.max(a, i) + 1);
+        }
+        // (a + 1)행 ~ (c - 1)행
+        for(int i = a + 1; i <= c - 1; i++) {
+            for(int j = 0; j < n; j++) {
+                answer.add(Math.max(i, j) + 1);
+            }
+        }
+        // c행 d열 이전
+        for(int i = 0; i <= d; i++) {
+            answer.add(Math.max(c, i) + 1);
+        }
+        return answer;
+    }
+}
