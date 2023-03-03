@@ -8,6 +8,8 @@ import java.util.*;
  * [한줄평] / 3번째 풀다보니 어렵지 않게 풀 수 있었던 것 같다.
  * 1_v1. 최소힙, 최대힙, Map(성공)
  * 2_v1. 최소힙, 최대힙(성공)
+ * 2_v2. 최소힙, 최대힙(성공)
+ * - PriorityQueue 의 remove() 함수 사용하면 특정 값을 삭제할 수 있다
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42628">문제</a>
  */
 class Solution42628 {
@@ -118,40 +120,27 @@ class Solution42628 {
                 case "D":
                     if(n == -1) {
                         // 최솟값 삭제
-                        while(!minHeap.isEmpty()) {
+                        if(!minHeap.isEmpty()) {
                             int min = minHeap.poll();
-                            // 최소힙에서 poll 한 값이 최대힙에 없는 경우 이미 삭제되었어야할 값이므로 한 번 더 삭제
-                            if(maxHeap.contains(min)) break;
+                            maxHeap.remove(min);
                         }
                     } else {
                         // 최댓값 삭제
-                        while(!maxHeap.isEmpty()) {
+                        if(!maxHeap.isEmpty()) {
                             int max = maxHeap.poll();
-                            // 최대힙에서 poll 한 값이 최소힙에 없는 경우 이미 삭제되었어야할 값이므로 한 번 더 삭제
-                            if(minHeap.contains(max)) break;
+                            minHeap.remove(max);
                         }
                     }
                     break;
             }
         }
-        // 최소힙에서 최솟값을 구하기 전에 이미 삭제되었어야 할 값 삭제하기
-        while(!minHeap.isEmpty()) {
-            int min = minHeap.peek();
-            if(maxHeap.contains(min)) break;
-            minHeap.poll();
+//        System.out.println("minHeap = " + minHeap);
+//        System.out.println("maxHeap = " + maxHeap);
+        // minHeap, maxHeap 의 구성 요소는 동일하니까 둘 중 하나의 크기만 확인하면 된다
+        if(minHeap.size() >= 1) {
+            answer[0] = maxHeap.poll();
+            answer[1] = minHeap.poll();
         }
-        // 최대힙에서 최댓값을 구하기 전에 이미 삭제되었어야 할 값 삭제하기
-        while(!maxHeap.isEmpty()) {
-            int max = maxHeap.peek();
-            if(minHeap.contains(max)) break;
-            maxHeap.poll();
-        }
-        // 둘 중 하나라도 비었으면 최솟값, 최댓값이 존재하지 않으므로 {0,0} 리턴
-        if(minHeap.isEmpty() || maxHeap.isEmpty())
-            return answer;
-        answer[0] = maxHeap.poll();
-        answer[1] = minHeap.poll();
-
         return answer;
     }
 }
