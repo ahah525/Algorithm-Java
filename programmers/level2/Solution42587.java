@@ -6,10 +6,11 @@ import java.util.Queue;
 
 /**
  * [문제명] 프린터
- * [한줄평] 큐를 이용해 풀었는데, 큐에서 값을 꺼내지 않고 탐색하기 위해 Iterator 사용법을 검색해서 풀었던 문제였다.
- * 1. 인쇄 대기목록의 가장 앞에 있는 문서(J)를 대기목록에서 꺼냅니다.
- * 2. 나머지 인쇄 대기목록에서 J보다 중요도가 높은 문서가 한 개라도 존재하면 J를 대기목록의 가장 마지막에 넣습니다.
- * 3. 그렇지 않으면 J를 인쇄합니다.
+ * [풀이시간] / 16분
+ * [한줄평] 큐에서 값을 꺼내지 않고 탐색하기 위해 Iterator 사용법을 검색해서 풀었던 문제였다. / 2번쨰 풀다보니 쉽게 풀 수 있었다.
+ * 1_v1. Queue, Iterator(성공)
+ * 2_v1. Queue, 향상된 for 문(성공) -> 추천
+ * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42587">문제</a>
  */
 class Solution42587 {
     public static void main(String[] args) {
@@ -39,7 +40,6 @@ class Solution42587 {
     }
 
     /**
-     *
      * @param priorities 문서 중요도
      * @param location 내가 인쇄를 요청한 문서 위치
      * @return 내가 인쇄를 요청한 문서 순서의 실제 인쇄 순서
@@ -78,5 +78,57 @@ class Solution42587 {
                 }
             }
         }
+    }
+
+    /**
+     * 2번 풀이
+     */
+    class Doc {
+        int index;   // 몇번째 문서인지
+        int priority;// 중요도
+
+        Doc(int index, int priority) {
+            this.index = index;
+            this.priority = priority;
+        }
+    }
+
+    public int solution2(int[] priorities, int location) {
+        int answer = 0; // 인쇄한 문서 개수
+        // 1. 대기큐 초기화
+        Queue<Doc> q = new LinkedList<>();
+        for(int i = 0; i < priorities.length; i++) {
+            q.add(new Doc(i, priorities[i]));
+        }
+        while(!q.isEmpty()) {
+            // 2. 가장 앞에 있는 문서 꺼내기
+            Doc j = q.poll();
+            if(canPrint(q, j.priority)) {
+                // 3. 해당 문서를 앤쇄할 수 있으면 카운팅
+                answer++;
+                // 4. 인쇄 요청한 문서면 탈출
+                if(j.index == location)
+                    break;
+            } else {
+                // 5. 해당 문서를 인쇄할 수 없으면 대기큐 마지막에 넣기
+                q.add(j);
+            }
+        }
+        return answer;
+    }
+
+    /**
+     * @param q 문서 대기목록
+     * @param standard 가장 앞에 있는 문서의 중요도
+     * @return 가장 앞에 있는 문서를 프린트할 수 있는지 여부
+     */
+    public boolean canPrint(Queue<Doc> q, int standard) {
+        for(Doc d : q) {
+            // 대기목록에서 더 중요도가 높은 문서가 1개라도 있으면 false
+            if(standard < d.priority) {
+                return false;
+            }
+        }
+        return true;
     }
 }
