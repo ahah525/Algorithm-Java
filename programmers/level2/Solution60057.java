@@ -3,9 +3,12 @@ package programmers.level2;
 
 /**
  * [문제명] 문자열 압축
- * [풀이시간] 28분
- * [한줄평] 문자열을 다루는 구현 문제였다.
+ * [풀이시간] 28분, 20분
+ * [한줄평] 문자열을 다루는 구현 문제로 split() 을 써서 바로 비교했을 때 시간이 훨씬 빨랐다.
  * 1_v1. 문자열 구현(성공)
+ * [접근법] 직접 문자열 분리 후 비교
+ * 1_v2. 문자열 구현(성공) -> 추천
+ * [접근법] split() 으로 분리와 동시에 비교
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/60057">문제</a>
  */
 class Solution60057 {
@@ -14,6 +17,7 @@ class Solution60057 {
         System.out.println();
     }
 
+    // 1_v1
     /**
      * @param s 압축할 문자열(s의 길이는 1 이상 1,000 이하)
      * @return 위에 설명한 방법으로 1개 이상 단위로 문자열을 잘라 압축하여 표현한 문자열 중 가장 짧은 것의 길이
@@ -68,5 +72,45 @@ class Solution60057 {
         if(sb.length() != 0)
             arr[idx] = sb.toString();
         return arr;
+    }
+
+    // 1_v2
+    public int solution2(String s) {
+        int answer = s.length();
+        // 1. (최소 단위 = 1, 최대 단위 = 문자열 길이 / 2) 만큼 반복
+        for(int i = 1; i <= s.length() / 2; i++) {
+            StringBuilder sb = new StringBuilder(); // i개 단위로 문자열을 잘라 압축한 문자열
+            String prev = "";   // 이전 문자열
+            String cur = "";    // 현재 문자열
+            int j = 0;      // s 에서 잘라야하는 시작 인덱스
+            int cnt = 1;    // prev 가 연속으로 나온 개수
+            // 2. 시작 인덱스가 범위를 벗어나지 않을 때까지 반복
+            while(j < s.length()) {
+                // 3-1. 마지막 문자열이면 끝 인덱스 설정X
+                if(j + i >= s.length()) cur = s.substring(j);
+                // 3-2. 마지막 문자열이아니면 끝 인덱스 설정
+                else cur = s.substring(j, j + i);
+                if(!cur.equals(prev)) {
+                    // 4. 현재 문자열이 이전 문자열과 다르면
+                    // 4-1. 이전 문자열이 몇번 연속되었는지 기록
+                    if(cnt != 1) sb.append(cnt);    // 1은 생략
+                    sb.append(prev);
+                    // 4-2. 현재 문자열을 이전 문자열로 업뎃
+                    prev = cur;
+                    cnt = 1;
+                } else {
+                    // 5. 현재 문자열이 이전 문자열과 같으면, 연속 개수만 카운트
+                    cnt++;
+                }
+                // 6. 단위가 i 니까 j = j + i 가 되도록 시작 인덱스 변경
+                j += i;
+            }
+            // 7. 마지막 문자열도 기록
+            if(cnt != 1) sb.append(cnt);
+            sb.append(prev);
+            // 8. ?개 단위로 문자열을 잘라 압축한 문자열의 길이의 최솟값 갱신
+            answer = Math.min(answer, sb.length());
+        }
+        return answer;
     }
 }
