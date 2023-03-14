@@ -10,16 +10,10 @@ import java.util.*;
  * 1_v1. TreeMap<String, Integer>(각 차의 누적 주차시간), ArrayList<String>(출차 기록없는 차량 번호 리스트)
  * 1_v2. TreeMap<String, Car>
  * - TreeMap 은 자동으로 key 값 기준 오름차순 정렬됨
- * 2_v1. HashMap<String, Car>
+ * 2_v1. HashMap<String, Car> -> 추천(더 빠름)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/92341">문제</a>
  */
 class Solution92341 {
-    static int standardTime; // 기본시간
-    static int standardFee;  // 기본요금
-    static int unitTime;     // 단위시간
-    static int unitFee;      // 단위요금
-    static final int END_TIME = 23 * 60 + 59; // 11:59 분으로 환산
-
     public static void main(String[] args) {
         int[] fees1 = {180, 5000, 10, 600};
         String[] records1 = {"05:34 5961 IN", "06:00 0000 IN", "06:34 0000 OUT", "07:59 5961 OUT", "07:59 0148 IN", "18:59 0000 IN", "19:09 0148 OUT", "22:59 5961 IN", "23:00 5961 OUT"};
@@ -39,6 +33,13 @@ class Solution92341 {
         List<Integer> answer3 = solution(fees3, records3);
         System.out.println(answer3);
     }
+
+    // 1_v1
+    static int standardTime; // 기본시간
+    static int standardFee;  // 기본요금
+    static int unitTime;     // 단위시간
+    static int unitFee;      // 단위요금
+    static final int END_TIME = 23 * 60 + 59; // 11:59 분으로 환산
 
     /**
      * @param fees 주차 요금을 나타내는 정수 배열 [기본 시간, 기본 요금, 단위 시간, 단위 요금]
@@ -97,7 +98,6 @@ class Solution92341 {
         }
         return fee;
     }
-
 
     // 2_v1
     class Car {
