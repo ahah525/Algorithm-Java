@@ -4,15 +4,14 @@ package programmers.level2;
 import java.util.*;
 
 /**
- * [한줄평] 처음에 문제 조건을 꼼꼼하게 체크하지 않아 생각보다 시간이 오래걸렸던 문제였다.
- * Map 2개를 쓰는 것과 Map 1개, Car 클래스를 쓰는 것 중 어느 것이 더 좋을지 고민해봐야할 문제
- *
- * 00:00부터 23:59까지의 입/출차 내역을 바탕으로 차량별 누적 주차 시간을 계산하여 요금을 일괄로 정산
- * - 어떤 차량이 입차된 후에 출차된 내역이 없다면, 23:59에 출차된 것으로 간주
- *
- * v1. TreeMap<String, Integer>(각 차의 누적 주차시간), ArrayList<String>(출차 기록없는 차량 번호 리스트)
- * v2. TreeMap<String, Car>
+ * [문제명] 주차 요금 계산
+ * [풀이시간] / 45분
+ * [한줄평] 처음에 문제 조건을 꼼꼼하게 체크하지 않아 생각보다 시간이 오래걸렸던 문제였다. Map 2개를 쓰는 것과 Map 1개, Car 클래스를 쓰는 것 중 어느 것이 더 좋을지 고민해봐야할 문제 / 다시 푸니까 좀 더 쉬웠던 구현 문제였다.
+ * 1_v1. TreeMap<String, Integer>(각 차의 누적 주차시간), ArrayList<String>(출차 기록없는 차량 번호 리스트)
+ * 1_v2. TreeMap<String, Car>
  * - TreeMap 은 자동으로 key 값 기준 오름차순 정렬됨
+ * 2_v1. HashMap<String, Car>
+ * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/92341">문제</a>
  */
 class Solution92341 {
     static int standardTime; // 기본시간
@@ -97,5 +96,66 @@ class Solution92341 {
             fee += Math.ceil((double) (time - standardTime) / unitTime) * unitFee;
         }
         return fee;
+    }
+
+
+    // 2_v1
+    class Car {
+        int total;      // 누적 주차 시간
+        boolean isOut;  // 출차 여부
+
+        Car(int total, boolean isOut) {
+            this.total = total;
+            this.isOut = isOut;
+        }
+    }
+
+    public List<Integer> solution2(int[] fees, String[] records) {
+        // 1. 기본 시간, 기본 요금, 단위 시간, 단위 요금
+        int basicTime = fees[0];
+        int basicFee = fees[1];
+        int unitTime = fees[2];
+        int unitFee = fees[3];
+        // 2.(차량번호, 주차 정보) 계산
+        Map<String, Car> map = new HashMap<>();
+        for(String record : records) {
+            String[] r = record.split(" ");
+            String[] times = r[0].split(":");
+            int time = Integer.parseInt(times[0]) * 60 + Integer.parseInt(times[1]); // 시각(분)
+            String num = r[1];  // 차량 번호
+            String type = r[2]; // 내역
+            // 3. 기록에 따라 해당 차량의 누적 주차 시각, 출차 여부 업데이트
+            // 입차 = 현재누적시간 - 시각, 출차 = 현재누적시간 + 시각
+            if(!map.containsKey(num)) {
+                // map 에 없으면 무조건 입차
+                map.put(num, new Car(-time, false));
+            } else {
+                int total = map.get(num).total;
+                if(type.equals("IN")) {
+                    // 입차인 경우
+                    map.put(num, new Car(total - time, false));
+                } else {
+                    // 출차인 경우
+                    map.put(num, new Car(total + time, true));
+                }
+            }
+        }
+        // 4. Key 값 오름차순 정렬
+        List<String> keySet = new ArrayList<>(map.keySet());
+        Collections.sort(keySet);
+        // 5. 차량번호별 주차요금 계산
+        List<Integer> answer = new ArrayList<>();
+        for(String num : keySet) {
+            Car car = map.get(num);
+            // 6. 출차 기록이 없는 차량은 23:59에 출차했으므로 누적 시간에 반영
+            int total = car.total;
+            if(!car.isOut) total += 1439;   // 23:59 = 1439분
+            // 7. 모든 차량 = 기본 요금, 단위 시간 초과한 차량 = 초과 요금 계산
+            int fee = basicFee;
+            if(basicTime < total)
+                fee += unitFee * Math.ceil((double) (total - basicTime) / unitTime);
+            answer.add(fee);
+        }
+        return answer;
     }
 }
