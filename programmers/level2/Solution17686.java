@@ -1,15 +1,21 @@
 package programmers.level2;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * [문제명] [3차] 파일명 정렬
+ * [풀이시간] / (40분)
  * [한줄평] 구현만하면 되는 쉬운문제에 속했지만 문제 조건을 꼼꼼하게 체크하지 않아 틀렸던 문제였다. 숫자를 판별하는 로직 부분이 다양할 것 같다.
- * v1. List<String>을 Comparator 로 정렬하기(실패 - 6, 7, 8, 9)
+ * 1_v1. List<String>을 Comparator 로 정렬하기(실패 - 6, 7, 8, 9)
  * - HEAD는 숫자가 아닌 문자로 이루어져 있다는 사실을 간과함(공백, 마침표, 빼기 부호에 대한 처리가 없음)
- * v2. List<String>을 Comparator 로 정렬하기(성공)
+ * 1_v2. List<String>을 Comparator 로 정렬하기(성공)
  * - HEAD 는 숫자가 아닌 모든 문자, NUMBER 는 HEAD 발견 이후 최초로 발견된 연속 숫자
+ * 2_v1. Arrays.sort(), Comparator (실패 - 4~20 실패)
+ *
  *
  * >> 숫자 판별법
  * 1. 아스키코드 조건문
@@ -22,15 +28,23 @@ import java.util.*;
  */
 class Solution17686 {
     public static void main(String[] args) {
+//        // ["img1.png", "IMG01.GIF", "img02.png", "img2.JPG", "img10.png", "img12.png"]
+//        String[] files1 = {"img12.png", "img10.png", "img02.png", "img1.png", "IMG01.GIF", "img2.JPG"};
+//        List<String> answer1 = solution(files1);
+//        System.out.println(answer1);
+//
+//        // ["A-10 Thunderbolt II", "B-50 Superfortress", "F-5 Freedom Fighter", "F-14 Tomcat"]
+//        String[] files2 = {"F-5 Freedom Fighter", "B-50 Superfortress", "A-10 Thunderbolt II", "F-14 Tomcat"};
+//        List<String> answer2 = solution(files2);
+//        System.out.println(answer2);
+
         // ["img1.png", "IMG01.GIF", "img02.png", "img2.JPG", "img10.png", "img12.png"]
         String[] files1 = {"img12.png", "img10.png", "img02.png", "img1.png", "IMG01.GIF", "img2.JPG"};
-        List<String> answer1 = solution(files1);
-        System.out.println(answer1);
+        System.out.println(Arrays.toString(solution2(files1)));
 
         // ["A-10 Thunderbolt II", "B-50 Superfortress", "F-5 Freedom Fighter", "F-14 Tomcat"]
         String[] files2 = {"F-5 Freedom Fighter", "B-50 Superfortress", "A-10 Thunderbolt II", "F-14 Tomcat"};
-        List<String> answer2 = solution(files2);
-        System.out.println(answer2);
+        System.out.println(Arrays.toString(solution2(files2)));
     }
 
     /**
@@ -96,5 +110,49 @@ class Solution17686 {
             return head1.compareTo(head2);
         });
         return answer;
+    }
+
+    public static String[] solution2(String[] files) {
+//         for(String file : files) {
+//             String[] split = split(file.toLowerCase());
+//             System.out.println(Arrays.toString(split));
+//         }
+        Arrays.sort(files, (o1, o2) -> {
+            String[] arr1 = split(o1.toLowerCase());
+            String[] arr2 = split(o2.toLowerCase());
+
+            if(arr1[0].equals(arr2[0])) {
+                if(arr1[1].equals(arr2[1])) {
+                    // 순서 안바꿈
+                    return -1;
+                }
+                // NUMBER 비교
+                return Integer.parseInt(arr1[1]) - Integer.parseInt(arr2[1]);
+            }
+            // HEAD 비교
+            return arr1[0].compareTo(arr2[0]);
+        });
+
+        return files;
+    }
+
+    public static String[] split(String s) {
+        int i = 0;
+        String[] arr = new String[3];
+        StringBuilder sb = new StringBuilder();
+        for(char c : s.toCharArray()) {
+            if(i == 0 && Character.isDigit(c)) {
+                arr[0] = sb.toString();
+                sb.setLength(0);
+                i = 1;
+            } else if(i == 1 && !Character.isDigit(c)) {
+                arr[1] = sb.toString();
+                sb.setLength(0);
+                i = 2;
+            }
+            sb.append(c);
+        }
+        arr[2] = sb.toString();
+        return arr;
     }
 }
