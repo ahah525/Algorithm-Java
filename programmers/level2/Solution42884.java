@@ -14,7 +14,7 @@ import java.util.Set;
  * ...
  * (4), (4, 7), (4, 7, 9), (4, 7, 9, 1), (4, 7, 9, 1, 1)
  */
-class Solution131701 {
+class Solution42884 {
 
     public static void main(String[] args) {
         // 18

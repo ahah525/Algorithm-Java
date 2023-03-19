@@ -35,7 +35,7 @@ class Solution17686 {
                 solution2(new String[] {"img12.png", "img10.png", "img02.png", "img1.png", "IMG01.GIF", "img2.JPG"})));
 
         // ["A-10 Thunderbolt II", "B-50 Superfortress", "F-5 Freedom Fighter", "F-14 Tomcat"]
-        System.out.println(Arrㅎays.toString(
+        System.out.println(Arrays.toString(
                 solution2(new String[] {"F-5 Freedom Fighter", "B-50 Superfortress", "A-10 Thunderbolt II", "F-14 Tomcat"})));
     }
 
