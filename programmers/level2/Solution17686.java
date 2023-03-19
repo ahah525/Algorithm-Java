@@ -1,10 +1,7 @@
 package programmers.level2;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * [문제명] [3차] 파일명 정렬
@@ -17,12 +14,6 @@ import java.util.List;
  * 2_v1. Arrays.sort(), Comparator (실패 - 4~20 실패)
  * 2_v2. Arrays.sort(), Comparator (성공)
  * [해결] tail 부분이 없는 경우 split() 메서드에서 arr[1]에 number 값이 저장되지 않는 문제 해결
- *
- * >> 숫자 판별법
- * 1. 아스키코드 조건문
- * 2. Character.isDigit(?)
- * 3. 정규 표현식
- *
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/17686">문제</a>
  * @See <a href="https://school.programmers.co.kr/questions/33195">반례</a>
  * @See <a href="https://wonit.tistory.com/143">Comparable vs Comparator</a>
@@ -40,12 +31,12 @@ class Solution17686 {
 //        System.out.println(answer2);
 
         // ["img1.png", "IMG01.GIF", "img02.png", "img2.JPG", "img10.png", "img12.png"]
-        String[] files1 = {"img12.png", "img10.png", "img02.png", "img1.png", "IMG01.GIF", "img2.JPG"};
-        System.out.println(Arrays.toString(solution2(files1)));
+        System.out.println(Arrays.toString(
+                solution2(new String[] {"img12.png", "img10.png", "img02.png", "img1.png", "IMG01.GIF", "img2.JPG"})));
 
         // ["A-10 Thunderbolt II", "B-50 Superfortress", "F-5 Freedom Fighter", "F-14 Tomcat"]
-        String[] files2 = {"F-5 Freedom Fighter", "B-50 Superfortress", "A-10 Thunderbolt II", "F-14 Tomcat"};
-        System.out.println(Arrays.toString(solution2(files2)));
+        System.out.println(Arrㅎays.toString(
+                solution2(new String[] {"F-5 Freedom Fighter", "B-50 Superfortress", "A-10 Thunderbolt II", "F-14 Tomcat"})));
     }
 
     // 1_v2
