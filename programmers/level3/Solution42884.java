@@ -5,8 +5,8 @@ import java.util.Arrays;
 
 /**
  * [문제명] 단속 카메라
- * [풀이시간] / (50분)
- * [한줄평] 보자마자 정렬을 해야겠다는 것은 알았는데 설치 조건을 어떻게 해야할지 고민하느라 시간을 많이 쏟았던 문제였다. 결국 반례를 보고 문제를 해결할 수 있었다.
+ * [풀이시간] / 1시간 20분(50분 + 30분)
+ * [한줄평] 보자마자 정렬을 해야겠다는 것은 알았는데 설치 조건을 어떻게 해야할지 고민하느라 시간을 많이 쏟았던 문제였다. 결국 반례를 보고 문제를 해결할 수 있었다. / 결국 반례를 잡지 못해 풀이를 참고했다.
  * v1. 경우의 수를 2가지로 나눔(실패)
  * - 1. 현재 차량 경로가 이전 카메라 지점에 포함되면 설치할 필요X
  * - 2. 현재 차량 경로가 이전 카메라 지점에 포함되면 진출지점에 설치
@@ -16,9 +16,11 @@ import java.util.Arrays;
  * - 2. 현재 범위가 카메라 범위에 아예 포함되는 경우, "현재 범위 끝" 에 재설치, "카메라 범위" 재조정
  * - 3. 현재 범위가 카메라 범위와 일부 겹치는 경우, "카메라 끝 범위" 재조정
  * 2_v1. 그리디(실패- 정확성 1, 효율성 5 실패)
+ * 2_v2. 그리디(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42884">문제</a>
  * @See <a href="https://school.programmers.co.kr/questions/6899">반례</a>
  * @See <a href="https://postimg.cc/K4Z8gfRS">풀이 정리 이미지</a>
+ * @See <a href="https://velog.io/@ahnick/programmers-%EB%8B%A8%EC%86%8D%EC%B9%B4%EB%A9%94%EB%9D%BC">풀이</a>
  */
 class Solution42884 {
 
@@ -93,40 +95,22 @@ class Solution42884 {
         return answer;
     }
 
-    // 2_v1
-    public static int solution2(int[][] routes) {
-        int answer = 0;
-        int n = routes.length;
-        // 1. 정렬
+    // 2_v2
+    public static int solutin2(int[][] routes) {
+        // 1. 진출지점 오름차순 정렬
         Arrays.sort(routes, (o1, o2) -> {
-            if(o1[0] == o2[0])
-                return o1[1] - o2[1];
-            return o1[0] - o2[0];
+            return o1[1] - o2[1];
         });
-        //
-        // for(int[] arr : routes) {
-        //     System.out.println(Arrays.toString(arr));
-        // }
 
-        // 공통 구간 찾기
-        int commonS = routes[0][0];
-        int commonE = routes[0][1];
-        for(int i = 1; i < n; i++) {
-            int curS = routes[i][0];
-            int curE = routes[i][1];
-            System.out.println(commonS + "," + commonE);
-            if(commonE <= curS) {
-
-                commonS = curS;
-                commonE = curE;
+        int answer = 0;
+        int cam = -30001;   // 캠이 설치된 위치
+        for(int[] route : routes) {
+            if(cam < route[0]) {
+                // 2. 캠 위치 < 차량의 진입 지점 -> 캠 설치
+                cam = route[1];
                 answer++;
-            } else {
-                commonS = curS;
-                commonE = Math.min(commonE, curE);
             }
         }
-        if(n >= 2)
-            if(routes[n - 2][1] < routes[n - 1][0]) answer++;
         return answer;
     }
 }
