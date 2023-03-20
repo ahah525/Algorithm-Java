@@ -6,16 +6,19 @@ import java.util.Queue;
 
 /**
  * [문제명] 다리를 지나는 트럭
- * [한줄평] 문제 설명이 조금 부실해서 문제를 이해하고 푸는데 생각보다 시간이 오래걸렸던 구현 문제였다. 나중에 다시 한번 꼭 풀어봐야겠다.
- * v1. (실패-테스트 11)
+ * [풀이시간] / 50분
+ * [한줄평] 문제 설명이 조금 부실해서 문제를 이해하고 푸는데 생각보다 시간이 오래걸렸던 구현 문제였다. 나중에 다시 한번 꼭 풀어봐야겠다. / 문제를 이해하는데 오랜시간이 걸렸던 문제였다.
+ * 1_v1. (실패-테스트 11)
  * [용어 정의]
  * - 진입: 다리를 건너기 시작함
  * - 진입완료: 다리에 완전히 오름
  * - 진출: 다리를 빠져나가기 시작함
  * - 진출완료: 다리를 완전히 빠져나감
- * v2. (성공)
+ * 1_v2. (성공)
  * - 진출 -> 진입 순서로 진행해야한다.
- * <a href="https://school.programmers.co.kr/questions/39010">반례</a>
+ * 2_v1. LinkedList 2(성공) -> 더 빠름
+ * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42583">반례</a>
+ * @See <a href="https://school.programmers.co.kr/questions/39010">반례</a>
  */
 class Solution42583 {
     public static void main(String[] args) {
@@ -50,8 +53,8 @@ class Solution42583 {
         System.out.println(solution(bridgeLength5, weight5, truckWeights5));
     }
 
+    // 1_v1
     /**
-     *
      * @param bridgeLength 다리에 올라갈 수 있는 트럭 수(1 이상 10,000 이하)
      * @param weight 다리가 견딜 수 있는 무게, 다리의 길이(1 이상 10,000 이하)
      * - 문제에서는 다리 길이에 대한 설명이 누락됨
@@ -109,5 +112,42 @@ class Solution42583 {
             this.weight = weight;
             this.passTime = passTime;
         }
+    }
+
+    // 2_v1
+    public static int solution2(int bridgeLength, int weight, int[] truckWeights) {
+        // 다리를 건너는 트럭을 담는 큐
+        Queue<Truck> pass = new LinkedList<>();
+        int t = 1;  // 현재 시각
+        int sum = 0;// 다리를 건너는 트럭 총 무게
+        // 1. 대기 트럭 무게를 담는 큐 초기화
+        Queue<Integer> wait = new LinkedList<>();
+        for(int w : truckWeights) {
+            wait.add(w);
+        }
+        // 2. 대기큐에 트럭이 없을 때까지 반복
+        while(!wait.isEmpty()) {
+            int w = wait.peek();    // 대기큐 맨앞에 있는 트럭의 무게
+            // 3. 현재 시점에 지나가고 있는 트럭 중 완전히 지나간 트럭은 pass 큐에서 빼기
+            while(!pass.isEmpty()) {
+                Truck truck = pass.peek();
+                // 3-1. 지나가고 있는 트럭이 다리에서 완전히 나간 시각 > 현재 시각
+                if(truck.passTime > t) break;
+                // 3-2. 지나가고 있는 트럭이 다리에서 완전히 나간 시각 <= 현재 시각 -> pass 큐에서 삭제
+                pass.poll();
+                sum -= truck.weight;
+            }
+            // 4. 대기큐 맨 앞에 있는 트럭이 현재 다리를 지나갈 수 있는지 검사
+            if(sum + w <= weight) {
+                // 5. wait 큐에서 꺼낸 트럭을 pass 큐에 넣기
+                wait.poll();
+                pass.add(new Truck(w, t + bridgeLength));
+                sum += w;
+                // 6. 대기큐가 비었으면 해당 트럭의 진출 시점을 바로 리턴
+                if(wait.isEmpty()) return t + bridgeLength;
+            }
+            t++;
+        }
+        return t;
     }
 }
