@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * [문제명] 모음사전
- * [풀이시간] / 34분
+ * [풀이시간] / 34분, 11분
  * [한줄평] DFS 로 풀어야겠다고 빨리 떠올려서 쉽게 풀 수 있었던 문제였다. 수학적으로 규칙을 찾아서 풀면 시간단축을 할 수 있기 떄문에 알아두면 좋을 것 같다. / 시간 단축을 위해 수학으로 풀려고 하다보니 좀 오래걸렸다.
  * 1_v1. DFS(성공)
  * >> answer 을 0이 아닌 -1 로 초기화한 이유
@@ -24,66 +24,53 @@ import java.util.Map;
  * EIO 의 비교대상 = AAA(원래 문자를 모두 A로 바꾼 것)
  * EIO -> AAA 의 각 자리수의 차 = 1, 2, 3
  * EIO 순서 = AAA 의 순서 + (EIO, AAA)의 각 자리수 문자의 차이의 합
+ * 2_v2. DFS(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/84512">문제</a>
  */
 class Solution84512 {
-    private static boolean isFind = false;
-    private static int answer = -1;
-    private static char[] alpha = {'A', 'E', 'I', 'O', 'U'};
-
     public static void main(String[] args) {
         // 6
-        String word1 = "AAAAE";
-        int answer1 = solution2(word1);
-        System.out.println(answer1);
+        System.out.println(solution2("AAAAE"));
 
         // 10
-        reset();
-        String word2 = "AAAE";
-        int answer2 = solution2(word2);
-        System.out.println(answer2);
+        System.out.println(solution2("AAAE"));
 
         // 1563
-        reset();
-        String word3 = "I";
-        int answer3 = solution2(word3);
-        System.out.println(answer3);
+        System.out.println(solution2("I"));
 
         // 1189
-        reset();
-        String word4 = "EIO";
-        int answer4 = solution2(word4);
-        System.out.println(answer4);
+        System.out.println(solution2("EIO"));
     }
 
-    // 1_v1
+    // 1_v1, 2_v2
+    private static boolean isFind;
+    private static int answer;
+    private static String[] alpha = {"A", "E", "I", "O", "U"};
+
     /**
      * @param word 단어(길이는 1 이상 5 이하, 알파벳 대문자 'A', 'E', 'I', 'O', 'U' 로만 이루어짐)
      * @return 이 단어가 사전에서 몇 번째 단어인지
      */
     public static int solution1(String word) {
+        isFind = false;
+        answer = -1;
+
         dfs(0, "", word);
+
         return answer;
     }
 
     public static void dfs(int depth, String word, String target) {
-        if(depth == 6) return;
-        if(isFind) return;
+        if(depth == 6 || isFind) return;
         answer++;
         if(word.equals(target)) {
             isFind = true;
             return;
         }
         // A, E, I, O, U
-        for(char c : alpha) {
+        for(String c : alpha) {
             dfs(depth + 1, word + c, target);
         }
-    }
-
-    // 출력 테스트를 위한 메서드
-    public static void reset() {
-        isFind = false;
-        answer = -1;
     }
 
     // 1_v2, 2_v1
