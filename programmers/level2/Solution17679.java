@@ -3,22 +3,25 @@ package programmers.level2;
 
 /**
  * [문제명] [1차] 프렌즈4블록
- * [풀이시간] 1시간
- * [한줄평] 생각보다 푸는데 시간이 좀 더 걸리긴했지만 어려운 구현 문제는 아니었다.
- * v1. 구현(성공)
+ * [풀이시간] 1시간 / 1시간 10분(1시간 + 10분)
+ * [한줄평] 생각보다 푸는데 시간이 좀 더 걸리긴했지만 어려운 구현 문제는 아니었다. / 그냥 구현문제였는데 결국 반례를 찾지 못해서 1번 방식을 참고해 풀었다.
+ * 1_v1. 구현(성공)
+ * 2_v1. 구현(실패 - 5, 10, 11 실패)
+ * 2_v2. 구현(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/17679">문제</a>
  */
 class Solution17679 {
     public static void main(String[] args) {
         // 14
         String[] board1 = {"CCBDE", "AAADE", "AAABF", "CCBBF"};
-        System.out.println(solution(4, 5, board1));
+        System.out.println(solution2(4, 5, board1));
 
         // 15
         String[] board2 = {"TTTANT", "RRFACC", "RRRFCC", "TRRRAA", "TTMMMF", "TMMTTJ"};
-        System.out.println(solution(6, 6, board2));
+        System.out.println(solution2(6, 6, board2));
     }
 
+    // 1_v1
     /**
      * @param m 판의 높이
      * @param n 판의 너비
@@ -89,6 +92,67 @@ class Solution17679 {
             map = tmp;
             // 5. 이번 턴에서 삭제한 블록 개수를 총 개수에 더해주기
             answer += cnt;
+        }
+        return answer;
+    }
+
+    // 2_v2
+    public static int solution2(int m, int n, String[] board) {
+        int answer = 0;
+        int[] dx = {0, 0, 1, 1};
+        int[] dy = {0, 1, 0, 1};
+        // 원본 맵
+        char[][] map = new char[m][n];
+        for(int i = 0; i < m; i++) {
+            char[] arr = board[i].toCharArray();
+            for(int j = 0; j < n; j++)
+                map[i][j] = arr[j];
+        }
+        //
+        while(true) {
+            int cnt = 0;
+            boolean[][] removed = new boolean[m][n];
+            for(int x = 0; x < m - 1; x++) {
+                for(int y = 0; y < n - 1; y++) {
+                    if(map[x][y] != '\0') {
+                        // 4칸 검사
+                        boolean remove = true;
+                        for(int i = 0; i < 4; i++) {
+                            int nx = x + dx[i];
+                            int ny = y + dy[i];
+                            if(map[x][y] != map[nx][ny]) {
+                                remove = false;
+                                break;
+                            }
+                        }
+                        // 복사본에 지우기
+                        if(remove) {
+                            for(int i = 0; i < 4; i++) {
+                                int nx = x + dx[i];
+                                int ny = y + dy[i];
+                                if(!removed[nx][ny]) cnt++;
+                                removed[nx][ny] = true;
+                            }
+                        }
+                    }
+                }
+            }
+            // 제거한게 없으면 종료
+            if(cnt == 0) break;
+            // 아래로 옮기기
+            char[][] tmp = new char[m][n];
+            for(int y = 0; y < n; y++) {
+                int i = m - 1;
+                for(int x = m - 1; x >= 0; x--) {
+                    // 삭제된 칸이면
+                    if(removed[x][y]) continue;
+                    // 삭제되지 않은 칸이면
+                    tmp[i--][y] = map[x][y];
+                }
+            }
+            //
+            answer += cnt;
+            map = tmp;
         }
         return answer;
     }
