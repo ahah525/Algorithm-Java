@@ -8,6 +8,14 @@ package programmers.level2;
  * 1_v1. 구현(성공)
  * 2_v1. 구현(실패 - 5, 10, 11 실패)
  * 2_v2. 구현(성공)
+ * [접근법] tmp 에 1,2차 저장을 수행함
+ * - map[][] : 원본
+ * - tmp[][] : 원본에서 블록 삭제한 결과 저장(1차) -> 빈칸이 있으면 블록을 아래로 이동한 결과를 저장(2차)
+ * 2_v3. 구현(성공)
+ * [접근법] tmp 에 1차 저장을 수행함
+ * - map[][] : 원본
+ * - removed[][] : 블록 삭제 여부
+ * - tmp[][] : 원본에서 블록 삭제 여부를 고려해 블록을 아래로 이동한 결과를 저장(1차)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/17679">문제</a>
  */
 class Solution17679 {
@@ -148,6 +156,76 @@ class Solution17679 {
                     if(removed[x][y]) continue;
                     // 삭제되지 않은 칸이면
                     tmp[i--][y] = map[x][y];
+                }
+            }
+            //
+            answer += cnt;
+            map = tmp;
+        }
+        return answer;
+    }
+
+    // 2_v3(2_v1 풀이 반례 잡기)
+    public static int solution3(int m, int n, String[] board) {
+        int answer = 0;
+        int[] dx = {0, 0, 1, 1};
+        int[] dy = {0, 1, 0, 1};
+
+        char[][] map = new char[m][n];
+        for(int i = 0; i < m; i++) {
+            char[] arr = board[i].toCharArray();
+            for(int j = 0; j < n; j++) {
+                map[i][j] = arr[j];
+            }
+        }
+        //
+        while(true) {
+            int cnt = 0;
+            char[][] tmp = new char[m][n];
+            for(int i = 0; i < m; i++) {
+                for(int j = 0; j < n; j++) {
+                    tmp[i][j] = map[i][j];
+                }
+            }
+            for(int x = 0; x < m - 1; x++) {
+                for(int y = 0; y < n - 1; y++) {
+                    if(map[x][y] != '-') {
+                        // 4칸 검사
+                        boolean remove = true;
+                        for(int i = 0; i < 4; i++) {
+                            int nx = x + dx[i];
+                            int ny = y + dy[i];
+                            if(map[x][y] != map[nx][ny]) {
+                                remove = false;
+                                break;
+                            }
+                        }
+                        // 복사본에 지우기
+                        if(remove) {
+                            for(int i = 0; i < 4; i++) {
+                                int nx = x + dx[i];
+                                int ny = y + dy[i];
+                                if(tmp[nx][ny] != '-') cnt++;
+                                tmp[nx][ny] = '-';
+                            }
+                        }
+                    }
+                }
+            }
+            // 제거한게 없으면 종료
+            if(cnt == 0) break;
+            for(int y = 0; y < n; y++) {
+                int blank = -1;
+                for(int x = m - 1; x >= 0; x--) {
+                    // 첫번째로 빈칸을 찾았으면 인덱스 기록
+                    if(blank == -1 && tmp[x][y] == '-') {
+                        blank = x;
+                    }
+                    // 빈칸을 찾은 상태에서 문자를 발견하면 아래로
+                    else if(blank != -1 && tmp[x][y] != '-') {
+                        tmp[blank--][y] = tmp[x][y];
+                        tmp[x][y] = '-';
+                    }
                 }
             }
             //
