@@ -3,10 +3,11 @@ package programmers.level3;
 
 /**
  * [문제명] 징검다리 건너기
- * [풀이시간] 1시간 30분(45분 + 45분)
- * [한줄평] 그대로 구현했더니 효율성 테스트가 모두 실패했고 결국 풀이 힌트를 얻고 풀었다. 이분탐색일거라고는 전혀 생각하지 못했어서 다음에 꼭 한번 풀어봐야하는 문제인 것 같다.
- * v1. 구현(실패 - 효율성 테스트 1 ~ 14 실패)
- * v2. 이분탐색(성공)
+ * [풀이시간] 1시간 30분(45분 + 45분) / 50분
+ * [한줄평] 그대로 구현했더니 효율성 테스트가 모두 실패했고 결국 풀이 힌트를 얻고 풀었다. 이분탐색일거라고는 전혀 생각하지 못했어서 다음에 꼭 한번 풀어봐야하는 문제인 것 같다. / 이분탐색이라는 것을 알고 풀어서 전보다는 쉽게 풀었다.
+ * 1_v1. 구현(실패 - 효율성 테스트 1 ~ 14 실패)
+ * 1_v2. 이분탐색(성공)
+ * 2_v1. 이분탐색(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/64062">문제</a>
  * @See <a href="https://velog.io/@hyunjkluz/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4640464-%EC%A7%95%EA%B2%80%EB%8B%A4%EB%A6%AC-%EA%B1%B4%EB%84%88%EA%B8%B0-Java">풀이 참고</a>
  */
@@ -18,37 +19,7 @@ class Solution64062 {
         System.out.println(solution2(stones1, k1));
     }
 
-    //
-    public static int solution1(int[] stones, int k) {
-        int answer = 0;
-        int n = stones.length;  // 디딤돌 수
-        while(true) {
-            int idx = -1;   // 시작
-            while(idx < n) {
-                boolean jump = false;   // 건너뛰기 여부
-                // k칸 이내로 가장 까운 디딤돌 찾기
-                for(int i = idx + 1; i <= idx + k; i++) {
-                    if(i == n) {
-                        // 도착점으로 건너뛰기
-                        jump = true;
-                        idx = n;
-                        answer++;
-                        break;
-                    } else if(stones[i] != 0) {
-                        // 디딤돌을 갈 수 있는 상태면 건너뛰기
-                        jump = true;
-                        idx = i;
-                        stones[idx]--;
-                        break;
-                    }
-                }
-                // 건너뛰지 못했다면
-                if(!jump)
-                    return answer;
-            }
-        }
-    }
-
+    // 1_v1
     /**
      * @param stones 디딤돌에 적힌 숫자가 순서대로 담긴 배열
      * @param k 한 번에 건너뛸 수 있는 디딤돌의 최대 칸수
@@ -97,5 +68,43 @@ class Solution64062 {
             }
         }
         return true;
+    }
+
+    // 2_v1
+    public int solution(int[] stones, int k) {
+        int answer = 0;
+        // 1. 건널 수 있는 최소, 최대인원 초기화
+        int start = 1;
+        int end = 200000000;
+        // 2. start, end 엇갈릴 때까지 반복
+        while(start <= end) {
+            int mid = (start + end) / 2;
+            int jump = 0;   // 건너뛴(밟지 않은) 돌의 개수
+            boolean possible = true;    // mid 명이 건널 수 있는지 여부
+            // mid 명이 건너고 난 후 각 돌의 수를 검증
+            for(int stone : stones) {
+                if(stone - mid >= 0) {
+                    // 3. 돌의 숫자가 0 이상이면, 이전 돌에서 해당 돌로 올 수 있음 -> 0개를 건너뜀(이전 돌에서 현재 돌로 바로 옴)
+                    jump = 0;
+                } else {
+                    // 4. 돌의 숫자가 음수면, 이전 돌에서 해당 돌로 올수 없음 -> 1개를 건너뜀
+                    jump++;
+                    // 5. 건너뛴 돌의 개수가 k 개 이면 mid 명이 건널 수는 없음
+                    if(jump == k) {
+                        possible = false;
+                        break;
+                    }
+                }
+            }
+            if(possible) {
+                // 6. mid 명이 건널 수 있으면, mid 오른쪽으로 범위 조정
+                start = mid + 1;
+                answer = Math.max(answer, mid);
+            } else {
+                // 7. mid 명이 건널 수 없으면, mid 왼쪽으로 범위 조정
+                end = mid - 1;
+            }
+        }
+        return answer;
     }
 }
