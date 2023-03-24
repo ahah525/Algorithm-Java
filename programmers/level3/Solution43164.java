@@ -2,13 +2,15 @@ package programmers.level3;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * [문제명] 여행경로
- * [풀이시간] 35분
- * [한줄평] DFS 로 풀어야겠다는 것은 알았지만 경로를 리스트 대신 문자열로 다룬다는 힌트를 얻었기 때문에 다시 한번 풀어봐야할 문제다.
- * v1. DFS(성공)
+ * [풀이시간] 35분 / 1시간 45분
+ * [한줄평] DFS 로 풀어야겠다는 것은 알았지만 경로를 리스트 대신 문자열로 다룬다는 힌트를 얻었기 때문에 다시 한번 풀어봐야할 문제다. /
+ * 1_v1. DFS(성공)
+ * 2_v1. DFS(성공) -> 더 빠름
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/43164">문제</a>
  * @See <a href="https://velog.io/@rari_1110/DFS-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%EC%97%AC%ED%96%89%EA%B2%BD%EB%A1%9C-JAVA">힌트</a>
  */
@@ -23,6 +25,7 @@ class Solution43164 {
         System.out.println(solution(tickets2));
     }
 
+    // 1_v1
     private static String bestRoute;
 
     /**
@@ -61,6 +64,47 @@ class Solution43164 {
             if(!visited[i] && tickets[i][0].equals(start)) {
                 visited[i] = true;
                 dfs(depth + 1, visited, tickets[i][1], route + tickets[i][1], n, tickets);
+                visited[i] = false;
+            }
+        }
+    }
+
+    // 2_v1
+    String[] answer;
+    boolean find;
+    public String[] solution2(String[][] tickets) {
+        int n = tickets.length;
+        answer = new String[n + 1];
+        // 1.
+        Arrays.sort(tickets, (o1, o2) -> {
+            if(o1[0].equals(o2[0])) {
+                return o1[1].compareTo(o2[1]);
+            }
+            return o1[0].compareTo(o2[0]);
+        });
+        //
+        String[] path = new String[n + 1];
+        path[0] = "ICN";
+        dfs2(1, "ICN", n, tickets, new boolean[n], path);
+
+        return answer;
+    }
+
+    public void dfs2(int depth, String start, int n, String[][] tickets, boolean[] visited, String[] path) {
+        if(find) return;
+        // n 개를 다 선택했으면
+        if(depth == n + 1) {
+            for(int i = 0; i < n + 1; i++) {
+                answer[i] = path[i];
+            }
+            find = true;
+            return;
+        }
+        for(int i = 0; i < n; i++) {
+            if(!visited[i] && tickets[i][0].equals(start)) {
+                visited[i] = true;
+                path[depth] = tickets[i][1];
+                dfs2(depth + 1, tickets[i][1], n, tickets, visited, path);
                 visited[i] = false;
             }
         }
