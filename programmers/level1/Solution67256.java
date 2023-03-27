@@ -3,27 +3,26 @@ package programmers.level1;
 
 /**
  * [문제명] [카카오 인턴] 키패드 누르기
- * [풀이시간] 28분
- * [한줄평] 문제 설명대로 구현하기만 하면 되는 나름 간단한 문제였다. static 하게 좌표값을 미리 저장해두는 방법도 있지만 내가 푼 방식이 더 시간이 빨랐다.
- * v1. 구현(성공)
+ * [풀이시간] 28분 / 19분
+ * [한줄평] 문제 설명대로 구현하기만 하면 되는 나름 간단한 문제였다. static 하게 좌표값을 미리 저장해두는 방법도 있지만 내가 푼 방식이 더 시간이 빨랐다. / 쉽게 해결할 수 있는 구현문제였다.
+ * 1_v1. 구현(성공)
+ * 2_v1. 구현(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/67256">문제</a>
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/67256/solution_groups?language=java">다른 풀이</a>
  */
 class Solution67256 {
     public static void main(String[] args) {
         // "LRLLLRLLRRL"
-        int[] numbers1 = {1, 3, 4, 5, 8, 2, 1, 4, 5, 9, 5};
-        System.out.println(solution(numbers1, "right"));
+        System.out.println(solution(new int[] {1, 3, 4, 5, 8, 2, 1, 4, 5, 9, 5}, "right"));
 
         // "LRLLRRLLLRR"
-        int[] numbers2 = {7, 0, 8, 2, 8, 3, 1, 5, 7, 6, 2};
-        System.out.println(solution(numbers2, "left"));
+        System.out.println(solution(new int[] {7, 0, 8, 2, 8, 3, 1, 5, 7, 6, 2}, "left"));
 
         // "LLRLLRLLRL"
-        int[] numbers3 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
-        System.out.println(solution(numbers3, "right"));
+        System.out.println(solution(new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 0}, "right"));
     }
 
+    // 1_v1, 2_v1
     /**
      * @param numbers 순서대로 누를 번호가 담긴 배열
      * @param hand 왼손잡이인지 오른손잡이인 지를 나타내는 문자열
@@ -47,18 +46,20 @@ class Solution67256 {
             } else if(n % 3 == 2) {
                 // 3-2. 2, 5, 8, 0 -> 추가 검사
                 // 4. 해당 번호에서 거리 가까운 손으로
-                int nx = n / 3;         // 해당 번호의 x좌표
-                int ny = (n + 2) % 3;   // 해당 번호의 y좌표
-                int dl = Math.abs((l - 1) / 3 - nx) + Math.abs((l + 2) % 3 - ny);   // (해당 번호 ~ 왼손) 거리
-                int dr = Math.abs((r - 1) / 3 - nx) + Math.abs((r + 2) % 3 - ny);   // (해당 번호 ~ 오른손) 거리
+                int nx = (n - 1) / 3;         // 해당 번호의 x좌표
+                int ny = (n - 1) % 3;   // 해당 번호의 y좌표
+                int dl = Math.abs((l - 1) / 3 - nx) + Math.abs((l - 1) % 3 - ny);   // (해당 번호 ~ 왼손) 거리
+                int dr = Math.abs((r - 1) / 3 - nx) + Math.abs((r - 1) % 3 - ny);   // (해당 번호 ~ 오른손) 거리
                 if(dl < dr) {
+                    // 4-1. 왼손의 거리가 더 가까운 경우 -> 왼손 사용
                     sb.append("L");
                     l = n;
                 } else if(dl > dr) {
+                    // 4-2. 오른손의 거리가 더 가까운 경우 -> 오른손 사용
                     sb.append("R");
                     r = n;
                 } else {
-                    // 5. 오른손잡이 -> 오른손, 왼손잡이 -> 왼손
+                    // 4-3. 두 손의 거리가 같은 경우 -> 오른손잡이는 오른손, 왼손잡이는 왼손
                     if(isRight){
                         sb.append("R");
                         r = n;
