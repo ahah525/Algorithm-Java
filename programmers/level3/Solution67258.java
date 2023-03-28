@@ -8,12 +8,13 @@ import java.util.Set;
 
 /**
  * [문제명] [카카오 인턴] 보석 쇼핑
- * [풀이시간] 1시간
+ * [풀이시간] 1시간 / 18분
  * [한줄평] 구현을 하면서도 시간초과가 날 것 같다고 생각했는데, 결국 시간초과가 났다. 결국 힌트를 얻어 투포인터로 해결했는데 투포인터는 무조건 복습이 필요하다!!
  * 투포인터에서 잊지밀아야할 점은 end = n 이 되기전까지 반복한다는것(종료조건)이고, start++ 와 end++ 시점이 중요하다.
- * v1. Set, Map, 2중 for 문 - 완전탐색(실패 - 효율성 테스트 1~5, 7~15 실패)
+ * 1_v1. Set, Map, 2중 for 문 - 완전탐색(실패 - 효율성 테스트 1~5, 7~15 실패)
  * - 시작 인덱스, 끝 인덱스를 바꿔가며 완전 탐색 수행
- * v2. Set, Map, 투포인터(성공)
+ * 1_v2. Set, Map, 투포인터(성공)
+ * 2_v1. HashSet, HashMap, 투포인터(실패 - 정확성 2,3,7~9,12,13,15, 효율성 1~3,5~11,13~14)
  * @See <a href="https://school.programmers.co.kr/learn/courses/15008/lessons/67258">문제</a>
  * @See <a href="https://velog.io/@fantastik/48">풀이 참고</a>
  */
@@ -127,5 +128,31 @@ class Solution67258 {
         answer[0] = minS + 1;
         answer[1] = minE + 1;
         return answer;
+    }
+
+    public int[] solution(String[] gems) {
+        // (보석, 개수)
+        Map<String, Integer> map = new HashMap<>();
+        Set<String> set = new HashSet<>();
+        int s = 0;
+        int e = 0;
+        for(String gem : gems) {
+            set.add(gem);
+        }
+        int n = set.size(); // 보석 개수
+        // n 개를 모두 모을때까지 e 를 오른쪽으로
+        while(true) {
+            map.put(gems[e], map.getOrDefault(gems[e], 0) + 1);
+            if(map.size() == n) break;
+            e++;
+        }
+        // 최소 길이로 줄이기위해서 s 를 오른쪽으로
+        while(true) {
+            if(map.get(gems[s]) == 1) break;
+            map.put(gems[s], map.get(gems[s]) - 1);
+            s++;
+        }
+
+        return new int[]{s + 1, e + 1};
     }
 }
