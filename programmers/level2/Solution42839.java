@@ -6,29 +6,29 @@ import java.util.Set;
 
 /**
  * [문제명] 소수 찾기
- * [한줄평] 순열 문제로 전형적인 DFS 문제였기때문에 쉽게 풀 수 있었다. 문자열을 자르고 붙이는데 생기는 부하를 생각해 StringBuilder 를 이용하였는데,
- * 일반적으로 사용하는 char[] 를 사용했을 때와 효율을 비교해볼 필요가 있다.
- * v1.DFS(v1.성공)
+ * [풀이시간] / 16분
+ * [한줄평] 순열 문제로 전형적인 DFS 문제였기때문에 쉽게 풀 수 있었다. / DFS 로 풀 수 있는 완전탐색 문제였다.
+ * 1_v1. DFS(성공) -> 더 빠름
+ * - 문자열을 자르고 붙이는데 생기는 부하를 고려해 StringBuilder 사용
+ * 2_v1. 완전탐색, DFS(성공)
+ * - String 사용
  * <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42839">문제</a>
  */
 class Solution42839 {
+    public static void main(String[] args) {
+        // 3
+        System.out.println(solution("17"));
+
+        // 2
+        System.out.println(solution("011"));
+    }
+
+    // 1_v1
     private static String s;
     private static int n;
     private static boolean[] visited;
     private static StringBuilder path = new StringBuilder();
-//    private static char[] path;
-    private static Set set;
-
-
-    public static void main(String[] args) {
-        // 3
-        String numbers1 = "17";
-        System.out.println(solution(numbers1));
-
-        // 2
-        String numbers2 = "011";
-        System.out.println(solution(numbers2));
-    }
+    private static Set<Integer> set;
 
     /**
      * @param numbers 숫자가 적힌 문자열
@@ -38,7 +38,7 @@ class Solution42839 {
         s = numbers;
         n = numbers.length();
         visited = new boolean[n];
-        set = new HashSet();
+        set = new HashSet<>();
 
         dfs(-1);
 
@@ -76,9 +76,36 @@ class Solution42839 {
     public static boolean isPrime(int n) {
         if(n == 0 || n == 1) return false;
         for(int i = 2; i <= Math.sqrt(n); i++) {
-            if(n % i == 0)
-                return false;
+            if(n % i == 0) return false;
         }
         return true;
+    }
+
+    // 1_v2
+    public static int solution2(String numbers) {
+        set = new HashSet<>();
+
+        dfs(0, new boolean[numbers.length()], "", numbers.toCharArray());
+
+        return set.size();
+    }
+
+    public static void dfs(int depth, boolean[] visited, String s, char[] arr) {
+        // 0번째 고를 차례가 아닐 때만(s 가 ""이 아닐때만)
+        if(depth != 0) {
+            int n = Integer.parseInt(s);
+            if(isPrime(n))
+                set.add(n);
+        }
+        // 문자열의 길이만큼 모두 골랐으면 리턴
+        if(depth == arr.length) return;
+        // 순열
+        for(int i = 0; i < arr.length; i++) {
+            if(!visited[i]) {
+                visited[i] = true;
+                dfs(depth + 1, visited, s + arr[i], arr);
+                visited[i] = false;
+            }
+        }
     }
 }
