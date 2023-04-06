@@ -1,24 +1,30 @@
 package programmers.level2;
 
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * [문제명] 단어 변환
- * [풀이시간] 30분
- * [한줄평] DFS로 풀 수 있는 간단한 문제였다.
- * v1. DFS(성공)
+ * [풀이시간] 30분 / 30분
+ * [한줄평] DFS로 풀 수 있는 간단한 문제였다. / 최단 경로 문제로 생각하고 BFS 로 풀었다. 이론상으로는 2번이 더 효율적이지만 실제 테스트 케이스에서는 1번이 빨랐다.
+ * 1_v1. DFS(성공)
+ * [접근법] 최소 변환 횟수 = target 을 만들 수 있는 모든 경우의 수 중 최소 횟수 -> 모든 경우의 수를 구해봐야 앎
+ * 2_v1. BFS(성공) -> 추천
+ * [접근법] 최소 변환 횟수 = 최초로 target 에 도달했을 때 횟수 -> 최초로 찾은 것이 정답
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/43163">문제</a>
+ * @See <a href="https://real-012.tistory.com/202">DFS BFS 비교</a>
  */
 class Solution43163 {
     public static void main(String[] args) {
         // 4
-        String[] words1 = {"hot", "dot", "dog", "lot", "log", "cog"};
-        System.out.println(solution("hit", "cog", words1));
+        System.out.println(solution("hit", "cog", new String[] {"hot", "dot", "dog", "lot", "log", "cog"}));
 
         // 0
-        String[] words2 = {"hot", "dot", "dog", "lot", "log"};
-        System.out.println(solution("hit", "cog", words2));
+        System.out.println(solution("hit", "cog", new String[]{"hot", "dot", "dog", "lot", "log"}));
     }
 
+    // 1_v1
     static int min; // 최소 과정수
 
     /**
@@ -79,5 +85,60 @@ class Solution43163 {
         }
         // 2. 같은 문자로는 변환X
         return diff == 0  ? false : true;
+    }
+
+    // 2_v1
+    class Word {
+        String name;
+        int cnt;
+
+        Word(String name, int cnt) {
+            this.name = name;
+            this.cnt = cnt;
+        }
+    }
+
+    public int solution2(String begin, String target, String[] words) {
+        // 1. words 에 target 이 없으면 0 리턴(생략가능)
+        boolean hasTarget = false;
+        for(int i = 0; i < words.length; i++) {
+            if(words[i].equals(target)) {
+                hasTarget = true;
+                break;
+            }
+        }
+        if(!hasTarget) return 0;
+        // 2. 시작 단어 삽입, 방문처리
+        Queue<Word> q = new LinkedList<>();
+        boolean[] visited = new boolean[words.length];
+        q.add(new Word(begin, 0));
+        // 3. 큐가 빌 때까지 반복
+        while(!q.isEmpty()) {
+            Word w = q.poll();
+            String name = w.name;
+            int cnt = w.cnt;
+            // 4. target 찾으면 cnt 리턴
+            if(name.equals(target)) return cnt;
+            for(int i = 0; i < words.length; i++) {
+                // 5. 아직 선택하지 않았고 변환할 수 있는 단어이면 큐에 삽입, 방문처리
+                if(!visited[i] && isChangeable(name, words[i])) {
+                    q.add(new Word(words[i], cnt + 1));
+                    visited[i] = true;
+                }
+            }
+        }
+        // target 만들 수 없는 경우 0 리턴
+        return 0;
+    }
+
+    // a 를 b 로 변환할 수 있는지 여부
+    public boolean isChangeable(String a, String b) {
+        int cnt = 0;
+        for(int i = 0; i < a.length(); i++) {
+            if(a.charAt(i) == b.charAt(i)) continue;
+            cnt++;
+            if(cnt == 2) return false;
+        }
+        return true;
     }
 }
