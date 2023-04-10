@@ -5,11 +5,13 @@ import java.util.*;
 
 /**
  * [문제명] 베스트 앨범
- * [한줄평] 문제가 어렵지는 않았으나 Map 을 Value 값을 기준으로 정렬하는 부분은 검색을 통해 해결했던 약간은 까다로운 문제였다.
+ * [풀이시간] 40분
+ * [한줄평] 문제가 어렵지는 않았으나 Map 을 Value 값을 기준으로 정렬하는 부분은 검색을 통해 해결했던 약간은 까다로운 문제였다. / Set 을 정렬하려면 List 로 바꿔서 정렬해아한다.
  * 6번에서 PriorityQueue 의 값을 역순으로 리스트에 넣을 때 이렇게 로직을 짜도 괜찮은건지 궁금하다. 만약 최대 2개가 아니라 n개 라면 어떻게 로직을 바꿔야할지 생각해봐야겠다.
- * v1. HashMap 2개, ArrayList 1개(성공)
+ * 1_v1. HashMap 2개, ArrayList 1개(성공)
  * - HashMap : (장르명, 장르별 총재생횟수), (장르명, 장르별 앨범에 들어갈 노래)
  * - ArrayList : 앨범에 들어갈 노래의 고유번호 리스트
+ * 2_v1. HashMap, 정렬(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42579">문제</a>
  */
 class Solution42579 {
@@ -90,5 +92,53 @@ class Solution42579 {
             this.id = id;
             this.play = play;
         }
+    }
+
+    // 2_v1
+    public int[] solution2(String[] genres, int[] plays) {
+        // (장르, 총 재생횟수)
+        Map<String, Integer> playMap = new HashMap<>();
+        // (장르, 베스트 앨범에 들어갈 노래 번호 우선순위큐)
+        Map<String, Queue<Integer>> map = new HashMap<>();
+        for(int i = 0; i < genres.length; i++) {
+            if(!map.containsKey(genres[i])) {
+                playMap.put(genres[i], 0);
+                // 1. 재생 횟수 오름차순 정렬, 번호 내림차순 정렬
+                map.put(genres[i], new PriorityQueue<>((o1, o2) -> {
+                    if(plays[o1] == plays[o2]) return o2 - o1;
+                    return plays[o1] - plays[o2];
+                }));
+            }
+            Queue<Integer> pq = map.get(genres[i]);
+            // 2. 넣기, 총 재생횟수 계산
+            pq.add(i);
+            playMap.put(genres[i], playMap.get(genres[i]) + plays[i]);
+            // 3. 3개이상이면 1개 빼기
+            if(pq.size() > 2) pq.poll();
+        }
+        // 4. 개수 계산
+        int n = 0;
+        for(Queue<Integer> q : map.values()) {
+            n += q.size();
+        }
+        // 5. 장르별 총 재생횟수 별로 내림차순 정렬
+        List<String> keys = new ArrayList<>(playMap.keySet());
+        Collections.sort(keys, (o1, o2) -> {
+            return playMap.get(o2) - playMap.get(o1);
+        });
+        // 6.
+        int[] answer = new int[n];
+        int i = 0;
+        for(String key : keys) {
+            Queue<Integer> q = map.get(key);
+            if(q.size() == 2) {
+                answer[i + 1] = q.poll();
+                answer[i] = q.poll();
+                i += 2;
+            } else {
+                answer[i++] = q.poll();
+            }
+        }
+        return answer;
     }
 }
