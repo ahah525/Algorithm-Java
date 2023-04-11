@@ -5,26 +5,29 @@ import java.util.Stack;
 
 /**
  * [문제명] 괄호변환
- * [풀이시간] 1시간
+ * [풀이시간] 1시간 / 30분(23분+7분)
  * [한줄평] 문제에 나온대로 구현하기만 하면 되는 문제로 굳이 따지자면 분할정복, 구현에 속하는 문제인 것 같다. 다만 조건들을 처리하고 재귀로 구현하는게 조금 익숙치 않아서 생각보다 오래걸렸던 문제였다.
- * v1. stack, 재귀(성공)
+ * / 괄호 검사할 때 스택을 사용하고 문제 나온대로 재귀로 구현하면 되는 문제였다.
+ * 1_v1. stack, 재귀(성공)
+ * 2_v1. stack, 재귀(실패)
+ * [접근] 괄호 방향을 뒤집는다의 의미를 문자열을 반대로 뒤집는다고 잘못 이해함
+ * 2_v2. stack, 재귀(성공)
+ * [해결] ( -> ), ) -> ( 로 괄호 방향을 뒤집음
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/60058">문제</a>
  */
 class Solution60058 {
     public static void main(String[] args) {
         // "(()())()"
-        String p1 = "(()())()";
-        System.out.println(solution(p1));
+        System.out.println(solution("(()())()"));
 
         // "()"
-        String p2 = ")(";
-        System.out.println(solution(p2));
+        System.out.println(solution(")("));
 
         // "()(())()"
-        String p3 = "()))((()";
-        System.out.println(solution(p3));
+        System.out.println(solution("()))((()"));
     }
 
+    // 1_v1, 2_v2
     /**
      * @param p "균형잡힌 괄호 문자열"
      * @return 주어진 알고리즘을 수행해 "올바른 괄호 문자열"로 변환한 결과
@@ -36,16 +39,16 @@ class Solution60058 {
     }
 
     // 주어진 균형잡힌 괄호 문자열 -> 올바른 괄호 문자열로 변환한 결과
-    public static String divide(String p) {
+    public static String divide(String w) {
         // 1. 입력이 빈 문자열인 경우, 빈 문자열을 반환합니다.
-        if(p.length() == 0) return "";
+        if(w.length() == 0) return "";
         // 2. 문자열 p를 두 "균형잡힌 괄호 문자열" u, v로 분리합니다. 단, u는 "균형잡힌 괄호 문자열"로 더 이상 분리할 수 없어야 하며, v는 빈 문자열이 될 수 있습니다.
         int a = 0;  // '(' 개수
         int b = 0;  // ')' 개수
         // '(' 와 ')' 의 개수가 같아지는 최초 인덱스 구하기
         int splitIdx = 0;
-        for(int i = 0; i < p.length(); i++) {
-            if(p.charAt(i) == '(') {
+        for(int i = 0; i < w.length(); i++) {
+            if(w.charAt(i) == '(') {
                 a++;
             } else {
                 b++;
@@ -55,8 +58,8 @@ class Solution60058 {
                 break;
             }
         }
-        String u = p.substring(0, splitIdx + 1);
-        String v = p.substring(splitIdx + 1);
+        String u = w.substring(0, splitIdx + 1);
+        String v = w.substring(splitIdx + 1);
         if(isValid(u)) {
             // 3. 문자열 u가 "올바른 괄호 문자열" 이라면 문자열 v에 대해 1단계부터 다시 수행합니다.
             return u + divide(v);
