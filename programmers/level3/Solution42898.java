@@ -3,7 +3,7 @@ package programmers.level3;
 
 /**
  * [문제명] 등굣길
- * [풀이시간] 1시간(40분 + 20분) / 24분(14분 + 10분)
+ * [풀이시간] 1시간(40분 + 20분) / 24분(14분 + 10분) / 14분
  * [한줄평] 최단 경로 개수를 찾기 위해 당연하게도 BFS 를 썼는데, 단순하게 DP 로 풀어야 하는 문제였다. 예전에 비슷한 풀어봤었는데 오랜만에 푸니까 어려웠다.
  * / DP 인 것을 알고 풀어서 점화식은 쉽게 세웠는데 런타임에러 반례를 잡지 못해 힌트를 보고 해결했다.
  * 1_v1. DP, BFS(실패- 1, 5 시간초과)
@@ -13,6 +13,7 @@ package programmers.level3;
  * 2_v1. DP(실패 - 런타임 에러)
  * 2_v2. DP(성공)
  * [해결법] 웅덩이 좌표가 [x, y] 가 아니라 [y, x] 로 입력됨
+ * 3_v1. DP(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42898">문제</a>
  * @See <a href="https://moonsbeen.tistory.com/75">풀이 참고</a>
  * @See <a href="https://velog.io/@qodlstjd12/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%EB%93%B1%EA%B5%A3%EA%B8%B8-Java">반례 참고</a>
@@ -60,7 +61,7 @@ class Solution42898 {
         return map[n][m] % 1000000007;
     }
 
-    // 2_v2
+    // 2_v2, 3_v1
     public static int solution2(int m, int n, int[][] puddles) {
         int[][] d = new int[n + 1][m + 1];
         // 1. 1행, 1열을 1로 만들어주기 위해 초기화
@@ -72,11 +73,9 @@ class Solution42898 {
         for(int i = 1; i <= n; i++) {
             for(int j = 1; j <= m; j++) {
                 // 3. 웅덩이는 갈 수 없으므로 0
-                if(d[i][j] == -1)
-                    d[i][j] = 0;
+                if(d[i][j] == -1) d[i][j] = 0;
                 // 4. 길이면 위쪽에서 오는 경로수 + 왼쪽에서 오는 경로수
-                else
-                    d[i][j] = (d[i - 1][j] + d[i][j - 1]) % 1000000007;
+                else d[i][j] = (d[i - 1][j] + d[i][j - 1]) % 1000000007;
             }
         }
         return d[n][m];
