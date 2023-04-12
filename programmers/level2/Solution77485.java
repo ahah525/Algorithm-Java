@@ -6,10 +6,16 @@ import java.util.List;
 
 /**
  * [문제명] 행렬 테두리 회전하기
- * [풀이시간] 1시간
+ * [풀이시간] 1시간 / 26분, 20분
  * [한줄평] 행렬 회전 문제는 많이 풀어봤던 문제 유형이었지만 푸는데 1시간 정도가 걸려서 다음에는 시간을 좀 더 단축해봐야겠다.
- * v1. 구현(성공)
+ * / 익숙한 유형이라 빨리 풀기는 했지만 회전한 결과를 저장할 때 굳이 tmp[][] 배열을 사용할 필요가 없었다.
+ * 1_v1. 구현(성공)
+ * [접근법] 회전할 때 tmp[][] 에 원본을 복사하고 회전한 결과를 저장함
+ * 2_v1. 구현(성공)
+ * 2_v2. 구현(성공) -> 추천
+ * [접근법] 회전할 때 map[][] 에 덮어쓰기(첫번째로 덮어쓰여지는 곳의 값을 저장해두고 마지막에 입력하기)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/77485">문제</a>
+ * @See <a href="https://velog.io/@ckr3453/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%ED%96%89%EB%A0%AC-%ED%85%8C%EB%91%90%EB%A6%AC-%ED%9A%8C%EC%A0%84%ED%95%98%EA%B8%B0-Java">다른 풀이</a>
  */
 class Solution77485 {
     public static void main(String[] args) {
@@ -18,6 +24,7 @@ class Solution77485 {
         System.out.println(solution(6, 6, queries1));
     }
 
+    // 1_v1
     /**
      * @param rows 세로(행개수)
      * @param columns 가로(열개수)
@@ -80,5 +87,54 @@ class Solution77485 {
             map = tmp;
         }
         return answer;
+    }
+
+    // 2_v2
+    int[][] map;
+    public int[] solution2(int rows, int columns, int[][] queries) {
+        // 1. map 초기화
+        map = new int[rows][columns];
+        int n = 1;
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < columns; j++) {
+                map[i][j] = n++;
+            }
+        }
+        // 2. 회전
+        int[] answer = new int[queries.length];
+        for(int i = 0; i < queries.length; i++) {
+            answer[i] = rotate(queries[i][0] - 1, queries[i][1] - 1, queries[i][2] - 1, queries[i][3] - 1);
+        }
+        return answer;
+    }
+
+    // (x1, y1), (x2, y2) 직사각형을 시계방향으로 회전했을 떄 최솟값
+    public int rotate(int x1, int y1, int x2, int y2) {
+        int tmp = map[x1][y2];   // 첫번째로 덮어쓰여진 값(덮어쓰기를 하기 때문에 보존해야함)
+        int min = tmp;  // 최솟값
+        // 1. 오른쪽
+        for(int y = y2 - 1; y >= y1; y--) {
+            map[x1][y + 1] = map[x1][y];
+            min = Math.min(min, map[x1][y]);
+        }
+        // 2. 위쪽
+        for(int x = x1 + 1; x <= x2; x++) {
+            map[x - 1][y1] = map[x][y1];
+            min = Math.min(min, map[x][y1]);
+        }
+        // 3. 왼쪽
+        for(int y = y1 + 1; y <= y2; y++) {
+            map[x2][y - 1] = map[x2][y];
+            min = Math.min(min, map[x2][y]);
+        }
+        // 4. 아래
+        for(int x = x2 - 1; x > x1; x--) {
+            map[x + 1][y2] = map[x][y2];
+            min = Math.min(min, map[x][y2]);
+        }
+        // (x1, y2) 값
+        map[x1 + 1][y2] = tmp;
+
+        return min;
     }
 }
