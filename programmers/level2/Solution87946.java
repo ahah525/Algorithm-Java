@@ -3,11 +3,12 @@ package programmers.level2;
 
 /**
  * [문제명] 피로도
- * [풀이시간] 30분
- * [한줄평] 입력예시를 보고 완전탐색으로 풀어야겠다는 생각이 들어서 순열을 재귀로 구현하여 문제를 풀었다.
- * v1. DFS(성공)
+ * [풀이시간] 30분 / 16분
+ * [한줄평] 입력예시를 보고 완전탐색으로 풀어야겠다는 생각이 들어서 순열을 재귀로 구현하여 문제를 풀었다. / 쉽게 풀 수 있는 기초 문제였다.
+ * 1_v1. DFS(성공)
  * - 유저가 탐험할 수 있는 최대 던전수 = n 개에서 r 개를 뽑아 나열할 수 있는 경우의 수들 중 r의 최댓값
  * - r 의 최댓값 = n, 최솟값 = 1 -> 최댓값(n)부터 최솟값(1)까지 for 문으로 탐색하기
+ * 2_v1. 완전탐색, DFS(성공) -> 빠름
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/87946">문제</a>
  */
 class Solution87946 {
@@ -59,6 +60,34 @@ class Solution87946 {
             if(!visited[i] && k >= dungeons[i][0]) {
                 visited[i] = true;
                 perm(depth + 1, visited, k - dungeons[i][1], n, r, dungeons);
+                visited[i] = false;
+            }
+        }
+    }
+
+    // 2_v1
+    int answer;
+    public int solution2(int k, int[][] dungeons) {
+        answer = 0;
+        dfs(0, k, new boolean[dungeons.length], dungeons);
+        return answer;
+    }
+
+    /**
+     * @param depth 탐험한 던전 개수
+     * @param power 현재 피로도
+     * @param visited 던전 탐험 여부
+     */
+    public void dfs(int depth, int power, boolean[] visited, int[][] dungeons) {
+        // 1. 모두 탐험했다면 종료
+        if(depth == dungeons.length + 1) return;
+        // 2. 탐헌한 던전 최대 개수 업데이트
+        answer = Math.max(answer, depth);
+        // 3. 아직 탐험하지 않았고 현재 필요도가 최소 필요도 이상이면, 탐험
+        for(int i = 0; i < dungeons.length; i++) {
+            if(!visited[i] && power >= dungeons[i][0]) {
+                visited[i] = true;
+                dfs(depth + 1, power - dungeons[i][1], visited, dungeons);
                 visited[i] = false;
             }
         }
