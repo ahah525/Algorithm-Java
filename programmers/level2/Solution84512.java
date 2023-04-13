@@ -6,8 +6,9 @@ import java.util.Map;
 
 /**
  * [문제명] 모음사전
- * [풀이시간] / 34분, 11분
+ * [풀이시간] / 34분, 11분 / 25분
  * [한줄평] DFS 로 풀어야겠다고 빨리 떠올려서 쉽게 풀 수 있었던 문제였다. 수학적으로 규칙을 찾아서 풀면 시간단축을 할 수 있기 떄문에 알아두면 좋을 것 같다. / 시간 단축을 위해 수학으로 풀려고 하다보니 좀 오래걸렸다.
+ * / 3번째 풀다보니 확실히 푸는데 속도가 빨라졌다.
  * 1_v1. DFS(성공)
  * >> answer 을 0이 아닌 -1 로 초기화한 이유
  * - 최초에 dfs 가 호출될 때 즉, depth = 0 일 때 answer 값이 0이어야 하기 때문이다.
@@ -25,6 +26,7 @@ import java.util.Map;
  * EIO -> AAA 의 각 자리수의 차 = 1, 2, 3
  * EIO 순서 = AAA 의 순서 + (EIO, AAA)의 각 자리수 문자의 차이의 합
  * 2_v2. DFS(성공)
+ * 3_v1. 수학(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/84512">문제</a>
  */
 class Solution84512 {
@@ -73,7 +75,7 @@ class Solution84512 {
         }
     }
 
-    // 1_v2, 2_v1
+    // 1_v2, 2_v1, 3_v1
     public static int solution2(String word) {
         // 1. arr[i] = 단어의 i번째 문자가 바뀔 때 증가폭 계산
         int[] arr = {781, 156, 31, 6, 1};
