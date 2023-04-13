@@ -7,9 +7,10 @@ import java.util.Queue;
 
 /**
  * [문제명] 디스크 컨트롤러
- * [풀이시간] 1시간 30분
+ * [풀이시간] 1시간 30분 / (1시간)
  * [한줄평] 저번에 비슷한 문제를 풀어봤음에도 생각보다 구현하는게 너무 어려웠던 문제였다. 결국 답을 보고 풀이를 할 수 밖에 없없다..
  * 1_v1. (성공)
+ * 2_v1. (실패 - 1~16,18 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/">문제</a>
  * @See <a href="https://codevang.tistory.com/316">풀이 참고</a>
  */
@@ -56,5 +57,39 @@ class Solution42627 {
             }
         }
         return times / jobs.length;
+    }
+
+    // 2_v1
+    class Job {
+        int request;
+        int play;
+
+        Job(int request, int play) {
+            this.request = request;
+            this.play = play;
+        }
+    }
+    public int solution2(int[][] jobs) {
+        int answer = 0;
+        int end = 0;    // 이전 작업 종료 시점
+        Queue<Job> wait = new PriorityQueue<>((o1, o2) -> {
+            return (o1.request + o1.play) - (o2.request + o2.play);
+        });
+        for(int[] job : jobs) {
+            wait.add(new Job(job[0], job[1]));
+        }
+        while(!wait.isEmpty()) {
+            Job job = wait.poll();
+            // 이전 작업이 이미 끝났으면, 현재 작업은 대기시간 없음
+            if(end <= job.request) {
+                answer += job.play;
+                end = job.request + job.play;
+            } else {
+                // 이전 작업이 아직 끝나지 않았으면, 현재 작업은 대기시간 추가
+                answer += (end - job.request) + job.play;
+                end += job.play;
+            }
+        }
+        return answer / jobs.length;
     }
 }

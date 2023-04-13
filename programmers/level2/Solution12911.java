@@ -3,14 +3,17 @@ package programmers.level2;
 
 /**
  * [문제명] 다음 큰 숫자
- * [풀이시간] 40분(30분 + 10분)
+ * [풀이시간] 40분(30분 + 10분) / 8분, 5분
  * [한줄평] 처음에는 규칙을 찾아서 효율적으로 문제를 풀고자 했지만 결국에는 값을 하나씩 증가시키는 방법을 선택했다. 2진수에서 1의 개수를 셀 때 쓰는 메서드가 있다는 사실을 새롭게 알게 되었다.
- * v1. Integer.toString(n, 2) 사용(실패 - 효율성 테스트 모두 시간초과)
- * - Integer.toString() 으로 2진수로 변환한 문자열의 길이 - replaceAll("1", "")로 변환한 문자열의 길이로 1의 개수를 센다.
- * v2. Integer.bitCount() 사용(성공)
- * - Integer.bitCount() 로 1의 개수를 바로 센다
+ * 1_v1. Integer.toString(n, 2) 사용(실패 - 효율성 테스트 모두 시간초과)
+ * [접근법] 1의 개수 = Integer.toString() 으로 2진수로 변환한 문자열의 길이 - replaceAll("1", "")로 변환한 문자열의 길이
+ * 1_v2. Integer.bitCount() 사용(성공) -> 추천
+ * [접근법] 1의 개수 = Integer.bitCount()
+ * 2_v1. (성공)
+ * 2_v2. 비트마스크(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12911">문제</a>
  * @See <a href="https://fbtmdwhd33.tistory.com/240">풀이 힌트</a>
+ * @See <a href="https://advenoh.tistory.com/18">비트마스크 풀이</a>
  */
 class Solution12911 {
     public static void main(String[] args) {
@@ -21,6 +24,7 @@ class Solution12911 {
         System.out.println(solution(15));
     }
 
+    // 1_v2, 2_v1
     /**
      * @param n 1,000,000 이하의 자연수
      * @return n의 다음 큰 숫자
@@ -38,5 +42,26 @@ class Solution12911 {
             num++;
         }
         return num;
+    }
+
+    // 2_v2
+    public int solution2(int n) {
+        int num = n + 1;
+        int cnt = bitCount(n);
+        while(true) {
+            if(bitCount(num) == cnt) break;
+            num++;
+        }
+        return num;
+    }
+
+    // n 에서 1의 개수 조회
+    public int bitCount(int n) {
+        int cnt = 0;
+        while(n != 0) {
+            cnt += (n & 1);
+            n >>= 1;
+        }
+        return cnt;
     }
 }
