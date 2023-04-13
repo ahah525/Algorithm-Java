@@ -3,9 +3,11 @@ package programmers.level2;
 
 /**
  * [문제명] 피보나치 수
- * [풀이시간] 10분
+ * [풀이시간] 10분 / 9분
  * [한줄평] 처음에 아무생각없이 재귀로 풀었다가 시간초과가 났는데, dp를 이용해 이전에 계산한 값을 활용하는 것이 포인트다.
- * v1. dp(성공)
+ * / 처음에 재귀로 풀려다가 시간초과가 날 것 같아 반복문으로 풀었다.
+ * 1_v1. dp(성공)
+ * 2_v1. dp(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12945">문제</a>
  */
 class Solution12945 {
@@ -17,6 +19,7 @@ class Solution12945 {
         System.out.println(solution(5));
     }
 
+    // 1_v1, 2_v1
     /**
      * @param n 2 이상 100,000 이하인 자연수
      * @return 2 이상의 n이 입력되었을 때, n번째 피보나치 수를 1234567으로 나눈 나머지
