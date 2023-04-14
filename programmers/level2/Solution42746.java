@@ -7,12 +7,16 @@ import java.util.List;
 
 /**
  * [문제명] 가장 큰 수
- * [풀이시간] / 22분
+ * [풀이시간] / 22분 / 12분
  * [한줄평] 정렬을 해서 풀어야겠다고 빨리 떠올렸으나 반례 힌트를 보고서 해결할 수 있었던 문제였다. 다시 풀었을 때도 또 똑같은 케이스에서 막혔던 문제다.
- * 1_v1. 입력이 모두 0인 경우를 고려하지 않음(실패-11)
- * 1_v2. 입력이 모두 0인 경우 "0"으로 반환(성공)
- * 2_v1. 입력이 모두 0인 경우를 고려하지 않음(실패-11)
- * 2_v2. 입력이 모두 0인 경우 "0"으로 반환(성공)
+ * / 많이 풀었더니 쉽게 풀었던 문제다.
+ * 1_v1. 정렬(실패-11)
+ * [접근법] 입력이 모두 0인 경우를 고려하지 않음
+ * 1_v2. 정렬(성공)
+ * [반례] 입력이 모두 0인 경우 "0"으로 반환
+ * 2_v1. 정렬(실패-11)
+ * 2_v2. 정렬(성공)
+ * 3_v1. 정렬(성공)
  * <a href="https://school.programmers.co.kr/questions/34081">반례</a>
  */
 class Solution42746 {
@@ -71,6 +75,26 @@ class Solution42746 {
 //            System.out.println(s);
             sb.append(s);
         }
+        return sb.toString();
+    }
+
+    // 3_v1
+    public String solution2(int[] numbers) {
+        // 1. String 변환
+        List<String> list = new ArrayList<>();
+        for(int num : numbers) {
+            list.add(Integer.toString(num));
+        }
+        // 2. 두 값을 이어 붙였을 때, 내림차순으로 정렬
+        Collections.sort(list, (o1, o2) -> {
+            // 0보다 클 때 순서 바꿈
+            return (o2 + o1).compareTo(o1 + o2);
+        });
+        // 3. 맨 첫번째 값이 0이면 뒤에도 다 0이므로 -> 0 반환
+        if(list.get(0).equals("0")) return "0";
+        StringBuilder sb = new StringBuilder();
+        for(String s : list)
+            sb.append(s);
         return sb.toString();
     }
 }
