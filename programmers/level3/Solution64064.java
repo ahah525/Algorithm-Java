@@ -8,6 +8,9 @@ import java.util.*;
  * [풀이시간] 50분
  * [한줄평] 예전에 풀다가 포기한 적이 있었는데, 어렵긴했지만 혼자서 푸는데 성공했다.
  * 1_v1. DFS(성공)
+ * [접근법] visited 배열을 사용해 사용 여부를 0, 1 로 나타내고 그 값을 문자열로 이어 붙여 비교
+ * 1_v2. DFS(성공)
+ * [접근법] 비트마스크
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/64064">문제</a>
  */
 class Solution64064 {
@@ -75,5 +78,34 @@ class Solution64064 {
             if(isBanned) list.add(i);
         }
         return list;
+    }
+
+    // 2_v1
+    Set<Integer> sets;
+    public int solution2(String[] userId, String[] bannedId) {
+        sets = new HashSet<>();
+        int n = userId.length; //
+        int m = bannedId.length;//
+        list = new ArrayList<>();
+        for(String id : bannedId) {
+            list.add(getBannedList(userId, id));
+        }
+        //
+        dfs(0, 0, new boolean[n], m);
+        return sets.size();
+    }
+
+    public void dfs(int depth, int res, boolean[] visited, int m) {
+        if(depth == m) {
+            sets.add(res);
+            return;
+        }
+        for(int i : list.get(depth)) {
+            if(!visited[i]) {
+                visited[i] = true;
+                dfs(depth + 1, (res | (1 << i)), visited, m);
+                visited[i] = false;
+            }
+        }
     }
 }
