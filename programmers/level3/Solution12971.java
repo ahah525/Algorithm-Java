@@ -3,9 +3,10 @@ package programmers.level3;
 
 /**
  * [문제명] 스티커 모으기(2)
- * [풀이시간] 40분
+ * [풀이시간] 40분 / DP
  * [한줄평] 처음에는 DFS 로 접근했는데 그러기엔 N이 10만이라 시간초과가 날 것 같았다. 결국엔 문제 풀이를 보고서야 해결을 했고 꼭 복습이 필요하다!
- * v1. DP(성공)
+ * / 확실히 아이디어를 쉽게 떠올리기만 한다면 빨리 풀 수 있는 게 DP 문제다.
+ * 1_v1. DP(성공)
  * - 이 문제의 핵심은 DP 로 푸는 것인데, 일반적인 DP 문제처럼 점화식을 1개 세운다고 바로 풀 수 있는 문제는 아니다.
  * 1. 점화식 세우기: d[i] = Math.max(d[i - 1], d[i - 2] + sticker[i])
  * - d[i]: i번째 스티커까지 스티커를 똈을 때 최대합(i 번째는 뗼 수도 안 뗼 수도 있음)
@@ -13,6 +14,7 @@ package programmers.level3;
  * 1) 첫번째 스티커를 떼는 경우, 마지막 스티커는 뗄 수 없음
  * 2) 첫번째 스티커를 뗴지 않는 경우, 마지막 스티커는 떼어도 안떼어도 상관없음
  * [점화식]
+ * 2_v1. DP(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12971">문제</a>
  * @See <a href="https://iron-jin.tistory.com/entry/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%EC%8A%A4%ED%8B%B0%EC%BB%A4-%EB%AA%A8%EC%9C%BC%EA%B8%B02">문제 풀이</a>
  */
@@ -27,6 +29,7 @@ class Solution12971 {
         System.out.println(solution(sticker2));
     }
 
+    // 1_v1, 2_v1
     /**
      * @param sticker 원형으로 연결된 스티커의 각 칸에 적힌 숫자가 순서대로 들어있는 배열
      * @return
@@ -34,9 +37,7 @@ class Solution12971 {
     public static int solution(int sticker[]) {
         int n = sticker.length; // 스티커 개수
         // 1. 길이가 1인 경우, 무조건 하나를 떼기
-        if(n == 1) {
-            return sticker[0];
-        }
+        if(n == 1) return sticker[0];
         // 2. 첫번째 스티커를 떼는 경우
         int[] d1 = new int[n];
         d1[0] = sticker[0];
@@ -45,14 +46,15 @@ class Solution12971 {
         for(int i = 2; i < n - 1; i++) {
             d1[i] = Math.max(d1[i - 1], d1[i - 2] + sticker[i]);
         }
+        d1[n - 1] =  d1[n - 2];
         // 3. 첫번째 스티커를 뗴지 않는 경우
-        int[] d2 = new int[n + 1];
+        int[] d2 = new int[n];
         d2[0] = 0;
         d2[1] = sticker[1];
         // 마지막 스티커는 떼어도 안떼어도 상관없음(n - 1 까지인 이유)
         for(int i = 2; i < n; i++) {
             d2[i] = Math.max(d2[i - 1], d2[i - 2] + sticker[i]);
         }
-        return Math.max(d1[n - 2], d2[n - 1]);
+        return Math.max(d1[n - 1], d2[n - 1]);
     }
 }
