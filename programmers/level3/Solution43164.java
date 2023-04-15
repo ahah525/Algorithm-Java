@@ -7,10 +7,15 @@ import java.util.List;
 
 /**
  * [문제명] 여행경로
- * [풀이시간] 35분 / 1시간 45분
- * [한줄평] DFS 로 풀어야겠다는 것은 알았지만 경로를 리스트 대신 문자열로 다룬다는 힌트를 얻었기 때문에 다시 한번 풀어봐야할 문제다. /
+ * [풀이시간] 35분 / 1시간 45분 / 40분
+ * [한줄평] DFS 로 풀어야겠다는 것은 알았지만 경로를 리스트 대신 문자열로 다룬다는 힌트를 얻었기 때문에 다시 한번 풀어봐야할 문제다.
+ * / 경로를 처음부터 문자열 배열에 저장하는 것이 가장 빠른 방법이다.
  * 1_v1. DFS(성공)
- * 2_v1. DFS(성공) -> 더 빠름
+ * [접근법] 정렬없이 완전탐색, 경로를 문자열로 저장 후 문자열 배열로 분리
+ * 2_v1. DFS(성공) -> 가장 빠름
+ * [접근법] 티켓 출발지,도착지 오름차순 정렬, 경로를 문자열 배열에 저장
+ * 3_v1. DFS(성공)
+ * [접근법] 티켓 출발지,도착지 오름차순 정렬, 경로를 문자열로 저장 후 문자열 배열로 분리
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/43164">문제</a>
  * @See <a href="https://velog.io/@rari_1110/DFS-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%EC%97%AC%ED%96%89%EA%B2%BD%EB%A1%9C-JAVA">힌트</a>
  */
@@ -105,6 +110,42 @@ class Solution43164 {
                 visited[i] = true;
                 path[depth] = tickets[i][1];
                 dfs2(depth + 1, tickets[i][1], n, tickets, visited, path);
+                visited[i] = false;
+            }
+        }
+    }
+
+    // 3_v1
+    String answerPath;
+    boolean isFind;
+    public String[] solution3(String[][] tickets) {
+        String[] answer = new String[tickets.length + 1];
+        answerPath = "";
+        isFind = false;
+        // 정렬
+        Arrays.sort(tickets, (o1, o2) -> {
+            if(o1[0].equals(o2[0])) return o1[1].compareTo(o2[1]);
+            return o1[0].compareTo(o2[0]);
+        });
+        dfs(0, "ICN", "ICN", new boolean[tickets.length], tickets);
+        for(int i = 0; i < answerPath.length() / 3; i++) {
+            answer[i] = answerPath.substring(3 * i, 3 * i + 3);
+        }
+        return answer;
+    }
+
+    public void dfs(int depth, String arrive, String path, boolean[] visited, String[][] tickets) {
+        if(isFind) return;
+        // n개 선택
+        if(depth == tickets.length) {
+            answerPath = path;
+            isFind = true;
+            return;
+        }
+        for(int i = 0; i < tickets.length; i++) {
+            if(tickets[i][0].equals(arrive) && !visited[i]) {
+                visited[i] = true;
+                dfs(depth + 1, tickets[i][1], path + tickets[i][1], visited, tickets);
                 visited[i] = false;
             }
         }
