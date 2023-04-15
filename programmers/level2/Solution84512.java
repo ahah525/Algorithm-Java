@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * [문제명] 모음사전
- * [풀이시간] / 34분, 11분 / 25분
+ * [풀이시간] / 34분, 11분 / 25분 / 13분
  * [한줄평] DFS 로 풀어야겠다고 빨리 떠올려서 쉽게 풀 수 있었던 문제였다. 수학적으로 규칙을 찾아서 풀면 시간단축을 할 수 있기 떄문에 알아두면 좋을 것 같다. / 시간 단축을 위해 수학으로 풀려고 하다보니 좀 오래걸렸다.
  * / 3번째 풀다보니 확실히 푸는데 속도가 빨라졌다.
  * 1_v1. DFS(성공)
@@ -27,6 +27,7 @@ import java.util.Map;
  * EIO 순서 = AAA 의 순서 + (EIO, AAA)의 각 자리수 문자의 차이의 합
  * 2_v2. DFS(성공)
  * 3_v1. 수학(성공)
+ * 4_v1. DFS(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/84512">문제</a>
  */
 class Solution84512 {
@@ -47,7 +48,7 @@ class Solution84512 {
     // 1_v1, 2_v2
     private static boolean isFind;
     private static int answer;
-    private static String[] alpha = {"A", "E", "I", "O", "U"};
+    private static char[] alpha ={'A', 'E', 'I', 'O', 'U'};
 
     /**
      * @param word 단어(길이는 1 이상 5 이하, 알파벳 대문자 'A', 'E', 'I', 'O', 'U' 로만 이루어짐)
@@ -62,16 +63,19 @@ class Solution84512 {
         return answer;
     }
 
-    public static void dfs(int depth, String word, String target) {
+    public static void dfs(int depth, String path, String word) {
+        // 1. path 길이가 6이거나 이미 word 를 찾았으면 리턴
         if(depth == 6 || isFind) return;
+        // 2. 카운트
         answer++;
-        if(word.equals(target)) {
+        // 3. path 가 word 이면 찾음 표시, 리턴
+        if(path.equals(word)) {
             isFind = true;
             return;
         }
         // A, E, I, O, U
-        for(String c : alpha) {
-            dfs(depth + 1, word + c, target);
+        for(char c : alpha) {
+            dfs(depth + 1, path + c, word);
         }
     }
 
