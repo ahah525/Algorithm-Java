@@ -10,13 +10,17 @@ import java.util.Queue;
  * [문제명] 전력망을 둘로 나누기
  * [풀이시간] 30분 / 13분 / 6분
  * [한줄평] n 의 크기를 보니 완전탐색으로 풀 수 있겠다는 생각이 들어서 BFS 를 반복문을 돌려 풀었다. BFS 로 풀었지만 DFS 로 풀어도 되는 문제다.
- * / 간선정보를 계속 수정해줘야하기 때문에 인접행렬 방식이 더 나을 것 같아 인접행렬, BFS 로 풀었다. / 진짜 쉬운 완전 탐색 기초 문제다.
+ * / 간선정보를 계속 수정해줘야하기 때문에 인접행렬 방식이 더 나을 것 같아 인접행렬, BFS 로 풀었다. / 진짜 쉬운 완전 탐색 기초 문제다. 항상 BFS 로 풀었는데, DFS 로 푸는 법도 알아야 한다.
  * 1_v1. 완전탐색, BFS(성공)
  * [접근법] 인접리스트
  * 1_v2. 완전탐색, BFS(성공)
  * [접근법] 인접행렬
  * 2_v1. 완전탐색, BFS(성공)
+ * [접근법] 인접행렬
  * 3_v1. 완전탐색, BFS(성공)
+ * [접근법] 인접행렬
+ * 4_v1. 완전탐색, DFS(성공)
+ * [접근법] 인접행렬
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/86971">문제</a>
  */
 
@@ -79,10 +83,11 @@ class Solution86971 {
     }
 
     // 1_v2, 2_v1, 3_v1
+    static boolean[][] map;
     public static int solution2(int n, int[][] wires) {
         int min = 100;
         // 1. 인접행렬 초기화
-        boolean[][] map = new boolean[n + 1][n + 1];
+        map = new boolean[n + 1][n + 1];
         for(int[] wire : wires) {
             map[wire[0]][wire[1]] = true;
             map[wire[1]][wire[0]] = true;
@@ -94,7 +99,7 @@ class Solution86971 {
             map[wire[1]][wire[0]] = false;
             // 4. 해당 전선을 끊었을 때 각 트리의 탑 개수의 차 구하기
             boolean[] visited = new boolean[n + 1]; // 탑 방문 여부
-            min = Math.min(min, Math.abs(bfs2(wire[0], n, map, visited) - bfs2(wire[1], n, map, visited)));
+            min = Math.min(min, Math.abs(bfs2(wire[0], n, visited) - bfs2(wire[1], n, visited)));
             // 5. 간선 다시 연결(원상복구)
             map[wire[0]][wire[1]] = true;
             map[wire[1]][wire[0]] = true;
@@ -103,7 +108,7 @@ class Solution86971 {
     }
 
     // start 노드에서 갈 수 있는 모든 노드의 개수 구하기
-    public static int bfs2(int start, int n, boolean[][] map, boolean[] visited) {
+    public static int bfs2(int start, int n, boolean[] visited) {
         int cnt = 0;    // 탑개수
         // 시작노드 방문 처리
         Queue<Integer> q = new LinkedList<>();
@@ -118,6 +123,19 @@ class Solution86971 {
                     q.add(i);
                     visited[i] = true;
                 }
+            }
+        }
+        return cnt;
+    }
+
+    // 3_v2
+    public int dfs(int v, int n, boolean[] visited) {
+        // 현재 노드 방문처리
+        visited[v] = true;
+        int cnt = 1; // 나(부모) 수 카운트
+        for(int i = 1; i <= n; i++) {
+            if(map[v][i] && !visited[i]) {
+                cnt += dfs(i, n, visited); // 자식 수 카운트
             }
         }
         return cnt;
