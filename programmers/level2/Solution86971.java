@@ -8,14 +8,18 @@ import java.util.Queue;
 
 /**
  * [문제명] 전력망을 둘로 나누기
- * [풀이시간] 30분 / 13분
+ * [풀이시간] 30분 / 13분 / 6분
  * [한줄평] n 의 크기를 보니 완전탐색으로 풀 수 있겠다는 생각이 들어서 BFS 를 반복문을 돌려 풀었다. BFS 로 풀었지만 DFS 로 풀어도 되는 문제다.
- * / 간선정보를 계속 수정해줘야하기 때문에 인접행렬 방식이 더 나을 것 같아 인접행렬, BFS 로 풀었다.
- * 1_v1. 인접리스트, BFS(성공)
- * 1_v2. 인접행렬, BFS(성공)
- * 2_v1. 인접행렬, BFS(성공)
+ * / 간선정보를 계속 수정해줘야하기 때문에 인접행렬 방식이 더 나을 것 같아 인접행렬, BFS 로 풀었다. / 진짜 쉬운 완전 탐색 기초 문제다.
+ * 1_v1. 완전탐색, BFS(성공)
+ * [접근법] 인접리스트
+ * 1_v2. 완전탐색, BFS(성공)
+ * [접근법] 인접행렬
+ * 2_v1. 완전탐색, BFS(성공)
+ * 3_v1. 완전탐색, BFS(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/86971">문제</a>
  */
+
 class Solution86971 {
     public static void main(String[] args) {
         // 3
@@ -74,7 +78,7 @@ class Solution86971 {
         return cnt;
     }
 
-    // 1_v2, 2_v1
+    // 1_v2, 2_v1, 3_v1
     public static int solution2(int n, int[][] wires) {
         int min = 100;
         // 1. 인접행렬 초기화
