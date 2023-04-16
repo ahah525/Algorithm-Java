@@ -6,12 +6,15 @@ import java.util.Set;
 
 /**
  * [문제명] 소수 찾기
- * [풀이시간] / 16분
+ * [풀이시간] / 16분 /15분
  * [한줄평] 순열 문제로 전형적인 DFS 문제였기때문에 쉽게 풀 수 있었다. / DFS 로 풀 수 있는 완전탐색 문제였다.
- * 1_v1. DFS(성공) -> 더 빠름
- * - 문자열을 자르고 붙이는데 생기는 부하를 고려해 StringBuilder 사용
+ * / 쉬운 DFS 문제였지만 종료 조건을 어디에 위치할지를 코드에 따라 잘 생각해야 한다.
+ * 1_v1. DFS(성공) -> 빠름
+ * [접근법] 경로 기록 : StringBuilder 사용(문자열을 자르고 붙이는데 생기는 부하를 고려)
  * 2_v1. 완전탐색, DFS(성공)
- * - String 사용
+ * [접근법] 경로 기록 : String 사용
+ * 3_v1. 완전탐색, DFS(성공)
+ * [접근법] 경로 기록 : String 사용
  * <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42839">문제</a>
  */
 class Solution42839 {
@@ -81,7 +84,7 @@ class Solution42839 {
         return true;
     }
 
-    // 1_v2
+    // 2_v1, 3_v1
     public static int solution2(String numbers) {
         set = new HashSet<>();
 
