@@ -7,13 +7,14 @@ import java.util.Queue;
 
 /**
  * [문제명] 야근 지수
- * [풀이시간] 45분(30분 + 15분)
+ * [풀이시간] 45분(30분 + 15분) / 6분
  * [한줄평] 아이디어 자체는 빨리 떠올렸는데, 구현부분에서 조금 오래걸렸던 것 같다.
- * v1. 단순 반복문(실패 - 정확성 9, 13 만 성공, 효율성 모두 실패)
+ * 1_v1. 단순 반복문(실패 - 정확성 9, 13 만 성공, 효율성 모두 실패)
  * - while 문 내에서 Arrays.sort() 로 매번 정렬을 하다보니 시간초과가 난 것 같다.
- * v2. PriorityQueue(성공)
+ * 1_v2. PriorityQueue(성공)
  * - 이 문제의 핵심은 최댓값이 최소가 되도록 최댓값을 계속 1개씩 줄여주는 것이다!!
- * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/">문제</a>
+ * 2_v1. PriorityQueue(성공) -> 빠름
+ * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12927">문제</a>
  */
 class Solution12927 {
     public static void main(String[] args) {
@@ -30,6 +31,7 @@ class Solution12927 {
         System.out.println(solution(3, works3));
     }
 
+    // 1_v2
     /**
      * @param n 퇴근까지 남은 시간
      * @param works 각 일에 대한 작업량
@@ -55,4 +57,25 @@ class Solution12927 {
         }
         return answer;
     }
+
+    // 2_v1
+     public long solution2(int n, int[] works) {
+         long answer = 0;
+         // 1. 내림차순 정렬
+         Queue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+         for(int work : works) {
+             pq.add(work);
+         }
+         // 2. 최댓값이 최소가 되게 만들기(남은 시간을 다 쓰거나 모든 작업을 끝냈을 경우 종료)
+         while(n > 0) {
+             if(pq.isEmpty()) break;
+             int work = pq.poll();
+             n--;
+             if(work > 1) pq.add(work - 1);
+         }
+         for(int work : pq) {
+             answer += work * work;
+         }
+         return answer;
+     }
 }
