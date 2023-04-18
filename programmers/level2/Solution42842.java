@@ -5,9 +5,10 @@ import java.util.Arrays;
 
 /**
  * [문제명] 카펫
- * [풀이시간] 20분
- * [한줄평] 10분 내로 풀 수 있는 쉬운 문제였는데, 생각보다 오래걸렸다.. 쉬운문제에서 무조건 시간단축을 하자!
- * v1. 수학(성공)
+ * [풀이시간] 20분 / 17분
+ * [한줄평] 10분 내로 풀 수 있는 쉬운 문제였는데, 생각보다 오래걸렸다.. 쉬운문제에서 무조건 시간단축을 하자! / 방정식만 세우면 쉽게 풀 수 있는 문제다.
+ * 1_v1. 수학(성공)
+ * 2_v1. 수학(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42842">문제</a>
  */
 class Solution42842 {
@@ -22,6 +23,7 @@ class Solution42842 {
         System.out.println(Arrays.toString(solution(24, 24)));
     }
 
+    // 1_v1
     /**
      * @param brown 갈색 격자의 수(8 이상 5,000 이하인 자연수)
      * @param yellow 노란색 격자의 수(1 이상 2,000,000 이하인 자연수)
@@ -43,5 +45,19 @@ class Solution42842 {
             }
         }
         return answer;
+    }
+
+    // 2_v1
+    public int[] solution2(int brown, int yellow) {
+        // 가로, 세로
+        int sum = brown / 2 + 2; // 가로 세로 길이의 합
+        int n = 3;          // 세로 길이
+        int m = sum - n;    // 가로 길이
+        while(true) {
+            if((n - 2) * (m - 2) == yellow) break;
+            n++;
+            m--;
+        }
+        return new int[] {m, n};
     }
 }
