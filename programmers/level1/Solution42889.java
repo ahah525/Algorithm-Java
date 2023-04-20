@@ -1,18 +1,18 @@
 package programmers.level1;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * [문제명] 실패율
- * [풀이시간] 40분(30분 + 10분)
+ * [풀이시간] 40분(30분 + 10분) / 38분
  * [한줄평] 30분 내에 충분히 풀 수 있는 문제였는데, 생각보다 시간이 걸렸다. 문제 조건을 잘 확인하자!!
- * v1. 정렬(실패 - 7, 9, 13 테스트 실패)
+ * / 처음에 PriorityQueue 로 풀려고 했는데 이상하게 계속 정렬이 제대로 안돼서 결국 리스트를 정렬해서 해결했다. 아직까지 무슨이유에서인지 파악하지 못했다.
+ * 1_v1. 정렬(실패 - 7, 9, 13 테스트 실패)
  * - 각 stage 번호별로 실패율을 모두 계산한 후에 정렬을 하는 방식으로 구현했는데, 3개의 테스트에서 실패했다.
- * v2. 정렬(성공)
+ * 1_v2. 정렬(성공)
  * - "스테이지에 도달한 유저가 없는 경우 해당 스테이지의 실패율은 0 으로 정의한다." 라는 조건에 따라
+ * 2_v1. 정렬(성공) -> 빠름
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons42889/">문제</a>
  */
 class Solution42889 {
@@ -74,6 +74,51 @@ class Solution42889 {
         // 3. 정렬된 스테이지 번호 리턴
         for(Stage stage : list) {
             answer.add(stage.num);
+        }
+        return answer;
+    }
+
+    // 2_v1
+    public int[] solution2(int N, int[] stages) {
+        int[] answer = new int[N];
+        List<Stage> list =new ArrayList<>();
+//        Queue<Stage> pq = new PriorityQueue<>((o1, o2) -> {
+//            if(o1.fail == o2.fail) return o1.num - o2.num;
+//            return o2.fail > o1.fail ? 1 : -1;
+//        });
+        // 1. 정렬
+        Arrays.sort(stages);
+        // 2. 스테이지별 실패율 계산
+        int clear = stages.length; // 스테이지에 도달한 플레이어 수
+        int noClear; // 스테이지에 도달했으나 아직 클리어하지 못한 플레이어 수
+        int j = 0;
+        for(int i = 1; i <= N; i++) {
+            // System.out.println(pq);
+            noClear = 0;
+            while(j < stages.length && i == stages[j]) {
+                noClear++;
+                j++;
+            }
+            double fail = 0;
+            // 스테이지에 도달한 유저가 있는 경우
+            if(noClear > 0) {
+                fail = (double) noClear / clear;
+                clear -= noClear;
+            }
+//            pq.add(new Stage(i, fail));
+            list.add(new Stage(i, fail));
+        }
+        // 3. 실패율 내림차순, 번호 오름차순 정렬
+        Collections.sort(list, (o1, o2) -> {
+            if(o1.fail == o2.fail) return o1.num - o2.num;
+            return o2.fail > o1.fail ? 1 : -1;
+        });
+        // System.out.println(pq);
+        // System.out.println(list);
+        int i = 0;
+        for(Stage stage : list) {
+            answer[i] = stage.num;
+            i++;
         }
         return answer;
     }
