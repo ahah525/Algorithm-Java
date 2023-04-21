@@ -122,47 +122,43 @@ class Solution42890 {
         }
     }
 
-    // 2_v1
+    // 2_v2
     int col;
     List<String> list;
-    int[] visited; // 0 : 아직 선택X, 1 : 이미 선택O, 2 : 선택하면 안됨
     public int solution2(String[][] relation) {
-        int answer = 0;
         col = relation[0].length; // 컬럼 개수
         list = new ArrayList<>();
-        visited = new int[col];
-        // 1개
-        for(int i = 0; i < col; i++) {
-            visited[i] = 1;
-            if(isUnique(relation)) {
-                visited[i] = 2;
-                list.add(Integer.toString(i));
-            } else {
-                visited[i] = 0;
-            }
-        }
-        //
-        // System.out.println(Arrays.toString(visited));
+        visited = new boolean[col];
+        // 1. 유일성을 만족하는 컬럼 조합 구하기
         dfs(0, -1, "", relation);
+        // 2. 길이 내림차순 정렬
         Collections.sort(list, (o1, o2) -> {
-            return o1.length() - o2.length();
+            return o2.length() - o1.length();
         });
         // System.out.println(list);
-        for(int i = 0; i < list.size(); i++) {
-            answer++;
-            for(int j = i + 1; j < list.size(); j++) {
-                if(!isMinimal(list.get(i), list.get(j))) {
-                    list.remove(j);
+        // 3. 최소성을 만족하지 않는 컬럼 조합 삭제
+        int i = 0;
+        while(i < list.size()) {
+            int j = i + 1;
+            boolean remove = false;
+            while(j < list.size()) {
+                if(!isMinimal(list.get(j), list.get(i))) {
+                    list.remove(i);
+                    remove = true;
+                    break;
                 }
+                j++;
             }
+            if(!remove) i++;
         }
-        return answer;
+        // System.out.println(list);
+        return list.size();
     }
 
     //
     public void dfs(int depth, int prev, String path, String[][] relation) {
         // System.out.println(path);
-        if(depth >= 2 && isUnique(relation)) {
+        if(depth >= 1 && isUnique(relation)) {
             list.add(path);
             return;
         }
@@ -170,10 +166,10 @@ class Solution42890 {
             return;
         }
         for(int i = prev + 1; i < col; i++) {
-            if(visited[i] == 0) {
-                visited[i] = 1;
+            if(!visited[i]) {
+                visited[i] = true;
                 dfs(depth + 1, i, path + i, relation);
-                visited[i] = 0;
+                visited[i] = false;
             }
         }
     }
@@ -182,18 +178,21 @@ class Solution42890 {
     public boolean isMinimal(String a, String b) {
         if(a.length() == b.length()) return true;
         // a < b
+        int cnt = 0;
         for(char c : a.toCharArray()) {
-            if(b.indexOf(c) == -1) return true;
+            if(b.indexOf(c) != -1) cnt++;
         }
-        return false;
+        if(cnt == a.length()) return false;
+        return true;
     }
 
+    // 유일성을 만족하는지
     public boolean isUnique(String[][] relation) {
         Set<String> set = new HashSet<>();
         for(String[] row : relation) {
             StringBuilder sb = new StringBuilder();
             for(int i = 0; i < row.length; i++) {
-                if(visited[i] == 1) {
+                if(visited[i]) {
                     sb.append(row[i]);
                 }
             }
