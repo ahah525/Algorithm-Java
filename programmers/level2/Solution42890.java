@@ -1,14 +1,11 @@
 package programmers.level2;
 
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * [문제명] 후보키
- * [풀이시간] 1시간(47분 + 13분)
+ * [풀이시간] 1시간(47분 + 13분) / (50분)
  * [한줄평] 그대로 구현만 하면되는 문제였는데, 반례를 찾지 못해서 어려웠던 문제였다.
  * 1_v1. 완전탐색, DFS(실패 - 18~20,22,25 실패)
  * 1_v2. 완전탐색, DFS(성공)
@@ -18,6 +15,7 @@ import java.util.Set;
  * - "02" : 후보키O
  * - "12" : 후보키X
  * -> "012" : 후보키O(문제)
+ * 2_v1. 완전탐색, DFS(실패 - 18~20,22,25,28 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42890">문제</a>
  * @See <a href="https://school.programmers.co.kr/questions/7476">반례</a>
  * @See <a href="https://velog.io/@yanghl98/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%ED%9B%84%EB%B3%B4%ED%82%A4-JAVA%EC%9E%90%EB%B0%94-2019-%EC%B9%B4%EC%B9%B4%EC%98%A4-%EA%B8%B0%EC%B6%9C">반례</a>
@@ -122,5 +120,86 @@ class Solution42890 {
                 visited[i] = false;
             }
         }
+    }
+
+    // 2_v1
+    int col;
+    List<String> list;
+    int[] visited; // 0 : 아직 선택X, 1 : 이미 선택O, 2 : 선택하면 안됨
+    public int solution2(String[][] relation) {
+        int answer = 0;
+        col = relation[0].length; // 컬럼 개수
+        list = new ArrayList<>();
+        visited = new int[col];
+        // 1개
+        for(int i = 0; i < col; i++) {
+            visited[i] = 1;
+            if(isUnique(relation)) {
+                visited[i] = 2;
+                list.add(Integer.toString(i));
+            } else {
+                visited[i] = 0;
+            }
+        }
+        //
+        // System.out.println(Arrays.toString(visited));
+        dfs(0, -1, "", relation);
+        Collections.sort(list, (o1, o2) -> {
+            return o1.length() - o2.length();
+        });
+        // System.out.println(list);
+        for(int i = 0; i < list.size(); i++) {
+            answer++;
+            for(int j = i + 1; j < list.size(); j++) {
+                if(!isMinimal(list.get(i), list.get(j))) {
+                    list.remove(j);
+                }
+            }
+        }
+        return answer;
+    }
+
+    //
+    public void dfs(int depth, int prev, String path, String[][] relation) {
+        // System.out.println(path);
+        if(depth >= 2 && isUnique(relation)) {
+            list.add(path);
+            return;
+        }
+        if(depth == col) {
+            return;
+        }
+        for(int i = prev + 1; i < col; i++) {
+            if(visited[i] == 0) {
+                visited[i] = 1;
+                dfs(depth + 1, i, path + i, relation);
+                visited[i] = 0;
+            }
+        }
+    }
+
+    // 최소성을 만족하는지
+    public boolean isMinimal(String a, String b) {
+        if(a.length() == b.length()) return true;
+        // a < b
+        for(char c : a.toCharArray()) {
+            if(b.indexOf(c) == -1) return true;
+        }
+        return false;
+    }
+
+    public boolean isUnique(String[][] relation) {
+        Set<String> set = new HashSet<>();
+        for(String[] row : relation) {
+            StringBuilder sb = new StringBuilder();
+            for(int i = 0; i < row.length; i++) {
+                if(visited[i] == 1) {
+                    sb.append(row[i]);
+                }
+            }
+            if(set.contains(sb.toString())) return false;
+            set.add(sb.toString());
+        }
+        return true;
     }
 }
