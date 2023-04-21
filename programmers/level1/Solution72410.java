@@ -3,10 +3,14 @@ package programmers.level1;
 
 /**
  * [문제명] 신규 아이디 추천
- * [풀이시간] 1시간
- * [한줄평] 정규표현식을 이용하면 쉽게 풀 수 있는 문제였다. 2, 3단계 정규표현식을 잘못해서 결국 정답을 보고 해결했다...
+ * [풀이시간] 1시간 / 18분
+ * [한줄평] 정규표현식을 이용하면 쉽게 풀 수 있는 문제였다. 2, 3단계 정규표현식을 잘못해서 결국 정답을 보고 해결했다... / 정규표현식 활용만 잘하면 쉽게 풀 수있는 문제다.
  * 1_v1. 정규표현식(실패 - 7, 12, 16, 24, 26)
  * 1_v2. 정규표현식(성공)
+ * 2_v1. 문자열, 구현(성공)
+ * [접근법] 정규표현식
+ * 2_v2. 문자열, 구현(성공) -> 빠름
+ * [접근법] StringBuilder 로 시간 단축
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/72410">문제</a>
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/72410/solution_groups?language=java">문제 풀이</a>
  */
@@ -42,5 +46,57 @@ class Solution72410 {
             }
         }
         return newId;
+    }
+
+    // 2_v1
+    public String solution2(String newId) {
+        newId = newId.toLowerCase()
+                .replaceAll("[^a-z0-9-_.]", "")
+                .replaceAll("[.]{2,}", ".");
+        if(newId.charAt(0) == '.')
+            newId = newId.substring(1);
+        if(newId.length() != 0 && newId.charAt(newId.length() - 1) == '.')
+            newId = newId.substring(0, newId.length() - 1);
+
+        if(newId.length() == 0) {
+            newId = "a";
+        } else if(newId.length() >= 16) {
+            newId = newId.substring(0, 15);
+            if(newId.charAt(14) == '.')
+                newId = newId.substring(0, 14);
+        }
+        if(newId.length() <= 2) {
+            char end = newId.charAt(newId.length() - 1);
+            while(newId.length() < 3) {
+                newId += end;
+            }
+        }
+        return newId;
+    }
+
+    // 2_v2
+    public String solution3(String newId) {
+        newId = newId.toLowerCase()
+                .replaceAll("[^a-z0-9-_.]", "")
+                .replaceAll("[.]{2,}", ".");
+        StringBuilder sb = new StringBuilder(newId);
+        if(sb.charAt(0) == '.')
+            sb.deleteCharAt(0);
+        if(sb.length() != 0 && sb.charAt(sb.length() - 1) == '.')
+            sb.deleteCharAt(sb.length() - 1);
+        if(sb.length() == 0) {
+            sb.append("a");
+        } else if(sb.length() >= 16) {
+            sb.delete(15, sb.length());
+            if(sb.charAt(14) == '.')
+                sb.deleteCharAt(14);
+        }
+        if(sb.length() <= 2) {
+            char end = sb.charAt(sb.length() - 1);
+            while(sb.length() < 3) {
+                sb.append(end);
+            }
+        }
+        return sb.toString();
     }
 }
