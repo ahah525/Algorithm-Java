@@ -5,10 +5,13 @@ import java.util.*;
 
 /**
  * [문제명] 스킬트리
- * [풀이시간] 30분 / 13분
+ * [풀이시간] 30분 / 13분, 10분
  * [한줄평] 문제를 잘못 이해해서 구현하느데 생각보다 시간이 오래걸렸던 문제였다. / 그냥 구현으로 풀었는데, 다른 풀이를 보니 정규 표현식으로 많이 푼 것 같다.
  * 1_v1. 문자열, 구현(성공)
- * 2_v1. 문자열, 구현(성공)
+ * 2_v1. 문자열, 구현(성공) -> 빠름
+ * [접근법] skill 과 skillTree 문자 하나씩 비교
+ * 2_v2. 문자열(성공)
+ * [접근법] skill 이 아닌 문자 제거 후 비교
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/49993">문제</a>
  */
 class Solution49993 {
@@ -80,5 +83,18 @@ class Solution49993 {
             i++;
         }
         return true;
+    }
+
+    // 2_v2
+    public int solution3(String skill, String[] skillTrees) {
+        int answer = 0;
+        for(String skillTree : skillTrees) {
+            // 1. 스킬트리에서 스킬에 없는 문자 제거
+            String s = skillTree.replaceAll("[^"+ skill + "]", "");
+            // 2. 스킬이 스킬트리로 시작하면 카운트
+            if(skill.startsWith(s))
+                answer++;
+        }
+        return answer;
     }
 }
