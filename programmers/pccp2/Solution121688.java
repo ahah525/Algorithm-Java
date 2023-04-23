@@ -6,9 +6,10 @@ import java.util.Queue;
 
 /**
  * [문제명] [PCCP 모의고사 #2] 신입사원 교육
- * [풀이시간] 4분
- * [한줄평] 보자마자 로직이 떠올라서 우선순위 큐로 바로 풀었던 쉬운 문제였다.
+ * [풀이시간] 4분 / 3분
+ * [한줄평] 보자마자 로직이 떠올라서 우선순위 큐로 바로 풀었던 쉬운 문제였다. / 우선순위 큐로 푸는 아주 쉬운 기초 문제다.
  * 1_v1. Priority Queue(성공)
+ * 2_v1. Priority Queue(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/15009/lessons/121688">문제</a>
  */
 class Solution121688 {
