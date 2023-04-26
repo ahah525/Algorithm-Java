@@ -102,7 +102,6 @@ class Solution121690 {
     int[] jy = {0, 0, 2, -2};
     int MAX_VALUE = Integer.MAX_VALUE;
     public int solution2(int n, int m, int[][] hole) {
-        int answer = 0;
         // 1. map 초기화 0 : 길, 1 : 구멍
         int[][] map = new int[m][n];
         for(int[] h : hole) {
@@ -117,23 +116,23 @@ class Solution121690 {
                 }
             }
         }
-        // 3.
-        bfs(m - 1, 0, map, dp, m, n);
-        // 4. (0, n - 1)에 도달할 수 없으면 -1 리턴, 도달 가능하면 최소 이동횟수 리턴
-        return (dp[1][0][n - 1] == MAX_VALUE) ? -1 : dp[1][0][n - 1];
+        // 3. 최소 이동 횟수 구하기
+        return bfs(m - 1, 0, map, dp, m, n);
     }
 
-    public void bfs(int startX, int startY, int[][] map, int[][][] dp, int m, int n) {
+    public int bfs(int startX, int startY, int[][] map, int[][][] dp, int m, int n) {
         Queue<P> q = new LinkedList<>();
         q.add(new P(startX, startY, 0));
         dp[0][startX][startY] = 0;
         dp[1][startX][startY] = 0;
         while(!q.isEmpty()) {
             P p = q.poll();
-            if(p.x == 0 && p.y == n - 1) continue;
             int x = p.x;
             int y = p.y;
             int j = p.jump;
+            // 목적지 도달하면 리턴
+            if(x == 0 && y == n - 1)
+                return dp[j][x][y];
             // 1칸 이동
             for(int i = 0; i < 4; i++) {
                 int nx = p.x + dx[i];
@@ -141,7 +140,7 @@ class Solution121690 {
                 if(0 <= nx && nx < m && 0 <= ny && ny < n
                         && map[nx][ny] == 0 && dp[j][nx][ny] == MAX_VALUE) {
                     q.add(new P(nx, ny, j));
-                    dp[j][nx][ny] = Math.min(dp[j][nx][ny], dp[j][x][y] + 1);
+                    dp[j][nx][ny] = dp[j][x][y] + 1;
                 }
             }
             // 점프
@@ -152,10 +151,11 @@ class Solution121690 {
                     if(0 <= nx && nx < m && 0 <= ny && ny < n
                             && map[nx][ny] == 0 && dp[1][nx][ny] == MAX_VALUE) {
                         q.add(new P(nx, ny, 1));
-                        dp[1][nx][ny] = Math.min(dp[1][nx][ny], dp[0][x][y] + 1);
+                        dp[1][nx][ny] = dp[0][x][y] + 1;
                     }
                 }
             }
         }
+        return -1;
     }
 }
