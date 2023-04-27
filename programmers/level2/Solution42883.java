@@ -4,13 +4,13 @@ package programmers.level2;
 import java.util.Stack;
 
 /**
- * [문제명] 단속 카메라
- * [풀이시간] 2시간
+ * [문제명] 큰 수 만들기
+ * [풀이시간] 2시간 / (30분)
  * [한줄평] stack 을 사용해야겠다는 것은 떠올렸는데 구현하는 과정에서 경우의 수를 처리하는 부분이 어려웠다.
  * 결국 풀이를 보고 해결했는데, 생각보다 너무 코드가 짧아서 놀랐고 꼭 다시 한번 풀어봐야할 문제인 것 같다. stack 이 아닌 for 문으로 해결한 풀이법도 있었다.
- * v1. stack(실패)
+ * 1_v1. stack(실패)
  * - 경우에 따라서 스택에 선택적으로 넣고 빼는 방식으로 구현했다가 실패했다.
- * v2. stack(성공)
+ * 1_v2. stack(성공)
  * - 1 -> 2 순서로 진행하고 경우의 수를 따지지 않고 일단 모두 넣는다는 점이 핵심이다.
  * - 반례를 고려해서 3번 과정을 수행하는 것이 필수적이다!!
  * [로직]
@@ -20,6 +20,7 @@ import java.util.Stack;
  * 2. 다 제거했으면 현재값 넣기
  * 3. 제거 가능한 횟수가 아직 0보다 크면 스택에서 k개 제거하기
  * 4. 스택에 있는 값들을 string 으로 변환
+ * 2_v1. stack(실패 - 12 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42883">문제</a>
  * @See <a href="https://school.programmers.co.kr/questions/25858">반례</a>
  * @See <a href="https://velog.io/@soo5717/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%ED%81%B0-%EC%88%98-%EB%A7%8C%EB%93%A4%EA%B8%B0-%ED%8C%8C%EC%9D%B4%EC%8D%AC">문제 힌트</a>
@@ -44,6 +45,7 @@ class Solution42883 {
         System.out.println(solution(number3, k3));
     }
 
+    // 1_v1
     /**
      * @param number 2자리 이상, 1,000,000자리 이하인 숫자
      * @param k 제거할 수의 개수
@@ -65,6 +67,32 @@ class Solution42883 {
             stack.pop();
         }
         // 4. 스택에 있는 값들을 string 으로 변환
+        StringBuilder sb = new StringBuilder();
+        for(char c : stack) {
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    // 2_v1
+    public String solution2(String number, int k) {
+        Stack<Character> stack = new Stack<>();
+        for(char c : number.toCharArray()) {
+            if(stack.isEmpty() || k == 0) {
+                stack.push(c);
+            } else {
+                // c보다 작은 숫자 모두 제거
+                while(!stack.isEmpty() && k > 0) {
+                    if(stack.peek() < c) {
+                        stack.pop();
+                        k--;
+                    } else {
+                        break;
+                    }
+                }
+                stack.push(c);
+            }
+        }
         StringBuilder sb = new StringBuilder();
         for(char c : stack) {
             sb.append(c);
