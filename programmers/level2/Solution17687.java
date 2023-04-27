@@ -3,9 +3,11 @@ package programmers.level2;
 
 /**
  * [문제명] [3차] n진수 게임
- * [풀이시간] 30분
+ * [풀이시간] 30분 / 17분
  * [한줄평] 처음 구현했을 때 마지막 입력예제처럼 m과 p의 값이 같을 경우에 대한 처리를 따로 해주지 않아 무한루프를 돌았다. 문제 구현자체는 쉬웠는데 사소한 오류를 고치느라 시간이 좀 더 걸렸다.
- * v1. (성공)
+ * / 진법으로 변환할 줄 알면 그대로 구현만 하면 되는 문제다.
+ * 1_v1. 구현(성공)
+ * 2_v1. 구현(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/17687">문제</a>
  */
 class Solution17687 {
@@ -20,6 +22,7 @@ class Solution17687 {
         System.out.println(solution(16, 16, 2, 2));
     }
 
+    // 1_v1
     /**
      * @param n 진법
      * @param t 미리 구할 숫자의 갯수
@@ -52,6 +55,29 @@ class Solution17687 {
             num++;
         }
         // 3. 대문자로 변환하여 리턴
+        return sb.toString().toUpperCase();
+    }
+
+    // 2_v1
+    public String solution2(int n, int t, int m, int p) {
+        int num = 0;
+        int cnt = 0;
+        StringBuilder sb = new StringBuilder();
+        p--;    // 순서를 0~(m-1) 범위의 값으로 만들어 주기 위함
+        while(t > 0) {
+            String s = Integer.toString(num, n);
+            for(char c : s.toCharArray()) {
+                if(t == 0) break;
+                if(cnt == m) cnt = 0;
+                if(cnt == p) {
+                    sb.append(c);
+                    t--;
+                }
+                cnt++;
+            }
+            num++;
+        }
+        // 대문자 변환
         return sb.toString().toUpperCase();
     }
 }
