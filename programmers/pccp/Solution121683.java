@@ -3,11 +3,12 @@ package programmers.pccp;
 
 /**
  * [문제명] [PCCP 모의고사 #1] 외톨이 알파벳
- * [풀이시간] 20분
- * [한줄평] 나름 간단한 문제였지만 연속된 문자를 1개로 처리하고, 알파벳 개수를 저장하는 쉬운 풀이법에 대한 고민을 많이 했던 문제였다.
- * v1. (성공)
+ * [풀이시간] 20분 / 24분
+ * [한줄평] 나름 간단한 문제였지만 연속된 문자를 1개로 처리하고, 알파벳 개수를 저장하는 쉬운 풀이법에 대한 고민을 많이 했던 문제였다. / 나중에 다시 한 번 풀어보면 좋을 문제다.
+ * 1_v1. (성공) -> 빠름
  * - 연속된 같은 문자를 1개로 카운팅하는 방법: 이전 문자값을 저장해놓고 이전 문자와 다를 때만 값을 카운팅하는 기초적인 방식을 사용했다.
  * - 알파벳 개수 저장 방법: 처음엔 Map 을 사용할까 하다가, 이후에 정렬을 해야하는 문제도 있고 어차피 알파벳은 개수가 26으로 고정되어있어서 배열을 사용했다.
+ * 2_v1. 문자열(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/15008/lessons/121683">문제</a>
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12938/solution_groups?language=java">다른 풀이</a>
  */
@@ -30,6 +31,7 @@ class Solution121683 {
         System.out.println(solution(input_string4));
     }
 
+    // 1_v1
     /**
      * @param input_string 알파벳 소문자로만 이루어진 어떤 문자열
      * @return 외톨이 알파벳들을 알파벳순으로 이어 붙인 문자열(외톨이 알파벳 없으면 "N")
