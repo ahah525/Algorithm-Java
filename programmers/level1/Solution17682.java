@@ -3,9 +3,11 @@ package programmers.level1;
 
 /**
  * [문제명] [1차] 다트 게임
- * [풀이시간] 60분
+ * [풀이시간] 60분 / 40분
  * [한줄평] 이렇게까지 오래걸릴 줄 몰랐는데, 어떻게 풀어야 효율적일지 고민하다가 시간을 많이 지체했다. 다음에 한번 더 풀어보면 좋을 것 같다.
- * v1. 구현(성공)
+ * / 간단한 구현 문제이긴 했지만 조건 처리할게 많아서 조금 오래걸렸다.
+ * 1_v1. 구현(성공)
+ * 1_v2. 문자열(성공) -> 빠름
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/17682">문제</a>
  */
 class Solution17682 {
@@ -14,6 +16,7 @@ class Solution17682 {
         System.out.println(solution("1S2D*3T\t"));
     }
 
+    // 1_v1
     /**
      * @param dartResult "점수|보너스|[옵션]"으로 이루어진 문자열 3세트
      * @return 총점수
@@ -60,6 +63,57 @@ class Solution17682 {
         for(int score : scores) {
             answer += score;
         }
+        return answer;
+    }
+
+    // 2_v1
+    public int solution2(String dartResult) {
+        int answer = 0;
+        int prevNum = 0; // 이전 숫자
+        int nowNum = 0; // 현재 숫자
+        int i = 0;
+        while(i < dartResult.length()) {
+            char cur = dartResult.charAt(i); // 현재 문자
+            if(Character.isDigit(cur)) {
+                // 1. 숫자인 경우
+                if(dartResult.charAt(i + 1) == '0') {
+                    // 1.1. 그 다음 문자가 0이면 현재 숫자 = 10
+                    nowNum = 10;
+                    i++; // 그 다음 문자 검사할 필요 없으므로 +1
+                } else {
+                    // 1.2. 그 다음 문자가 0이 아니면 현재 숫자 그대로 저장
+                    nowNum = cur - '0';
+                }
+            } else if('A' <= cur && cur <= 'Z') {
+                // 2. 문자인 경우
+                if(cur == 'D') {
+                    // 2.1. 제곱
+                    nowNum *= nowNum;
+                } else if(cur == 'T') {
+                    // 2.2. 세제곱
+                    nowNum = nowNum * nowNum * nowNum;
+                }
+                // 3. 그 다음 문자가 옵션인 경우
+                if(i + 1 != dartResult.length()) {
+                    if(dartResult.charAt(i + 1) == '*') {
+                        // 3.1. 이전 숫자, 현재 숫자 x2배
+                        prevNum *= 2;
+                        nowNum *= 2;
+                        i++;
+                    } else if(dartResult.charAt(i + 1) == '#') {
+                        // 3.2. 현재 숫자 -1배
+                        nowNum = -nowNum;
+                        i++;
+                    }
+                }
+                // 4. 이전숫자 정산
+                answer += prevNum;
+                prevNum = nowNum;
+            }
+            i++;
+        }
+        // 5. 마지막 이전 숫자 정산
+        answer += prevNum;
         return answer;
     }
 }
