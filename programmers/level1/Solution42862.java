@@ -5,13 +5,14 @@ import java.util.Arrays;
 
 /**
  * [문제명] 체육복
- * [풀이시간] 37분(20분 + 15분 + 2분)
+ * [풀이시간] 37분(20분 + 15분 + 2분) / (14분)
  * [한줄평] 조건(여벌 체육복을 가져온 학생이 체육복을 도난당했을 수 있습니다)을 잘 신경쓰지 않아서 푸는데 너무 오래걸렸던 문제였다.
  * 1_v1. 그리디(실패 - 11, 13, 14 실패)
  * 1_v2. 그리디(실패 - 11 실패)
  * - 입력이 오름차순 정렬된 상태라는 보장이 없음 -> Arrays.sort() 추가
  * 1_v3. 그리디(성공)
  * - reserves[] 배열의 마지막 인덱스가 (n - 1) 이 아닌 n 이라는 것을 간과함 -> 마지막
+ * 2_v1. (실패 - 5, 24 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42862">문제</a>
  */
 class Solution42862 {
@@ -61,6 +62,36 @@ class Solution42862 {
             } else {
                 // 왼쪽/오른쪽 학생에게 빌리지 못한 경우
                 answer--;
+            }
+        }
+        return answer;
+    }
+
+    // 2_v1
+    public int solution(int n, int[] lost, int[] reserve) {
+        int answer = n - lost.length;
+        // true= 체육복 없음, false= 체육복 있음
+        boolean[] student = new boolean[n + 2];
+        for(int i : lost) {
+            student[i] = true;
+        }
+        //
+        Arrays.sort(reserve);
+        for(int i : reserve) {
+            // 본인 체육복이 없으면, 본인에게
+            if(student[i]) {
+                student[i] = false;
+                answer++;
+            }
+            // 본인 체육복이 있으면, 왼쪽/오른쪽 사람에게
+            else {
+                if(student[i - 1]) {
+                    student[i - 1] = false;
+                    answer++;
+                } else if(student[i + 1]) {
+                    student[i + 1] = false;
+                    answer++;
+                }
             }
         }
         return answer;
