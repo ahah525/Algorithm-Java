@@ -6,12 +6,15 @@ import java.util.Queue;
 
 /**
  * [문제명] [카카오 인턴] 경주로 건설
- * [풀이시간] 1시간 50분 / 27분 / (37분)
+ * [풀이시간] 1시간 50분 / 27분 / 47분(37분 + 10분)
  * [한줄평] 생각보다 너무 어려웠던 문제였고 결국 다른 풀이를 보고 해결했다.. 비슷한 문제를 몇번 풀어본 기억이 있는데 여전히 어렵다ㅠㅠ
- * 1_v1. DP + BFS(성공)
+ * / DP를 적용하지 않아도 최소비용을 구할 수 있다고 생각해서 틀렸던 문제였다.
+ * 1_v1. DP, BFS(성공)
  * - dp[d][x][y]: (x, y)좌표용 d 방향일 때 최소 비용
- * 2_v1. DP + BFS(성공)
+ * 2_v1. DP, BFS(성공)
  * 3_v1. BFS(실패 - 3~4,6~11,13~23,25 실패)
+ * 3_v2. DP, BFS(실패 - 3~4,6~11,13~23,25 실패) -> 빠름
+ * [해결법] 최단거리 문제가 아니기 때문에 visited[i][x][y] 에 방문했던 곳이더라도 최소비용이면 다시 방문한다.
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/67259">문제</a>
  * @See <a href="https://girawhale.tistory.com/86">다른 풀이</a>
  */
@@ -22,15 +25,16 @@ class Solution67259 {
         System.out.println(solution(board1));
     }
 
+    // 1_v1, 2_v1
     static class P {
+        int d;
         int x;
         int y;
-        int d;
 
-        public P(int x, int y, int d) {
+        public P(int d, int x, int y) {
+            this.d = d;
             this.x = x;
             this.y = y;
-            this.d = d;
         }
     }
 
@@ -59,7 +63,7 @@ class Solution67259 {
         // 2. 시작점 4방향 방문처리
         Queue<P> q = new LinkedList<>();
         for(int i = 0; i < 4; i++) {
-            q.add(new P(0, 0, i));
+            q.add(new P(i, 0, 0));
             dp[i][0][0] = 0;
         }
         int min = INF;  // 최소 비용
@@ -84,7 +88,7 @@ class Solution67259 {
                     // (nx, ny) i 방향으로 오는 현재 최소 비용 > (x, y) d 방향으로 오는 현재 최소 비용 + (x,y) d 방향 -> (nx, ny) i 방향으로 가기 위해 드는 비용
                     if(dp[i][nx][ny] > dp[d][x][y] + cost) {
                         // 방문처리 + 최소비용 갱신
-                        q.add(new P(nx, ny, i));
+                        q.add(new P(i, nx, ny));
                         dp[i][nx][ny] = dp[d][x][y] + cost;
                     }
                 }
@@ -93,7 +97,7 @@ class Solution67259 {
         return min;
     }
 
-    // 2_v1
+    // 3_v1
     public int solution2(int[][] board) {
         int n = board.length;
         int[][][] visited = new int[4][n][n];
@@ -110,6 +114,7 @@ class Solution67259 {
         int[] dx = {-1, 1, 0, 0};
         int[] dy = {0, 0, -1, 1};
         Queue<P> q = new LinkedList<>();
+        // 하,우 방향으로만 큐에 넣기
         q.add(new P(1, 0, 0));
         q.add(new P(3, 0, 0));
         visited[1][0][0] = 0;
@@ -119,23 +124,23 @@ class Solution67259 {
             int x = p.x;
             int y = p.y;
             int d = p.d;
-            int dd = (d % 2 == 0) ? d + 1 : d - 1;
+            int dd = (d % 2 == 0) ? d + 1 : d - 1;  // 반대방향
             for(int i = 0; i < 4; i++) {
+                if(i == dd) continue;   // 반대방향은 이미 지나왔던 곳이므로 건너뛰기
                 int nx = x + dx[i];
                 int ny = y + dy[i];
-                if(i == dd) continue;
                 if(0 <= nx && nx < n && 0 <= ny && ny < n) {
-                    if(board[nx][ny] == 0 && visited[i][nx][ny] == MAX) {
-                        // System.out.println(i + "," + nx + "," + ny);
-                        q.add(new P(i, nx, ny));
+                    if(board[nx][ny] == 0) {
                         int cost = (d == i) ? 100 : 600;
-                        visited[i][nx][ny] = visited[d][x][y] + cost;
+                        if(visited[i][nx][ny] > visited[d][x][y] + cost) {
+                            q.add(new P(i, nx, ny));
+                            visited[i][nx][ny] = visited[d][x][y] + cost;
+                        }
                     }
                 }
             }
         }
         for(int i = 0; i < 4; i++) {
-            System.out.println(visited[i][n-1][n-1]);
             answer = Math.min(answer, visited[i][n-1][n-1]);
         }
         return answer;
