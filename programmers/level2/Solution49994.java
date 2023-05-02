@@ -3,10 +3,13 @@ package programmers.level2;
 
 /**
  * [문제명] 방문 길이
- * [풀이시간] 48분
+ * [풀이시간] 48분 / 35분(20분+15분)
  * [한줄평] 그대로 구현하기만 하면 되는 문제였는데, 갔던 좌표가 아니라 길을 어떻게 효율적으로 체크할지 고민하다가 시간이 좀 오래 걸렸다.
+ * / 바로 풀기는했는데 (nx, ny)를 대입하는 위치가 잘못되서 문제를 찾는데 오래걸렸다.
  * 1_v1. 구현(성공)
- * 2_v1. (실패 - 7~20실패)
+ * 2_v1. 구현(실패 - 7~20실패)
+ * 2_v2. 구현(성공)
+ * [접근법] visited[d][x][y]: (x, y)에서 d 방향으로 이동하는 길 방문여부
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/49994">문제</a>
  */
 class Solution49994 {
@@ -82,23 +85,21 @@ class Solution49994 {
         int[] dy = {0, 0, 1, -1};
         int x = 5;
         int y = 5;
-        // int nx = 0;
-        // int ny = 0;
         for(char c : dirs.toCharArray()) {
-            int d = getDir(c);
+            int d = getD(c);
             int nx = x + dx[d];
             int ny = y + dy[d];
             if(isValid(nx, ny)) {
-                x = nx;
-                y = ny;
+                int dd = (d % 2 == 0) ? d + 1 : d - 1;  // 반대방향
                 if(!visited[d][x][y]) {
                     visited[d][x][y] = true;
-                    visited[getReverseDir(d)][nx][ny] = true;
+                    visited[dd][nx][ny] = true;
                     answer++;
                 }
+                x = nx;
+                y = ny;
             }
         }
-
         return answer;
     }
 
@@ -106,7 +107,7 @@ class Solution49994 {
         return (0 <= x && x <= 10 && 0 <= y && y <= 10) ? true : false;
     }
 
-    public int getDir(char c) {
+    public int getD(char c) {
         switch(c) {
             case 'U':
                 return 0;
@@ -118,9 +119,5 @@ class Solution49994 {
                 return 3;
         }
         return -1;
-    }
-
-    public int getReverseDir(int d) {
-        return (d % 2 == 0) ? d + 1 : d - 1;
     }
 }
