@@ -5,15 +5,19 @@ import java.util.Arrays;
 
 /**
  * [문제명] 체육복
- * [풀이시간] 37분(20분 + 15분 + 2분) / (14분)
+ * [풀이시간] 37분(20분 + 15분 + 2분) / 50분(14분 + 36분)
  * [한줄평] 조건(여벌 체육복을 가져온 학생이 체육복을 도난당했을 수 있습니다)을 잘 신경쓰지 않아서 푸는데 너무 오래걸렸던 문제였다.
+ * / 반례를 처리하는데 너무 오랜 시간을 쏟았던 문제다.
  * 1_v1. 그리디(실패 - 11, 13, 14 실패)
  * 1_v2. 그리디(실패 - 11 실패)
  * - 입력이 오름차순 정렬된 상태라는 보장이 없음 -> Arrays.sort() 추가
  * 1_v3. 그리디(성공)
  * - reserves[] 배열의 마지막 인덱스가 (n - 1) 이 아닌 n 이라는 것을 간과함 -> 마지막
- * 2_v1. (실패 - 5, 24 실패)
+ * 2_v1. 그리디(실패 - 5, 24 실패)
+ * 2_v2. 그리디(성공)
+ * [해결법] 본인 체육복을 도난 당한 사람은 다른 사람에게 빌려줄 수 없음!!
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42862">문제</a>
+ * @See <a href="https://school.programmers.co.kr/questions/37331">반례</a>
  */
 class Solution42862 {
     public static void main(String[] args) {
@@ -68,30 +72,35 @@ class Solution42862 {
     }
 
     // 2_v1
-    public int solution(int n, int[] lost, int[] reserve) {
+    public int solution2(int n, int[] lost, int[] reserve) {
         int answer = n - lost.length;
         // true= 체육복 없음, false= 체육복 있음
         boolean[] student = new boolean[n + 2];
         for(int i : lost) {
             student[i] = true;
         }
-        //
+        // 1. 여분 가져온 학생 정렬
         Arrays.sort(reserve);
-        for(int i : reserve) {
-            // 본인 체육복이 없으면, 본인에게
-            if(student[i]) {
-                student[i] = false;
+        // 2. 본인 체육복을 도난 당한 사람은 본인에게 주기
+        for(int i = 0; i < reserve.length; i++) {
+            if(student[reserve[i]]) {
+                student[reserve[i]] = false;
                 answer++;
+                reserve[i] = 0;
             }
-            // 본인 체육복이 있으면, 왼쪽/오른쪽 사람에게
-            else {
-                if(student[i - 1]) {
-                    student[i - 1] = false;
-                    answer++;
-                } else if(student[i + 1]) {
-                    student[i + 1] = false;
-                    answer++;
-                }
+        }
+        // 3. 양 옆사람에게 빌려주기
+        for(int i : reserve) {
+            // 이미 본인에게 준 학생은 패스
+            if(i == 0) continue;
+            if(student[i - 1]) {
+                // 왼쪽 사람에게 체육복을 주는 경우
+                student[i - 1] = false;
+                answer++;
+            } else if(student[i + 1]) {
+                // 오른쪽 사람에게 체육복을 주는 경우
+                student[i + 1] = false;
+                answer++;
             }
         }
         return answer;
