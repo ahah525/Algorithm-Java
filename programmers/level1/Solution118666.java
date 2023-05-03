@@ -6,9 +6,11 @@ import java.util.Map;
 
 /**
  * [문제명] 성격 유형 검사하기
- * [풀이시간] 26분
+ * [풀이시간] 26분 / 15분
  * [한줄평] 문제 설명대로 구현하기만 하면 되는 문제였으나 어떤 자료구조를 쓸지 고민하다가 시간이 좀 오래걸렸다.
- * 1_v1. HashMap(성공)
+ * / 쉽게 풀만한 구현 문제였다.
+ * 1_v1. 구현(성공)
+ * 2_v1. 구현(성공) -> 빠름
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/118666">문제</a>
  */
 class Solution118666 {
@@ -48,6 +50,36 @@ class Solution118666 {
                 .append(map.get('C') >= map.get('F') ? 'C' : 'F')
                 .append(map.get('J') >= map.get('M') ? 'J' : 'M')
                 .append(map.get('A') >= map.get('N') ? 'A' : 'N');
+        return sb.toString();
+    }
+
+    // 2_v1
+    public String solution2(String[] survey, int[] choices) {
+        int[] scores = {0, 3, 2, 1, 0, 1, 2, 3};
+        int[] types = new int[8];
+        String s = "RTCFJMAN";
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('R', 0);
+        map.put('T', 1);
+        map.put('C', 2);
+        map.put('F', 3);
+        map.put('J', 4);
+        map.put('M', 5);
+        map.put('A', 6);
+        map.put('N', 7);
+        for(int i = 0; i < survey.length; i++) {
+            int type = (choices[i] < 4) ? 0 : 1;
+            types[map.get(survey[i].charAt(type))] += scores[choices[i]];
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < 4; i++) {
+            int idx = 2 * i;
+            if(types[idx] >= types[idx + 1]) {
+                sb.append(s.charAt(idx));
+            } else {
+                sb.append(s.charAt(idx + 1));
+            }
+        }
         return sb.toString();
     }
 }
