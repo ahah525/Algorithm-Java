@@ -5,11 +5,13 @@ import java.util.Stack;
 
 /**
  * [문제명] 택배상자
- * [풀이시간] 50분(25분 + 25분) / (30분)
+ * [풀이시간] 50분(25분 + 25분) / 35분(30분 + 5분)
  * [한줄평] 문제 이해하기가 조금 까다로웠고 생각보다 푸는데 더 어려웠던 문제였다.. 다음에 한번 더 풀어볼만한 문제다.
  * 1_v1. Stack(실패 - 6, 7, 9, 10 시간초과)
  * 1_v2. Stack(성공)
  * 2_v1. Stack(실패 - 6~10 실패)
+ * 2_v2. Stack(성공)
+ * [해결법] 트럭에 싣는 경우에도 container++ 하기
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/131704">문제</a>
  * @See <a href="https://velog.io/@biny22/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%ED%83%9D%EB%B0%B0%EC%83%81%EC%9E%90">문제 설명</a>
  */
@@ -52,16 +54,20 @@ class Solution131704 {
         int answer = 0;
         // 보조 컨베이어
         Stack<Integer> stack = new Stack<>();
-        int container = 1;
+        int container = 1; // 컨테이너 맨 앞에 있는 박스 번호
+        // n = 트럭에 실어야 하는 박스 번호
         for(int n : order) {
-            // 컨테이너에서 가져올 수 있으면
+            // 트럭에 실어야 하는 박스 번호 < 컨테이너 맨 앞 박스 번호 -> 컨테이너에 원하는 박스가 있음
             while(container < n) {
                 stack.push(container);
                 container++;
             }
             if(n == container) {
+                // 트럭에 실어야 하는 박스 번호 == 컨테이너 맨 앞 박스 번호 -> 트럭에 싣기
+                container++;
                 answer++;
-            } else {
+            } else if(n < container) {
+                // 트럭에 실어야 하는 박스 번호 > 컨테이너 맨 앞 박스 번호 -> 보조 컨베이어벨트에 원하는 박스가 있음
                 if(n == stack.peek()) {
                     stack.pop();
                     answer++;
