@@ -4,12 +4,13 @@ import java.util.*;
 
 /**
  * [문제명] 이중우선순위큐
- * [풀이시간] / 45분
+ * [풀이시간] / 45분 / 10분
  * [한줄평] / 3번째 풀다보니 어렵지 않게 풀 수 있었던 것 같다.
  * 1_v1. 최소힙, 최대힙, Map(성공)
  * 2_v1. 최소힙, 최대힙(성공)
  * 2_v2. 최소힙, 최대힙(성공)
  * - PriorityQueue 의 remove() 함수 사용하면 특정 값을 삭제할 수 있다
+ * 3_v1. 최소힙, 최대힙(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42628">문제</a>
  */
 class Solution42628 {
@@ -102,6 +103,7 @@ class Solution42628 {
         return answer;
     }
 
+    // 2_v2, 3_v1
     public static int[] solution2(String[] operations) {
         int[] answer = new int[2];  // (최댓값, 최솟값)
         Queue<Integer> minHeap = new PriorityQueue<>(); // 최소힙
@@ -118,26 +120,21 @@ class Solution42628 {
                     maxHeap.add(n);
                     break;
                 case "D":
+                    if(minHeap.isEmpty()) continue;
                     if(n == -1) {
                         // 최솟값 삭제
-                        if(!minHeap.isEmpty()) {
-                            int min = minHeap.poll();
-                            maxHeap.remove(min);
-                        }
+                        int min = minHeap.poll();
+                        maxHeap.remove(min);
                     } else {
                         // 최댓값 삭제
-                        if(!maxHeap.isEmpty()) {
-                            int max = maxHeap.poll();
-                            minHeap.remove(max);
-                        }
+                        int max = maxHeap.poll();
+                        minHeap.remove(max);
                     }
                     break;
             }
         }
-//        System.out.println("minHeap = " + minHeap);
-//        System.out.println("maxHeap = " + maxHeap);
         // minHeap, maxHeap 의 구성 요소는 동일하니까 둘 중 하나의 크기만 확인하면 된다
-        if(minHeap.size() >= 1) {
+        if(!minHeap.isEmpty()) {
             answer[0] = maxHeap.poll();
             answer[1] = minHeap.poll();
         }
