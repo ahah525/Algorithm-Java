@@ -124,6 +124,11 @@ class Solution67259 {
             int x = p.x;
             int y = p.y;
             int d = p.d;
+            // (n-1, n-1)이면 최솟값 갱신
+            if(x == n - 1 && y == n - 1) {
+                answer = Math.min(answer, visited[d][n - 1][n - 1]);
+                continue;
+            }
             int dd = (d % 2 == 0) ? d + 1 : d - 1;  // 반대방향
             for(int i = 0; i < 4; i++) {
                 if(i == dd) continue;   // 반대방향은 이미 지나왔던 곳이므로 건너뛰기
@@ -131,17 +136,14 @@ class Solution67259 {
                 int ny = y + dy[i];
                 if(0 <= nx && nx < n && 0 <= ny && ny < n) {
                     if(board[nx][ny] == 0) {
-                        int cost = (d == i) ? 100 : 600;
-                        if(visited[i][nx][ny] > visited[d][x][y] + cost) {
+                        int cost = visited[d][x][y] + ((d == i) ? 100 : 600);
+                        if(visited[i][nx][ny] > cost) {
                             q.add(new P(i, nx, ny));
-                            visited[i][nx][ny] = visited[d][x][y] + cost;
+                            visited[i][nx][ny] = cost;
                         }
                     }
                 }
             }
-        }
-        for(int i = 0; i < 4; i++) {
-            answer = Math.min(answer, visited[i][n-1][n-1]);
         }
         return answer;
     }
