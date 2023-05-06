@@ -3,11 +3,13 @@ package programmers.level3;
 
 /**
  * [문제명] 가장 긴 팰린드롬
- * [풀이시간] 30분(26분 + 4분)
+ * [풀이시간] 30분(26분 + 4분) / 15분
  * [한줄평] 처음에는 split() 으로 부분 문자열을 만들고 reverse() 로 확인하려고 했는데 너무 효율성이 떨어질 것 같아 인덱스로 하나씩 값을 가져오는 것으로 구현했다.
+ * / 그냥 구현하면 되는 쉬운 문제였다.
  * 1_v1. (실패 - 정확성 테스트 1~10, 13~16,21 실패, 효율성 테스트 1 실패)
- * 1_v2. 3중 for 문(성공)
+ * 1_v2. 완전탐색(성공)
  * [접근법] 팰린드롬인지 검사할 때 charAt() 로 한 문자씩 비교
+ * 2_v1. 완전탐색(성공) -> 빠름
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12904">문제</a>
  */
 class Solution12904 {
@@ -22,6 +24,7 @@ class Solution12904 {
         System.out.println(solution("abbb"));
     }
 
+    // 1_v2
     /**
      * @param s 문자열(문자열 s의 길이 : 2,500 이하의 자연수)
      * @return s의 부분문자열(Substring)중 가장 긴 팰린드롬의 길이
@@ -50,6 +53,32 @@ class Solution12904 {
         for(int i = 0; i < len / 2; i++) {
             if(s.charAt(a + i) != s.charAt(a + len - 1 - i))
                 return false;
+        }
+        return true;
+    }
+
+    // 2_v1
+    char[] arr;
+    public int solution2(String s)
+    {
+        int answer = 0;
+        int len = s.length();
+        arr = s.toCharArray();
+        for(int i = len; i >= 1; i--) {
+            for(int j = 0; j <= len - i; j++) {
+                if(isPalin(j, j + i - 1)) {
+                    return i;
+                }
+            }
+        }
+        return answer;
+    }
+
+    public boolean isPalin(int start, int end) {
+        while(start <= end) {
+            if(arr[start] != arr[end]) return false;
+            start++;
+            end--;
         }
         return true;
     }
