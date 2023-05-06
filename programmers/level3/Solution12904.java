@@ -59,19 +59,18 @@ class Solution12904 {
 
     // 2_v1
     char[] arr;
-    public int solution2(String s)
-    {
-        int answer = 0;
+    public int solution2(String s) {
         int len = s.length();
         arr = s.toCharArray();
-        for(int i = len; i >= 1; i--) {
+        for(int i = len; i >= 2; i--) {
             for(int j = 0; j <= len - i; j++) {
                 if(isPalin(j, j + i - 1)) {
                     return i;
                 }
             }
         }
-        return answer;
+        // 최솟값 = 1
+        return 1;
     }
 
     public boolean isPalin(int start, int end) {
