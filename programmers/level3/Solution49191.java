@@ -3,11 +3,12 @@ package programmers.level3;
 
 /**
  * [문제명] 순위
- * [풀이시간] 1시간(40분 + 20분)
- * [한줄평] 그래프 문제임을 알아도 감을 못잡아 결국 풀이를 보고 해결했던 문제다.
+ * [풀이시간] 1시간(40분 + 20분) / 19분
+ * [한줄평] 그래프 문제임을 알아도 감을 못잡아 결국 풀이를 보고 해결했던 문제다. / 플루이드 와샬 알고리즘이라는 걸 모르고 그냥 풀었다.
  * 1_v1. 그래프(실패)
  * 1_v2. 그래프, 인접행렬(성공)
  * [접근법] 플루이드-와샬 알고리즘
+ * 2_v1. 그래프(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/49191">문제</a>
  * @See <a href="https://gom20.tistory.com/178">풀이</a>
  */
@@ -54,6 +55,44 @@ class Solution49191 {
             }
             // 5. i 가 (n - 1)명의 선수와의 경기 결과를 알고 있으면 순위를 매길 수 있음
             if(cnt == n - 1) answer++;
+        }
+        return answer;
+    }
+
+    // 2_v1
+    public int solution2(int n, int[][] results) {
+        int answer = 0;
+        int[][] map = new int[n + 1][n + 1];
+        for(int[] res : results) {
+            map[res[0]][res[1]] = 1;
+            map[res[1]][res[0]] = -1;
+        }
+        //
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= n; j++) {
+                int value = map[i][j];
+                if(value == 0) continue;
+                for(int k = 1; k <= n; k++) {
+                    if(k != i && value == map[j][k]) {
+                        // i -> j, j -> k => i -> k
+                        map[i][k] = value;
+                        // i <- j, j <- k => i <- k
+                        map[k][i] = -value;
+                    }
+                }
+            }
+        }
+        //
+        for(int i = 1; i <= n; i++) {
+            boolean flag = true;
+            for(int j = 1; j <= n; j++) {
+                if(i == j) continue;
+                if(map[i][j] == 0) {
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag) answer++;
         }
         return answer;
     }
