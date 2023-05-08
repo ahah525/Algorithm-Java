@@ -1,15 +1,17 @@
 package programmers.level2;
 
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
  * [문제명] 거리두기 확인하기
- * [풀이시간] 32분
- * [한줄평] 생각보다 쉽게 풀 수 있었던 문제였다.
+ * [풀이시간] 32분 / 47분
+ * [한줄평] 생각보다 쉽게 풀 수 있었던 문제였다. / BFS로 풀면 어렵지 않게 풀 수 있었다.
  * 1_v1. BFS(성공)
  * - P 인 지점에서 매번 BFS 를 수행하며 2 이내에 P 가 있는지 검사하는 방법
+ * 2_v1. BFS(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/">문제</a>
  */
 class Solution81302 {
@@ -18,15 +20,16 @@ class Solution81302 {
         System.out.println();
     }
 
+    // 1_v1
     class P {
         int x;
         int y;
-        int n;  // 시작 좌표와의 맨해튼 거리
+        int d;  // 시작 좌표와의 맨해튼 거리
 
-        P(int x, int y, int n) {
+        P(int x, int y, int d) {
             this.x = x;
             this.y = y;
-            this.n = n;
+            this.d = d;
         }
     }
 
@@ -89,7 +92,7 @@ class Solution81302 {
             P p = q.poll();
             int x = p.x;
             int y = p.y;
-            int n = p.n;
+            int n = p.d;
             if(n == 2) break;
             // 주변 탐색
             for(int i = 0; i < 4; i++) {
@@ -108,5 +111,64 @@ class Solution81302 {
             }
         }
         return false;
+    }
+
+    // 2_v1
+    public int[] solution2(String[][] places) {
+        int[] answer = new int[5];
+        Arrays.fill(answer, 1);
+        for(int k = 0; k < 5; k++) {
+            char[][] map = change(places[k]);
+            boolean[][] visited = new boolean[5][5];
+            l1:
+            for(int i = 0; i < 5; i++) {
+                for(int j = 0; j < 5; j++) {
+                    if(map[i][j] != 'P') continue;
+                    if(!bfs(i, j, map, visited)) {
+                        answer[k] = 0;
+                        break l1;
+                    }
+                }
+            }
+        }
+        return answer;
+    }
+
+    public char[][] change(String[] place) {
+        char[][] map = new char[5][5];
+        for(int i = 0; i < 5; i++) {
+            for(int j = 0; j < 5; j++) {
+                map[i][j] = place[i].charAt(j);
+            }
+        }
+        return map;
+    }
+
+    public boolean bfs(int startX, int startY, char[][] map, boolean[][] visited) {
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+        Queue<P> q = new LinkedList<>();
+        q.add(new P(startX, startY, 0));
+        visited[startX][startY] = true;
+        while(!q.isEmpty()) {
+            P p = q.poll();
+            int x = p.x;
+            int y = p.y;
+            int d = p.d;
+            if(d == 2) break;
+            for(int i = 0; i < 4; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+                if(0 <= nx && nx < 5 && 0 <= ny && ny < 5) {
+                    if(visited[nx][ny]) continue;
+                    if(map[nx][ny] == 'P') return false;
+                    if(map[nx][ny] == 'O') {
+                        q.add(new P(nx, ny, d + 1));
+                        visited[nx][ny] = true;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }
