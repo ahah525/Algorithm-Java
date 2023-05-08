@@ -1,13 +1,17 @@
 package programmers.level2;
 
 
+import java.util.Arrays;
+
 /**
  * [문제명] 숫자 변환하기
- * [풀이시간] 16분
+ * [풀이시간] 16분 / 11분
  * [한줄평] 전형적인 DP 문제여서 쉽게 풀 수 있었다.
  * 1_v1. DP(성공)
  * - d[i]: x 에서 i 를 만들기 위한 최소 연산 횟수
  * [점화식] d[i] = Math.min(d[i], d[i - n], d[i / 2], d[i / 3])
+ * 2_v1. DP(성공) -> 빠름
+ * 2_v2. DP(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/154538">문제</a>
  */
 class Solution154538 {
@@ -16,6 +20,7 @@ class Solution154538 {
         System.out.println();
     }
 
+    // 1_v1, 2_v1
     /**
      * @param x 1 ≤ x ≤ y ≤ 1,000,000
      * @param y 1 ≤ x ≤ y ≤ 1,000,000
@@ -23,12 +28,10 @@ class Solution154538 {
      * @return x를 y로 변환하기 위해 필요한 최소 연산 횟수(x를 y로 만들 수 없다면 -1)
      */
     public int solution(int x, int y, int n) {
+        int INF = 1000000;
         int[] d = new int[y + 1];
         // 1. 최댓값으로 연산 비용 초기화
-        int INF = 1000000;
-        for(int i = 0; i <= y; i++) {
-            d[i] = INF;
-        }
+        Arrays.fill(d, INF);
         // 2. x -> x 만드는 비용 = 0
         d[x] = 0;
         // 3. x 에서 (x + 1)...(y) 까지 만드는 최소비용 계산
@@ -42,6 +45,23 @@ class Solution154538 {
             // 3. 3 곱하기
             if(i % 3 == 0)
                 d[i] = Math.min(d[i], d[i / 3] + 1);
+        }
+        return d[y] == INF ? -1 : d[y];
+    }
+
+    // 2_v2
+    public int solution2(int x, int y, int n) {
+        int INF = 1000000;
+        int[] d = new int[y + 1];
+        Arrays.fill(d, INF);
+        d[x] = 0;
+        for(int i = x; i <= y; i++) {
+            if(i + n <= y)
+                d[i + n] = Math.min(d[i + n], d[i] + 1);
+            if(i * 2 <= y)
+                d[i * 2] = Math.min(d[i * 2], d[i] + 1);
+            if(i * 3 <= y)
+                d[i * 3] = Math.min(d[i * 3], d[i] + 1);
         }
         return d[y] == INF ? -1 : d[y];
     }
