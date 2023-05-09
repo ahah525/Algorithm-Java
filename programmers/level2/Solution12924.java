@@ -3,9 +3,10 @@ package programmers.level2;
 
 /**
  * [문제명] 숫자의 표현
- * [풀이시간] 30분
- * [한줄평] 보자마자 투포인터로 풀어야겠다고 떠올렸는데, 투포인터 문제는 항상 풀 때 조건 순서가 헷갈린다..
- * v1. 투포인터(성공)
+ * [풀이시간] 30분 / 9분
+ * [한줄평] 보자마자 투포인터로 풀어야겠다고 떠올렸는데, 투포인터 문제는 항상 풀 때 조건 순서가 헷갈린다.. / 투포인터 기초 문제였다.
+ * 1_v1. 투포인터(성공)
+ * 2_v1. 투포인터(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12924">문제</a>
  */
 class Solution12924 {
@@ -14,6 +15,7 @@ class Solution12924 {
         System.out.println(solution(15));
     }
 
+    // 1_v1
     /**
      * @param n 10,000 이하의 자연수
      * @return 연속된 자연수들로 n을 표현하는 방법의 수
@@ -38,10 +40,25 @@ class Solution12924 {
             // 2. 정답을 찾았을 때 처리
             if(sum == n) {
                 answer++;
-//                System.out.println("l = " + l);
-//                System.out.println("r = " + r);
-//                System.out.println("sum = " + sum);
-//                System.out.println("=========");
+            }
+        }
+        return answer;
+    }
+
+    // 2_v1
+    public int solution2(int n) {
+        int answer = 1; // n 자체 1개 초기화
+        int l = 1;
+        int r = 1;
+        int sum = 0;
+        while(r <= n) {
+            if(sum < n) {
+                sum += r++;
+            } else if(sum == n) {
+                answer++;
+                sum += r++;
+            } else {
+                sum -= l++;
             }
         }
         return answer;
