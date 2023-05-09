@@ -3,9 +3,10 @@ package programmers.level1;
 
 /**
  * [문제명] 삼총사
- * [풀이시간] 13분
+ * [풀이시간] 13분 / 3분
  * [한줄평] n 개 중에 3개를 뽑는 아주 쉬운 조합 문제였으나 변수 하나를 잘못써서 조금 오래걸렸다. 사실 3중 for 문으로도 풀 수 있지만 재귀 풀이를 연습하고자 재귀로 풀었다.
- * v1. 조합-재귀(성공)
+ * 1_v1. DFS, 완전탐색(성공)
+ * 2_v1. DFS, 완전탐색(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/131705">문제</a>
  */
 class Solution131705 {
@@ -23,6 +24,7 @@ class Solution131705 {
         System.out.println(solution(number3));
     }
 
+    // 1_v1, 2_v1
     static int answer;
 
     /**
@@ -32,7 +34,7 @@ class Solution131705 {
      */
     public static int solution(int[] number) {
         answer = 0;
-        dfs(0, 0, 0, number, number.length);
+        dfs(0, 0, 0, number);
         return answer;
     }
 
@@ -41,16 +43,14 @@ class Solution131705 {
      * @param start 탐색 시작인덱스
      * @param sum 누적합
      * @param number 학생 번호 배열
-     * @param n 학생수
      */
-    public static void dfs(int depth, int start, int sum, int[] number, int n) {
+    public static void dfs(int depth, int start, int sum, int[] number) {
         if(depth == 3) {
-            if(sum == 0)
-                answer++;
+            if(sum == 0) answer++;
             return;
         }
-        for(int i = start; i < n; i++) {
-            dfs(depth + 1, i + 1, sum + number[i], number ,n);
+        for(int i = start; i < number.length; i++) {
+            dfs(depth + 1, i + 1, sum + number[i], number);
         }
     }
 }
