@@ -6,12 +6,14 @@ import java.util.List;
 
 /**
  * [문제명] 최고의 집합
+ * [풀이시간] (16분)
  * [한줄평] 처음에는 재귀로 완전탐색을 하는 방식으로 접근했다가 할 때마다 배열 값을 저장하는게 부담이 커져서 규칙을 찾아서 아예 다른 방식으로 접근해서 풀었던 문제였다.
- * v1. 원소의 개수 = n, 합 = s 일때, 곱이 최대가 되는 중복집합은 (n // s) 값을 반복해서 구함(성공)
+ * 1_v1. 원소의 개수 = n, 합 = s 일때, 곱이 최대가 되는 중복집합은 (n // s) 값을 반복해서 구함(성공)
  * (가정) n = 3, s = 8
  * n = 3, s = 8         -> 8 // 3 = 2
  * n = 2, s = 8 - 2 = 6 -> 6 // 2 = 3
  * n = 1, s = 6 - 3 = 3 -> 3 // 1 = 3
+ * 2_v1. DFS, 완전탐색(실패 - 1~14 시간초과)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12938">문제</a>
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12938/solution_groups?language=java">다른 풀이</a>
  */
@@ -59,5 +61,40 @@ class Solution12938 {
             num--;
         }
         return answer;
+    }
+
+    // 2_v1
+    int max;
+    int[] answer;
+    int[] path;
+    public int[] solution2(int n, int s) {
+        max = 0;
+        path = new int[n];
+        answer = new int[n];
+
+        comb(0, 1, 0, 1, n, s);
+        if(max == 0) return new int[] {-1};
+        return answer;
+    }
+
+    public void comb(int depth, int start, int sum, int mul, int n, int s) {
+        if(depth == n) {
+            // System.out.println(sum + "," + mul);
+            // System.out.println(Arrays.toString(path));
+
+            if(sum == s && max < mul) {
+                // System.out.println("예스");
+                max = mul;
+                for(int i = 0; i < n; i++) {
+                    answer[i] = path[i];
+                }
+            }
+            return;
+        }
+        //
+        for(int i = start; i <= s; i++) {
+            path[depth] = i;
+            comb(depth + 1, start, sum + i, mul * i, n, s);
+        }
     }
 }
