@@ -3,15 +3,17 @@ package programmers.level2;
 
 /**
  * [문제명] 문자열 압축
- * [풀이시간] 28분, 20분 / (1시간)
+ * [풀이시간] 28분, 20분 / 1시간 5분(1시간 + 5분)
  * [한줄평] 문자열을 다루는 구현 문제로 split() 을 써서 바로 비교했을 때 시간이 훨씬 빨랐다.
  * 1_v1. 문자열 구현(성공)
  * [접근법] 직접 문자열 분리 후 비교
  * 1_v2. 문자열 구현(성공) -> 추천
  * [접근법] split() 으로 분리와 동시에 비교
  * 2_v1. 문자열(실패 - 5 실패)
+ * 2_v2. 문자열(성공)
+ * [반례] 문자열 길이가 1인 경우, 최솟값 = 1
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/60057">문제</a>
- * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/60057">반례</a>
+ * @See <a href="https://school.programmers.co.kr/questions/20870">반례</a>
  */
 class Solution60057 {
     public static void main(String[] args) {
@@ -119,6 +121,7 @@ class Solution60057 {
     // 2_v1
     public int solution3(String s) {
         int answer = Integer.MAX_VALUE;
+        if(s.length() == 1) return 1;
         for(int i = 1; i <= s.length() / 2; i++) {
             answer = Math.min(answer, change(s, i));
         }
