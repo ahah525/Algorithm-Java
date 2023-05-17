@@ -3,12 +3,13 @@ package programmers.level2;
 
 /**
  * [문제명] 숫자 카드 나누기
- * [풀이시간] 20분, 20분
- * [한줄평] 최대 공약수 구하는 것을 응용해서 풀 수 있는 문제였다.
+ * [풀이시간] 20분, 20분 / 25분
+ * [한줄평] 최대 공약수 구하는 것을 응용해서 풀 수 있는 문제였다. / 유클리드 호제법을 구현하는데 좀 시간이 걸렸다.
  * 1_v1. 수학(성공)
  * [접근법] 일반적인 방법
- * 1_v2. 수학(성공)
+ * 1_v2. 수학(성공) -> 빠름
  * [접근법] 유클리드 호제법
+ * 2_v1. 수학(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/135807">문제</a>
  */
 class Solution135807 {
@@ -63,5 +64,19 @@ class Solution135807 {
             min = tmp;
         }
         return max;
+    }
+
+    // 2_v1
+    public int solution2(int[] arrayA, int[] arrayB) {
+        int answer = 0;
+        // 1. 각 배열의 최대공약수 구하기
+        int gcdA = gcd(arrayA); // arrayA의 최대공약수
+        int gcdB = gcd(arrayB); // arrayB의 최대공약수
+        // 2. 조건을 만족하는 수 중에서 최댓값 구하기
+        if(!canDivide(gcdA, arrayB))
+            answer = Math.max(answer, gcdA);
+        if(!canDivide(gcdB, arrayA))
+            answer = Math.max(answer, gcdB);
+        return answer;
     }
 }
