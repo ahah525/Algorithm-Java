@@ -3,11 +3,12 @@ package programmers.level2;
 
 /**
  * [문제명] 점찍기
- * [풀이시간] 30분(25분 + 5분)
+ * [풀이시간] 30분(25분 + 5분) / (15분)
  * [한줄평] 2중 for문으로 풀면 시간초과가 날 것 같아서
  * 1_v1. 수학, for 문(실패-11,13,14 실패)
  * 1_v2. 수학, for 문(성공)
  * [반례] int 범위를 벗어날 경우를 고려해 long 으로 변환
+ * 2_v1. (실패 - 2~3,5~15 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/140107">문제</a>
  */
 class Solution140107 {
@@ -33,6 +34,18 @@ class Solution140107 {
         for(int a = 0; a <= d; a += k) {
             // (Math.sqrt(dd - (long) a * a) / k) 의 결과값을 int -> long 으로 변환 필요!
             answer += (long) (Math.sqrt(dd - (long) a * a) / k) + 1;
+        }
+        return answer;
+    }
+
+    // 2_v1
+    public long solution2(int k, int d) {
+        long answer = 0;
+        long dd = d * d;
+        for(int x = 0; x <= d; x+=k) {
+            long cnt = (long) Math.sqrt(dd - (long) x * x) / (long) k + 1;
+            answer += cnt;
+            // System.out.println(cnt);
         }
         return answer;
     }
