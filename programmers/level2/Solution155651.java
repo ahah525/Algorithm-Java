@@ -13,7 +13,7 @@ import java.util.Queue;
  * 1_v2. PriorityQueue(성공)
  * [반례] 대실 종료 시각 10분 후 새로운 대실을 받을 수 있음
  * 2_v1. PriorityQueue(실패 - 3~4, 6~18 실패)
- * 2_v2. PriorityQueue(성공)
+ * 2_v2. PriorityQueue(성공) -> 빠름
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/155651">문제</a>
  */
 class Solution155651 {
