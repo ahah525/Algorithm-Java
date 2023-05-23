@@ -1,11 +1,15 @@
 package programmers.level3;
 
 
+import java.util.Arrays;
+
 /**
  * [문제명] 기지국 설치
+ * [풀이시간] / 23분
  * [한줄평] n 의 범위가 크기때문에, 배열에 하나씩 체크하면 안되고 각 범위를 커버할 수 있는 기지국의 개수를 수식으로 만들어 계산해야 하는 구현 문제였다.
  * 아이디어는 나름 쉽게 떠올렸는데, 생각보다 구현하는데 시간이 오래걸렸던 문제로 다시 한번 꼭 풀어봐야겠다.
- * v1. 수학적 접근(성공)
+ * 1_v1. 수학적 접근(성공)
+ * 2_v1. (실패 - 효율성 테스트 2~3 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12979">문제</a>
  * @See <a href="https://i.postimg.cc/mDkjcvyW/3.png">그림 참고</a>
  */
@@ -24,6 +28,7 @@ class Solution12979 {
         System.out.println(solution(n2, stations2, w2));
     }
 
+    // 1_v1
     /**
      * @param n 아파트의 개수
      * @param stations 현재 기지국이 설치된 아파트의 번호가 담긴 1차원 배열
@@ -57,5 +62,23 @@ class Solution12979 {
             answer += Math.ceil((double) dis / range);
         }
         return answer;
+    }
+
+    // 2_v1
+    int size;
+    public int solution2(int n, int[] stations, int w) {
+        int answer = 0;
+        Arrays.sort(stations);
+        size = 2 * w + 1;
+        answer += calc(1, stations[0] - w - 1);
+        for(int i = 0; i < stations.length - 1; i++) {
+            answer += calc(stations[i] + w + 1, stations[i + 1] - w - 1);
+        }
+        answer += calc(stations[stations.length - 1] + w + 1, n);
+        return answer;
+    }
+
+    public int calc(int s, int e) {
+        return (s > e) ? 0 : (int) Math.ceil((double) (e - s + 1) / size);
     }
 }
