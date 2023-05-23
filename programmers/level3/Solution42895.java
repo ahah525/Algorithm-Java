@@ -6,10 +6,18 @@ import java.util.Set;
 
 /**
  * [문제명] N으로 표현
- * [풀이시간] 1시간 10분 / (21분)
- * [한줄평] 풀이를 봐도 이해가 어려웠던 문제였다.
+ * [풀이시간] 1시간 10분 / 40분(21분 + 19분)
+ * [한줄평] 풀이를 봐도 이해가 어려웠던 문제였다. / 감을 찾기는 했지만 결국 반례를 해결하지 못해 풀이를 참고했다.
  * 1_v1. DP(성공)
  * 2_v1. (실패 - 5~9 실패)
+ * [접근법] 하나의 경우만 고려
+ * 1) n을 i번 사용해서 만든 수의 집합 = n을 (i - 1)번 사용해서 만든 수의 집합 X n을 1번 사용해서 만든 수의 집합
+ * 2_v2. (성공)
+ * [해결법] 모든 경우의 수 계산
+ * 1) n을 i번 사용해서 만든 수의 집합 = n을 (i - 1)번 사용해서 만든 수의 집합 X n을 1번 사용해서 만든 수의 집합
+ * 2) n을 i번 사용해서 만든 수의 집합 = n을 (i - 2)번 사용해서 만든 수의 집합 X n을 2번 사용해서 만든 수의 집합
+ * ...
+ * 3) n을 i번 사용해서 만든 수의 집합 = n을 1번 사용해서 만든 수의 집합 X n을 (i - 1)번 사용해서 만든 수의 집합
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42895">문제</a>
  * @See <a href="https://alreadyusedadress.tistory.com/115">풀이</a>
  */
@@ -22,6 +30,7 @@ class Solution42895 {
         System.out.println(solution(2, 11));
     }
 
+    // 1_v1, 2_v2
     /**
      * @param N 숫자(1 이상 9 이하)
      * @param number 숫자(1 이상 32,000 이하)
@@ -53,33 +62,6 @@ class Solution42895 {
             tmp = tmp * 10 + N;
         }
         // 4. N을 8번 사용해도 number 를 만들수 없으면 -1 리턴
-        return -1;
-    }
-
-    // 2_v1
-    public int solution2(int n, int number) {
-        int answer = 0;
-        Set<Integer>[] sets = new HashSet[7];
-        for(int i = 0; i < 7; i++) {
-            sets[i] = new HashSet<>();
-        }
-        int v = n;
-        sets[0].add(v);
-        for(int i = 1; i < 7; i++) {
-            v = v * 10 + n;
-            sets[i].add(v);
-            for(int num : sets[i - 1]) {
-                sets[i].add(num + n);
-                sets[i].add(num - n);
-                sets[i].add(n - num);
-                sets[i].add(num * n);
-                if(num == 0) continue;
-                if(num % n == 0) sets[i].add(num / n);
-                if(n % num == 0) sets[i].add(n / num);
-            }
-            // System.out.println(sets[i]);
-            if(sets[i].contains(number)) return i + 1;
-        }
         return -1;
     }
 }
