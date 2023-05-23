@@ -5,10 +5,11 @@ import java.util.*;
 
 /**
  * [문제명] 무인도 여행
- * [풀이시간] 16분 / 23분
+ * [풀이시간] 16분 / 23분, 13분
  * [한줄평] DFS/BFS 로 풀 수 있는 쉬운 문제였다. / BFS로 쉽게 풀 수 있는 문제였다.
  * 1_v1. BFS(성공)
  * 2_v1. BFS(성공)
+ * 2_v2. DFS(성공) -> 빠름
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/154540">문제</a>
  */
 class Solution154540 {
@@ -88,6 +89,49 @@ class Solution154540 {
                         map[nx][ny] = 0;
                     }
                 }
+            }
+        }
+        return sum;
+    }
+
+    // 2_v2
+    int[] dx = {-1, 1, 0, 0};
+    int[] dy = {0, 0, -1, 1};
+    public int[] solution2(String[] maps) {
+        List<Integer> list = new ArrayList<>();
+        int n = maps.length;
+        int m = maps[0].length();
+        int[][] map = new int[n][m];
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(maps[i].charAt(j) == 'X') map[i][j] = 0;
+                else map[i][j] = maps[i].charAt(j) - '0';
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(map[i][j] != 0) {
+                    list.add(dfs(i, j, n, m, map));
+                }
+            }
+        }
+        if(list.size() == 0) return new int[] {-1};
+        int[] answer = new int[list.size()];
+        Collections.sort(list);
+        for(int i = 0; i < list.size(); i++) {
+            answer[i] = list.get(i);
+        }
+        return answer;
+    }
+
+    public int dfs(int x, int y, int n, int m, int[][] map) {
+        int sum = map[x][y];
+        map[x][y] = 0;
+        for(int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if(0 <= nx && nx < n && 0 <= ny && ny < m && map[nx][ny] != 0) {
+                sum += dfs(nx, ny, n, m, map);
             }
         }
         return sum;
