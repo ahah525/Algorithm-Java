@@ -1,17 +1,19 @@
 package programmers.level2;
 
 
+import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**
  * [문제명] 호텔 대실
- * [풀이시간] 21분(19분+2분) / (13분)
- * [한줄평] 문제를 꼼꼼하게 읽자.
- * 1_v1. (실패 - 3~4,6~18 실패)
- * 1_v2. (성공)
+ * [풀이시간] 21분(19분+2분) / 15분(13분 + 2분)
+ * [한줄평] 문제를 꼼꼼하게 읽자. / 문제를 꼼꼼히 읽지 않아서 처음에 틀렸던 문제였다.
+ * 1_v1. PriorityQueue(실패 - 3~4,6~18 실패)
+ * 1_v2. PriorityQueue(성공)
  * [반례] 대실 종료 시각 10분 후 새로운 대실을 받을 수 있음
- * 2_v1. (실패 - 3~4, 6~18 실패)
+ * 2_v1. PriorityQueue(실패 - 3~4, 6~18 실패)
+ * 2_v2. PriorityQueue(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/155651">문제</a>
  */
 class Solution155651 {
@@ -67,7 +69,30 @@ class Solution155651 {
                 room.add(book.end);
             }
         }
-
         return room.size();
+    }
+
+    // 2_v1
+    public int solution2(String[][] bookTime) {
+        int answer = 0;
+        // 1. 시작 시각 오름차순 정렬
+        Arrays.sort(bookTime, (o1, o2) -> {
+            return o1[0].compareTo(o2[0]);
+        });
+        Queue<Integer> pq = new PriorityQueue<>();
+        for(String[] time : bookTime) {
+            int start = getTime(time[0]);
+            int end = getTime(time[1]);
+            if(!pq.isEmpty() && pq.peek() <= start) pq.poll();
+            pq.add(end + 10);
+            answer = Math.max(answer, pq.size());
+        }
+        return answer;
+    }
+
+    // 시간을 분으로 환산
+    public int getTime(String s) {
+        String[] t = s.split(":");
+        return Integer.parseInt(t[0]) * 60 + Integer.parseInt(t[1]);
     }
 }
