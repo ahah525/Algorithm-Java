@@ -1,15 +1,16 @@
 package programmers.level3;
 
 
-import java.util.Arrays;
-
 /**
  * [문제명] 기지국 설치
- * [풀이시간] / 23분
+ * [풀이시간] / 24분
  * [한줄평] n 의 범위가 크기때문에, 배열에 하나씩 체크하면 안되고 각 범위를 커버할 수 있는 기지국의 개수를 수식으로 만들어 계산해야 하는 구현 문제였다.
  * 아이디어는 나름 쉽게 떠올렸는데, 생각보다 구현하는데 시간이 오래걸렸던 문제로 다시 한번 꼭 풀어봐야겠다.
- * 1_v1. 수학적 접근(성공)
- * 2_v1. (실패 - 효율성 테스트 2~3 실패)
+ * / 쉽게 풀 수 있는 문제였는데, 문제 조건을 제대로 읽지 않고 불필요하게 정렬을 했다가 시간초과가 났던 문제였다.
+ * 1_v1. 수학(성공)
+ * 2_v1. 수학(실패 - 효율성 테스트 2~3 시간초과)
+ * 2_v2. 수학(성공) -> 빠름
+ * [해결법] stations는 오름차순으로 정렬되어 있기때문에 배열을 정렬하는 코드를 삭제한다.
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12979">문제</a>
  * @See <a href="https://i.postimg.cc/mDkjcvyW/3.png">그림 참고</a>
  */
@@ -47,7 +48,6 @@ class Solution12979 {
             dis = first - w - 1;
             answer += Math.ceil((double) dis / range);
         }
-
         int prev = first;           // 이전 기지국 설치 지점
         // 2. 두번째 이후 값에 대한 처리(이전 기지국이 무조건 존재함)
         for(int i = 1; i < cnt; i++) {
@@ -64,11 +64,11 @@ class Solution12979 {
         return answer;
     }
 
-    // 2_v1
+    // 2_v2
     int size;
     public int solution2(int n, int[] stations, int w) {
         int answer = 0;
-        Arrays.sort(stations);
+//        Arrays.sort(stations);
         size = 2 * w + 1;
         answer += calc(1, stations[0] - w - 1);
         for(int i = 0; i < stations.length - 1; i++) {
@@ -78,6 +78,11 @@ class Solution12979 {
         return answer;
     }
 
+    /**
+     * @param s 구간 시작 인덱스
+     * @param e 구간 끝 인덱스
+     * @return 해당 구간의 모든 아파트에 전파를 전달하기 위해 필요한 기지국 개수
+     */
     public int calc(int s, int e) {
         return (s > e) ? 0 : (int) Math.ceil((double) (e - s + 1) / size);
     }
