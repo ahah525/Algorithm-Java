@@ -6,9 +6,10 @@ import java.util.Set;
 
 /**
  * [문제명] N으로 표현
- * [풀이시간] 1시간 10분
+ * [풀이시간] 1시간 10분 / (21분)
  * [한줄평] 풀이를 봐도 이해가 어려웠던 문제였다.
  * 1_v1. DP(성공)
+ * 2_v1. (실패 - 5~9 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42895">문제</a>
  * @See <a href="https://alreadyusedadress.tistory.com/115">풀이</a>
  */
@@ -52,6 +53,33 @@ class Solution42895 {
             tmp = tmp * 10 + N;
         }
         // 4. N을 8번 사용해도 number 를 만들수 없으면 -1 리턴
+        return -1;
+    }
+
+    // 2_v1
+    public int solution2(int n, int number) {
+        int answer = 0;
+        Set<Integer>[] sets = new HashSet[7];
+        for(int i = 0; i < 7; i++) {
+            sets[i] = new HashSet<>();
+        }
+        int v = n;
+        sets[0].add(v);
+        for(int i = 1; i < 7; i++) {
+            v = v * 10 + n;
+            sets[i].add(v);
+            for(int num : sets[i - 1]) {
+                sets[i].add(num + n);
+                sets[i].add(num - n);
+                sets[i].add(n - num);
+                sets[i].add(num * n);
+                if(num == 0) continue;
+                if(num % n == 0) sets[i].add(num / n);
+                if(n % num == 0) sets[i].add(n / num);
+            }
+            // System.out.println(sets[i]);
+            if(sets[i].contains(number)) return i + 1;
+        }
         return -1;
     }
 }
