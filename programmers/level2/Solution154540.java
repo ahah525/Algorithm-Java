@@ -5,9 +5,10 @@ import java.util.*;
 
 /**
  * [문제명] 무인도 여행
- * [풀이시간] 16분
- * [한줄평] DFS/BFS 로 풀 수 있는 쉬운 문제였다.
+ * [풀이시간] 16분 / 23분
+ * [한줄평] DFS/BFS 로 풀 수 있는 쉬운 문제였다. / BFS로 쉽게 풀 수 있는 문제였다.
  * 1_v1. BFS(성공)
+ * 2_v1. BFS(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/154540">문제</a>
  */
 class Solution154540 {
@@ -16,7 +17,7 @@ class Solution154540 {
         System.out.println();
     }
 
-    // 1_v1
+    // 1_v1, 2_v1
     class P {
         int x;
         int y;
