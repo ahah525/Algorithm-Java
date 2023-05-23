@@ -6,11 +6,12 @@ import java.util.Queue;
 
 /**
  * [문제명] 호텔 대실
- * [풀이시간] 21분(19분+2분)
+ * [풀이시간] 21분(19분+2분) / (13분)
  * [한줄평] 문제를 꼼꼼하게 읽자.
  * 1_v1. (실패 - 3~4,6~18 실패)
  * 1_v2. (성공)
  * [반례] 대실 종료 시각 10분 후 새로운 대실을 받을 수 있음
+ * 2_v1. (실패 - 3~4, 6~18 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/155651">문제</a>
  */
 class Solution155651 {
