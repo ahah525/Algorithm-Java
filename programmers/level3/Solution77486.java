@@ -7,9 +7,13 @@ import java.util.Map;
 
 /**
  * [문제명] 다단계 칫솔 판매
- * [풀이시간] 52분(47분 + 5분)
- * [한줄평] Map 을 이용해서 푸는 구현 문제로 어렵지는 않았으나 반례를 찾지 못해 힌트를 보고 해결했다.
+ * [풀이시간] 52분(47분 + 5분) / 29분
+ * [한줄평] Map 을 이용해서 푸는 구현 문제로 어렵지는 않았으나 반례를 찾지 못해 힌트를 보고 해결했다. / 쉽게 풀 수 있는 구현 문제였다.
  * 1_v1. HashMap 2(실패-11~13 시간초과)
+ * 1_v2. 구현(성공)
+ * [접근법] 반복문
+ * 2_v1. 구현(성공)
+ * [접근법] 재귀
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/77486">문제</a>
  * @See <a href="https://school.programmers.co.kr/questions/29442">반례</a>
  */
@@ -64,5 +68,32 @@ class Solution77486 {
         for(int j = 0; j < enroll.length; j++)
             answer[j] = prices.get(enroll[j]);
         return answer;
+    }
+
+    // 2_v1
+    int[] answer;
+    Map<String, Integer> map;
+    public int[] solution2(String[] enroll, String[] referral, String[] seller, int[] amount) {
+        answer = new int[enroll.length];
+        // (이름, 번호)
+        map = new HashMap<>();
+        for(int i = 0; i < enroll.length; i++) {
+            map.put(enroll[i], i);
+        }
+        //
+        for(int i = 0; i < seller.length; i++) {
+            dfs(seller[i], amount[i] * 100, referral);
+        }
+        return answer;
+    }
+
+    public void dfs(String child, int amount, String[] referral) {
+        if(amount == 0 || child.equals("-")) return;
+        int parentAmount = amount / 10; // 부모 정산 금액
+        // 자식 정산
+        int c = map.get(child);
+        answer[c] += amount - parentAmount;
+        // 부모 재귀 호출
+        dfs(referral[c], parentAmount, referral);
     }
 }
