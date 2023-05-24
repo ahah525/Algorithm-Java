@@ -5,13 +5,17 @@ import java.util.*;
 
 /**
  * [문제명] 베스트 앨범
- * [풀이시간] 40분
+ * [풀이시간] / 40분 / 18분
  * [한줄평] 문제가 어렵지는 않았으나 Map 을 Value 값을 기준으로 정렬하는 부분은 검색을 통해 해결했던 약간은 까다로운 문제였다. / Set 을 정렬하려면 List 로 바꿔서 정렬해아한다.
  * 6번에서 PriorityQueue 의 값을 역순으로 리스트에 넣을 때 이렇게 로직을 짜도 괜찮은건지 궁금하다. 만약 최대 2개가 아니라 n개 라면 어떻게 로직을 바꿔야할지 생각해봐야겠다.
+ * / 3번째 푸니까 확실히 쉽게 풀 수 있었던 문제다.
  * 1_v1. HashMap 2개, ArrayList 1개(성공)
  * - HashMap : (장르명, 장르별 총재생횟수), (장르명, 장르별 앨범에 들어갈 노래)
  * - ArrayList : 앨범에 들어갈 노래의 고유번호 리스트
  * 2_v1. HashMap, 정렬(성공)
+ * [접근법] 우선순위 큐에 최대 2개만 넣는다.
+ * 3_v1. HashMap, 정렬(성공) -> 빠름
+ * [접근법] 우선순위 큐에 모든 곡을 넣고 2개만 꺼낸다.
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42579">문제</a>
  */
 class Solution42579 {
@@ -138,6 +142,41 @@ class Solution42579 {
             } else {
                 answer[i++] = q.poll();
             }
+        }
+        return answer;
+    }
+
+    // 3_v1
+    public int[] solution3(String[] genres, int[] plays) {
+        Map<String, Integer> map2 = new HashMap<>();
+        Map<String, Queue<Integer>> map1 = new HashMap<>();
+        for(int i = 0; i < plays.length; i++) {
+            if(!map1.containsKey(genres[i])) {
+                map1.put(genres[i], new PriorityQueue<>((o1, o2) -> {
+                    if(plays[o1] == plays[o2]) return o1 - o2;
+                    return plays[o2] - plays[o1];
+                }));
+            }
+            Queue<Integer> pq = map1.get(genres[i]);
+            pq.add(i);
+            map2.put(genres[i], map2.getOrDefault(genres[i], 0) + plays[i]);
+        }
+        //
+        List<String> keys = new ArrayList<>(map2.keySet());
+        Collections.sort(keys, (o1, o2) -> map2.get(o2) - map2.get(o1));
+        //
+        List<Integer> list = new ArrayList<>();
+        for(String key : keys) {
+            Queue<Integer> pq = map1.get(key);
+            int cnt = 0;
+            while(!pq.isEmpty() && cnt < 2) {
+                list.add(pq.poll());
+                cnt++;
+            }
+        }
+        int[] answer = new int[list.size()];
+        for(int i = 0; i < list.size(); i++) {
+            answer[i] = list.get(i);
         }
         return answer;
     }
