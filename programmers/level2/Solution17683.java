@@ -3,10 +3,12 @@ package programmers.level2;
 
 /**
  * [문제명] [3차] 방금그곡
- * [풀이시간] / 27분
+ * [풀이시간] / 27분 / 23분
  * [한줄평] #이 붙은 음을 하나의 다른 음으로 치환해서 풀어야한다는 힌트를 받고 풀었던 문제였다. / 2번째 풀때 바로 치환을 해야겠다고 떠올려서 빨리 풀 수 있었던 것 같다.
+ * / 문자열을 이용해 구현하는 문제였다.
  * 1_v1. replaceAll()(성공)
  * 2_v1. replace()(성공)
+ * 3_v1. 구현, 문자열(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/17683">문제</a>
  */
 public class Solution17683 {
@@ -82,5 +84,38 @@ public class Solution17683 {
                 .replace("F#", "J")
                 .replace("G#", "K")
                 .replace("A#", "L");
+    }
+
+    // 3_v1
+    public String solution2(String m, String[] musicInfos) {
+        int len = 0;
+        String title = "(None)";
+        m = change(m);
+        for(String musicInfo : musicInfos) {
+            String[] info = musicInfo.split(",");
+            int play = getTime(info[1]) - getTime(info[0]);
+            String playMusic = getPlayMusic(change(info[3]), play);
+            if(playMusic.contains(m) && len < play) {
+                title = info[2];
+                len = play;
+            }
+        }
+        return title;
+    }
+
+    // 시간 정보를 분으로 변환
+    public int getTime(String s) {
+        String[] t = s.split(":");
+        return Integer.parseInt(t[0]) * 60 + Integer.parseInt(t[1]);
+    }
+
+    // 실제 재생된 악보 문자열 리턴
+    public String getPlayMusic(String music, int play) {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < play / music.length(); i++) {
+            sb.append(music);
+        }
+        sb.append(music, 0, play % music.length());
+        return sb.toString();
     }
 }
