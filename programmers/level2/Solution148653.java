@@ -3,9 +3,10 @@ package programmers.level2;
 
 /**
  * [문제명] 마법의 엘리베이터
- * [풀이시간] 1시간 10분
+ * [풀이시간] 1시간 10분 / (50분)
  * [한줄평] 처음에는 DP 문제인가 했는데, 수학으로 규칙을 찾아서 풀 수 있을 것 같았는데 결국 풀이를 보고 이해했던 문제다.
  * 1_v1. 수학(성공)
+ * 2_v1. (실패 - 1,3 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/148653">문제</a>
  * @See <a href="https://velog.io/@isayaksh/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Programmers-%EB%A7%88%EB%B2%95%EC%9D%98-%EC%97%98%EB%A6%AC%EB%B2%A0%EC%9D%B4%ED%84%B0-Python">풀이</a>
  */
@@ -15,6 +16,7 @@ class Solution148653 {
         System.out.println();
     }
 
+    // 1_v1
     /**
      * @param storey 민수와 마법의 엘리베이터가 있는 층을 나타내는 정수
      * @return 0층으로 가기 위해 필요한 마법의 돌의 최소값
@@ -44,6 +46,29 @@ class Solution148653 {
                 }
             }
             storey /= 10;
+        }
+        return answer;
+    }
+
+    // 2_v1
+    public int solution2(int storey) {
+        int answer = 0;
+        while(storey != 0) {
+            int n = storey % 10;
+            if(n <= 4) {
+                answer += n;
+                storey /= 10;
+            } else if(n == 5) {
+                answer += n;
+                storey /= 10;
+                if(storey % 10 > 5) {
+                    storey++;
+                }
+            } else {
+                answer += (10 - n);
+                storey /= 10;
+                storey++;
+            }
         }
         return answer;
     }
