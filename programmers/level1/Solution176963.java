@@ -6,9 +6,10 @@ import java.util.Map;
 
 /**
  * [문제명] 추억 점수
- * [풀이시간] 6분
- * [한줄평] map 을 사용하는 완전 기초 문제다.
+ * [풀이시간] 6분 / 4분
+ * [한줄평] map 을 사용하는 완전 기초 문제다. / 더 이상 풀어볼 필요도 없는 쉬운 문제다.
  * 1_v1. HashMap(성공)
+ * 2_v1. HashMap(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/176963">문제</a>
  */
 class Solution176963 {
@@ -17,6 +18,7 @@ class Solution176963 {
         System.out.println();
     }
 
+    // 1_v1, 2_v1
     /**
      * @param name 그리워하는 사람의 이름을 담은 문자열 배열
      * @param yearning 각 사람별 그리움 점수를 담은 정수 배열
