@@ -6,9 +6,10 @@ import java.util.Map;
 
 /**
  * [문제명] 공원 산책
- * [풀이시간] 37분
- * [한줄평] 단순 구현 문제였는데, 코드를 복붙하다가 생긴 오류를 해결하느라 오래걸렸다.
+ * [풀이시간] 37분 / 30분
+ * [한줄평] 단순 구현 문제였는데, 코드를 복붙하다가 생긴 오류를 해결하느라 오래걸렸다. / 쉬운 문제였는데, 방향 설정을 잘못해서 시간을 허비했다.
  * 1_v1. 구현(성공)
+ * 2_v1. 구현(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/172928">문제</a>
  */
 class Solution172928 {
@@ -84,5 +85,61 @@ class Solution172928 {
             }
         }
         return new int[]{x, y};
+    }
+
+    // 2_v1
+    public int[] solution2(String[] park, String[] routes) {
+        // NSWE
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+        // (방향, 인덱스)
+        Map<String, Integer> dirMap = new HashMap<>();
+        dirMap.put("N", 0);
+        dirMap.put("S", 1);
+        dirMap.put("W", 2);
+        dirMap.put("E", 3);
+
+        int n = park.length;
+        int m = park[0].length();
+        char[][] map = new char[n][m];
+        // 맵, 시작 좌표 초기화
+        int x = 0;
+        int y = 0;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                map[i][j] = park[i].charAt(j);
+                if(map[i][j] == 'S') {
+                    x = i;
+                    y = j;
+                }
+            }
+        }
+        //
+        for(String route : routes) {
+            String[] r = route.split(" ");
+            int dir = dirMap.get(r[0]);
+            int dis = Integer.parseInt(r[1]);
+            // dir 방향으로 dis 만큼 이동했을 때 예상 좌표
+            int nx = x + dx[dir] * dis;
+            int ny = y + dy[dir] * dis;
+            // 1. 범위를 벗어난 경우
+            if(nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
+            // 2. 장애물 만나는지 검사
+            nx = x;
+            ny = y;
+            boolean isPossible = true;
+            for(int i = 0; i < dis; i++) {
+                nx += dx[dir];
+                ny += dy[dir];
+                if(map[nx][ny] == 'X') {
+                    isPossible = false;
+                    break;
+                }
+            }
+            if(!isPossible) continue;
+            x = nx;
+            y = ny;
+        }
+        return new int[] {x, y};
     }
 }
