@@ -3,10 +3,11 @@ package programmers.level1;
 
 /**
  * [문제명] 덧칠하기
- * [풀이시간] 10분
- * [한줄평] 단순한 아이디어로 빨리 풀 수 있는 문제였다.
- * 1_v1. (성공)
+ * [풀이시간] 10분 / 4분
+ * [한줄평] 단순한 아이디어로 빨리 풀 수 있는 문제였다. / 쉬운 그리디 문제였고 더 풀어볼 필요까진 없을 것 같다.
+ * 1_v1. 그리디(성공)
  * [접근법] 페인트를 칠할 때 색칠해야하는 번호를 시작점으로 해서 칠한다.
+ * 2_v1. 그리디(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/161989">문제</a>
  */
 class Solution161989 {
@@ -15,6 +16,7 @@ class Solution161989 {
         System.out.println();
     }
 
+    // 1_v1, 2_v1
     /**
      * @param n 벽의 길이
      * @param m 롤러의 길이
