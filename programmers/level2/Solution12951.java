@@ -3,10 +3,11 @@ package programmers.level2;
 
 /**
  * [문제명] JadenCase 문자열 만들기
- * [풀이시간] 15분
- * [한줄평] 간단했는데 어떻게 풀어야 더 효율적일지 고민하다가 시간이 좀 오래걸렸던 문제였다.
- * v1. StringBuilder 사용(성공)
- * - 경우에 따라 각 문자를 변환작업하여 넣어 새로운 문자열을 만드는 방식으로 해결
+ * [풀이시간] 15분 / 6분
+ * [한줄평] 간단했는데 어떻게 풀어야 더 효율적일지 고민하다가 시간이 좀 오래걸렸던 문제였다. / split 해서도 풀 수 있었던 문제다.
+ * 1_v1. 문자열(성공)
+ * [접근법] 경우에 따라 각 문자를 변환 작업하여 StringBuilder 에 넣는 방식으로 해결
+ * 2_v1. 문자열(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12951">문제</a>
  */
 class Solution12951 {
@@ -21,6 +22,7 @@ class Solution12951 {
 
     }
 
+    // 1_v1, 2_v1
     /**
      * @param s 길이 1 이상 200 이하인 문자열(알파벳과 숫자, 공백문자(" ")로 이루어져 있습니다.)
      * @return s를 JadenCase로 바꾼 문자열을 리턴
@@ -30,22 +32,16 @@ class Solution12951 {
         StringBuilder sb = new StringBuilder();
         boolean start = true;
         for(char c : s.toCharArray()) {
-            if(Character.isDigit(c)) {
-                // 숫자는 무조건 첫번째 자리에만 올수 있음
+            if(c == ' ') {
+                // 공백 뒤에 나오는 문자는 무조건 첫번째 자리
                 sb.append(c);
-                start = false;
+                start = true;
             } else {
-                if(c == ' ') {
-                    // 공백 뒤에 나오는 문자는 무조건 첫번째 자리
-                    sb.append(c);
-                    start = true;
+                if(start) {
+                    sb.append(Character.toUpperCase(c));
+                    start = false;
                 } else {
-                    if(start) {
-                        sb.append(Character.toUpperCase(c));
-                        start = false;
-                    } else {
-                        sb.append(Character.toLowerCase(c));
-                    }
+                    sb.append(Character.toLowerCase(c));
                 }
             }
         }
