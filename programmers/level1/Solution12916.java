@@ -1,13 +1,15 @@
 package programmers.level1;
 
 /**
- * 문자열 내 특정 문자 개수 구하기
- * v1. 반복문 이용(추천)
- * v2. 람다식 이용(속도 가장 느림)
- * v3. replaceAll() 이용(속도 느림)
+ * [문제명] 문자열 내 특정 문자 개수 구하기
+ * [풀이시간] / 1분 30초
+ * [한줄평] 더 이상 풀어볼 필요가 없는 단순 구현 문제다.
+ * 1_v1. 반복문 이용(추천)
+ * 1_v2. 람다식 이용(속도 가장 느림)
+ * 1_v3. replaceAll() 이용(속도 느림)
  * - replace(특정 문자열, 변환할 문자열)
  * - replaceAll(정규식, 변환할 문자열)
- *
+ * 2_v1. 반복문(성공)
  * @see <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12916/solution_groups?language=java">풀이 참고</a>
  * @See <a href="https://hianna.tistory.com/540">문자열에서 특정 문자 개수 구하는 방법</a>
  */
