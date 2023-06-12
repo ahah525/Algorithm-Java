@@ -3,9 +3,12 @@ package programmers.level1;
 
 /**
  * [문제명] 카드 뭉치
- * [풀이시간] 15분
- * [한줄평] 어렵지 않게 풀 수 있었다. 재귀말고 큐나 리스트로 문제를 푼사람도 있었다.
- * 1_v1. 재귀(성공)
+ * [풀이시간] 15분 / 3분
+ * [한줄평] 어렵지 않게 풀 수 있었다. 재귀말고 큐나 리스트로 문제를 푼사람도 있었다. / 큐로 풀 수도 있었지만 시간 단축을 위해 포인터로 풀었다.
+ * 1_v1. 구현(성공)
+ * [접근법] 재귀
+ * 2_v1. 구현(성공) -> 빠름
+ * [접근법] 각 배열의 포인터 이용
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/159994">문제</a>
  */
 class Solution159994 {
@@ -14,6 +17,7 @@ class Solution159994 {
         System.out.println();
     }
 
+    // 1_v1
     boolean isFind; // goal 을 만들 수 있는지 여부
 
     /**
@@ -48,5 +52,22 @@ class Solution159994 {
         // 2. cards2 에서 선택하기
         if(b < cards2.length && cards2[b].equals(goal[depth]))
             dfs(depth + 1, a, b + 1, cards1, cards2, goal);
+    }
+
+    // 2_v1
+    public String solution2(String[] cards1, String[] cards2, String[] goal) {
+        int p1 = 0;
+        int p2 = 0;
+        //
+        for(String s : goal) {
+            if(p1 < cards1.length && cards1[p1].equals(s)) {
+                p1++;
+            } else if(p2 < cards2.length && cards2[p2].equals(s)) {
+                p2++;
+            } else {
+                return "No";
+            }
+        }
+        return "Yes";
     }
 }
