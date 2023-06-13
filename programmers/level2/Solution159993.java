@@ -6,9 +6,10 @@ import java.util.Queue;
 
 /**
  * [문제명] 미로 탈출
- * [풀이시간] 18분
- * [한줄평] BFS 기초 문제였다.
+ * [풀이시간] 18분 / 16분
+ * [한줄평] BFS 기초 문제였다. / 전형적인 BFS 문제로 다시 안풀어봐도 될 것 같다.
  * 1_v1. BFS(성공)
+ * 2_v1. BFS(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/159993">문제</a>
  */
 class Solution159993 {
@@ -54,29 +55,32 @@ class Solution159993 {
         return d1 + d2;
     }
 
-    public int bfs(P start, P end) {
+    /**
+     * @param s 시작 좌표
+     * @param e 끝 좌표
+     * @return 시작 좌표 끝 좌표까지의 최단거리
+     */
+    public int bfs(P s, P e) {
         int[] dx = {-1, 1, 0, 0};
         int[] dy = {0, 0, -1, 1};
-        // 1. 시작 지점 방문처리
         Queue<P> q = new LinkedList<>();
-        q.add(new P(start.x, start.y));
         int[][] visited = new int[n][m];
-        visited[start.x][start.y] = 1;
-        //
+        // 1. 시작 지점 방문처리
+        q.add(s);
+        visited[s.x][s.y] = 1;
+
         while(!q.isEmpty()) {
             P p = q.poll();
-            int x = p.x;
-            int y = p.y;
             // 2. 출구 찾으면 최단거리 리턴
-            if(x == end.x && y == end.y) return visited[x][y] - 1;
+            if(p.x == e.x && p.y == e.y) return visited[p.x][p.y] - 1;
             // 3. 인접 좌표 탐색
             for(int i = 0; i < 4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
+                int nx = p.x + dx[i];
+                int ny = p.y + dy[i];
                 if(0 <= nx && nx < n && 0 <= ny && ny < m) {
                     if(map[nx][ny] != 'X' && visited[nx][ny] == 0) {
                         q.add(new P(nx, ny));
-                        visited[nx][ny] = visited[x][y] + 1;
+                        visited[nx][ny] = visited[p.x][p.y] + 1;
                     }
                 }
             }
