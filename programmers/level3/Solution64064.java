@@ -5,12 +5,13 @@ import java.util.*;
 
 /**
  * [문제명] 불량 사용자
- * [풀이시간] 50분
- * [한줄평] 예전에 풀다가 포기한 적이 있었는데, 어렵긴했지만 혼자서 푸는데 성공했다.
+ * [풀이시간] 50분 / 19분
+ * [한줄평] 예전에 풀다가 포기한 적이 있었는데, 어렵긴했지만 혼자서 푸는데 성공했다. / 비트마스크로 풀어야겠다는 것을 바로 알고 푸니 쉽게 풀 수 있었다.
  * 1_v1. DFS(성공)
  * [접근법] visited 배열을 사용해 사용 여부를 0, 1 로 나타내고 그 값을 문자열로 이어 붙여 비교
  * 1_v2. DFS(성공)
  * [접근법] 비트마스크
+ * 2_v1. DFS, 완전탐색(성공) -> 빠름
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/64064">문제</a>
  */
 class Solution64064 {
@@ -80,7 +81,7 @@ class Solution64064 {
         return list;
     }
 
-    // 2_v1
+    // 1_v2
     Set<Integer> sets;
     public int solution2(String[] userId, String[] bannedId) {
         sets = new HashSet<>();
@@ -107,5 +108,40 @@ class Solution64064 {
                 visited[i] = false;
             }
         }
+    }
+
+
+    // 2_v1
+    public int solution3(String[] userId, String[] bannedId) {
+        sets = new HashSet<>();
+        permu(0, 0, new boolean[userId.length], userId, bannedId);
+        return set.size();
+    }
+
+    // userId 목록에서 bannedId 목록의 개수만큼 뽑기
+    public void permu(int depth, int path, boolean[] visited, String[] userId, String[] bannedId) {
+        // 다 뽑았으면 set에 넣기
+        if(depth == bannedId.length) {
+            sets.add(path);
+            return;
+        }
+        //
+        for(int i = 0; i < userId.length; i++) {
+            if(!visited[i] && isOk(userId[i], bannedId[depth])) {
+                visited[i] = true;
+                permu(depth + 1, path | (1 << i), visited, userId, bannedId);
+                visited[i] = false;
+            }
+        }
+    }
+
+    // 해당 userId가 bannedId 형식에 맞는지 검사
+    public boolean isOk(String userId, String bannedId) {
+        if(userId.length() != bannedId.length()) return false;
+        for(int i = 0; i < userId.length(); i++) {
+            if(bannedId.charAt(i) == '*') continue;
+            if(userId.charAt(i) != bannedId.charAt(i)) return false;
+        }
+        return true;
     }
 }
