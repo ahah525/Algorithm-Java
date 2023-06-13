@@ -2,14 +2,13 @@ package programmers.level1;
 
 /**
  * [문제명] 약수의 합
- * [풀이시간] / (3분)
- * [한줄평] /
- * 1_v1. (성공)
- * >> 약수 구하는 방법
- * 1. 1 ~ n 반복
- * 2. 1 ~ n/2 반복(추천)
- * 3. 1 ~ 루트 n 반복
+ * [풀이시간] / 13분(3분 + 10분)
+ * [한줄평] / 반례를 찾지 못해서 결국 답을 봤는데, 생각지못하게 제곱근 판별 수식을 틀려서 애를 먹었다.
+ * 1_v1. 수학(성공)
  * 2_v1. 수학(실패 - 3~5,8,10,13 실패)
+ * [접근법] 제곱근인지 판별할 때 if(sqrt * sqrt == n)을 사용
+ * 2_v2. 수학(성공)
+ * [해결법] 제곱근인지 판별할 때 (Math.floor(sqrt) == sqrt)을 사용
  */
 class Solution12928 {
     public static void main(String[] args) {
@@ -24,6 +23,7 @@ class Solution12928 {
         System.out.println(answer2);
     }
 
+    // 1_v1
     /**
      * @param n 0 이상 3000이하인 정수
      * @return 정수 n의 약수를 모두 더한 값
@@ -42,6 +42,20 @@ class Solution12928 {
         if(sqrt == sqrt.intValue()) {
             answer -= sqrt;
         }
+        return answer;
+    }
+
+    // 2_v2
+    public int solution2(int n) {
+        int answer = 0;
+        double sqrt = Math.sqrt(n);
+        for(int i = 1; i <= sqrt; i++) {
+            if(n % i != 0) continue;
+            answer += i;
+            answer += n / i;
+        }
+        // 실수값이 정수인지 판별
+        if(Math.floor(sqrt) == sqrt) answer -= sqrt;
         return answer;
     }
 }
