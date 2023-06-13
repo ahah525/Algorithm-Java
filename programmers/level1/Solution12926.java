@@ -2,9 +2,11 @@ package programmers.level1;
 
 /**
  * [문제명] 시저 암호
+ * [풀이시간] / 11분
  * [한줄평] 알파벳을 밀었을 때 대문자->소문자, 소문자->대문자로 바뀔 수 있다고 문제를 잘못 이해해서 생각보다 시간이 조금 걸렸던 문제였다.
  * 아스키코드와 char 연산에 대한 복습이 꼭 필요하다!
- * v1. (성공)
+ * 1_v1. 문자열(성공)
+ * 2_v1. 문자열(성공)
  * @see <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12926">문제</a>
  */
 class Solution12926 {
@@ -25,6 +27,7 @@ class Solution12926 {
         System.out.println(solution(s3, n3));
     }
 
+    // 1_v1, 2_v1
     /**
      * @param s 문자열(알파벳 소문자, 대문자, 공백으로만 이루어짐)
      * @param n 거리(1 이상, 25이하인 자연수)
