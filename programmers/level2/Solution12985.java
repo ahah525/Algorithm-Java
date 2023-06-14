@@ -3,9 +3,10 @@ package programmers.level2;
 
 /**
  * [문제명] 예상 대진표
- * [풀이시간] 10분
- * [한줄평] 쉽게 풀 수 있는 문제였지만 너무 오래걸렸다.
- * v1. (성공)
+ * [풀이시간] 10분 / 5분
+ * [한줄평] 쉽게 풀 수 있는 문제였지만 너무 오래걸렸다. / 수식만 세우면 쉽게 풀 수 있어서 더 안풀어봐도 될 것 같다.
+ * 1_v1. 수학(성공)
+ * 2_v1. 수학(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12985">문제</a>
  */
 class Solution12985 {
@@ -14,6 +15,7 @@ class Solution12985 {
         System.out.println(solution(8, 4, 7));
     }
 
+    // 1_v1, 2_v1
     /**
      * @param n 게임 참가자 수
      * @param a 참가자 번호
