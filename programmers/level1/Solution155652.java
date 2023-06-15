@@ -2,16 +2,20 @@ package programmers.level1;
 
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * [문제명] 둘만의 암호
- * [풀이시간] 50분(35분 + 15분)
+ * [풀이시간] 50분(35분 + 15분) / 10분
  * [한줄평] 변환한 문자를 더 효율적으로 구하기 위해 고민하다가 결국 처음에 생각했던 방법으로 해결했다.
  * 1_v1. (실패-3~8, 10~14, 16~19 실패)
- * [접근법] 현재 문자에서 인덱스만큼 뒤의 알파벳을 구하고 skip 했어야할 문자 수만큼 더 뒤로 이동함
- * 1_v2. HashMap, while문(성공) -> 직관적인 방법
- * [접근법] while 문으로 인덱스만큼 뒤의 알파벳을 구함
+ * [풀이] 현재 문자에서 인덱스만큼 뒤의 알파벳을 구하고 skip 했어야할 문자 수만큼 더 뒤로 이동함
+ * 1_v2. (성공)
+ * [풀이] skip 문자를 HashMap 으로 관리하여 O(1)로 탐색
+ * 2_v1. (성공)
+ * [풀이] skip 문자를 HashSet 으로 관리하여 O(1)로 탐색
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/155652">문제</a>
  */
 class Solution155652 {
@@ -53,5 +57,36 @@ class Solution155652 {
             sb.append(tmp);
         }
         return sb.toString();
+    }
+
+    // 2_v1
+    Set<Character> set;
+    public String solution2(String s, String skip, int index) {
+        // 1. skip 에 포함된 알파벳을 집합으로 만들기
+        set = new HashSet<>();
+        for(char c : skip.toCharArray()) {
+            set.add(c);
+        }
+        // 2. 각 문자를 변환하여 문자열로 리턴
+        StringBuilder sb = new StringBuilder();
+        for(char c : s.toCharArray()) {
+            sb.append(change(c, index));
+        }
+        return sb.toString();
+    }
+
+    // 문자를 규칙에 맞게 index 만큼 뒤의 문자로 변환
+    public char change(char c, int index) {
+        // index 만큼 반복
+        for(int i = 0; i < index; i++) {
+            while(true) {
+                c++;
+                // 1. z 를 넘어가면 a 로 변환
+                if(c > 'z') c = 'a';
+                // 2. skip 에 있는 문자가 아니면 종료
+                if(!set.contains(c)) break;
+            }
+        }
+        return c;
     }
 }
