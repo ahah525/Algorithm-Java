@@ -1,9 +1,15 @@
 package programmers.level1;
 
 /**
- * 정수의 각 자리수의 합 구하기
- * v1. 나머지 연산 반복(추천)
- * v2. Integer.toString(정수).chars() 사용
+ * [문제명] 하샤드 수
+ * [풀이시간] / 2분
+ * [한줄평] / 더이상 풀어볼 필요없는 쉬운 문제다.
+ * 1_v1. (성공) -> 빠름
+ * [풀이] 나머지 연산 반복
+ * 1_v2. (성공)
+ * [풀이] Integer.toString(정수).chars() 사용
+ * 2_v1. (성공)
+ * @see <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12947">문제</a>
  * @see <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12947/solution_groups?language=java">풀이 참고</a>
  */
 class Solution12947 {
@@ -29,6 +35,7 @@ class Solution12947 {
         System.out.println(answer4);
     }
 
+    // 1_v1, 2_v1
     /**
      * @param x 1 이상, 10000 이하인 정수
      * @return x 가 하샤드 수인지(양의 정수 x가 하샤드 수이려면 x의 자릿수의 합으로 x가 나누어져야 합니다.)
