@@ -3,9 +3,10 @@ package programmers.level1;
 
 /**
  * [문제명] 부족한 금액 계산하기
- * [풀이시간] 4분
- * [한줄평] 수학으로 쉽게 풀 수 있는 문제였다.
+ * [풀이시간] 4분 / 4분
+ * [한줄평] 수학으로 쉽게 풀 수 있는 문제였다. / 더이상 풀어볼 필요 없는 문제다.
  * 1_v1. 수학(성공)
+ * 2_v1. 수학(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/82612">문제</a>
  */
 class Solution82612 {
@@ -14,6 +15,7 @@ class Solution82612 {
         System.out.println();
     }
 
+    // 1_v1, 2_v1
     /**
      * @param price 놀이기구의 이용료
      * @param money 처음 가지고 있던 금액
