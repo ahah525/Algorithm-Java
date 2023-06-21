@@ -1,18 +1,26 @@
 package programmers.level2;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * [문제명] 숫자 블록
- * [풀이시간] (17분)
- * [한줄평]
+ * [풀이시간] 1시간 10분(17분 + 53분)
+ * [한줄평] 반례를 찾기가 너무 어려웠고 결국 풀이를 보고 해결했던 문제다.
  * 1_v1. (실패 - 정확성 1~14 실패, 효율성 1~6 실패)
+ * 1_v2. (성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12923">문제</a>
+ * @See <a href="https://ondol-diary.tistory.com/43">풀이 참고</a>
  */
 class Solution12923 {
     public static void main(String[] args) {
         //
         System.out.println();
     }
+
+    int MAX = 10000000; // 블록에 적힌 숫자의 최댓값
+
     // 1_v1
     /**
      * @param begin 시작점
@@ -20,22 +28,27 @@ class Solution12923 {
      * @return 그 구간에 깔려 있는 블록의 숫자 배열
      */
     public int[] solution(long begin, long end) {
-        int len = (int) (end - begin + 1);
-        int[] answer = new int[len];
-        for(int i = 1; i < len; i++) {
-            answer[i] = getNum((int) (begin + i));
+        int s = (int) begin;
+        int e = (int) end;
+        int[] answer = new int[e - s + 1];
+        for(int i = s; i <= e; i++) {
+            answer[i - s] = getCnt(i);
         }
         return answer;
     }
 
-    // 원본 값을 제외하고 제일 큰 약수
-    public int getNum(int n) {
-        int i = 2;
-        double sqrt = Math.sqrt(n);
-        while(i <= sqrt) {
-            if(n % i == 0) return n / i;
-            i++;
+    public int getCnt(int n) {
+        if(n == 1) return 0;
+        // Math.sqrt(n)이하의 약수 모음
+        List<Integer> list = new ArrayList<>();
+        // (i), (n / i): 블록에 적힌 숫자
+        for(int i = 2; i <= Math.sqrt(n); i++) {
+            if(n % i == 0) {
+                // 위 조건을 만족하는 i 중에서 i가 최솟값일 때 (n / i)가 최댓값이 된다.
+                if(n / i <= MAX) return n / i;
+                list.add(i);
+            }
         }
-        return 1;
+        return list.size() == 0 ? 1 : list.get(list.size() - 1);
     }
 }
