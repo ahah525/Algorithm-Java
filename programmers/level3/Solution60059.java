@@ -11,6 +11,7 @@ import java.util.List;
  * 1_v1. 완전탐색, 구현(실패 - 2,4,12 실패)
  * 1_v2. 완전탐색, 구현(성공)
  * [반례] 열쇠의 홈이 없는 경우 무조건 열 수 있음
+ * 2_v1. 완전탐색, 구현(실패 - 2,4,12,23,25 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/60059">문제</a>
  * @See <a href="https://school.programmers.co.kr/questions/35007">반례</a>
  */
@@ -131,4 +132,83 @@ class Solution60059 {
         // 4. 자물쇠의 모든 홈이 채워졌다면 true 리턴
         return (cnt == target) ? true : false;
     }
+
+    // 2_v1
+//    class P {
+//        int x;
+//        int y;
+//        P(int x, int y) {
+//            this.x = x;
+//            this.y = y;
+//        }
+//
+//        public String toString() {
+//            return String.format("(%d, %d)", x, y);
+//        }
+//    }
+//
+//    int m, n;
+//    List<P> homs;
+//    List<P> dols;
+//    public boolean solution(int[][] key, int[][] lock) {
+//        boolean answer = true;
+//
+//        // 0: 홈, 1: 돌기
+//        // 열쇠의 돌기 & 자물쇠의 홈
+//        m = key.length;
+//        n = lock.length;
+//        // 1. 자물쇠 홈 좌표 찾기
+//        homs = new ArrayList<>();
+//        for(int i = 0; i < n; i++) {
+//            for(int j = 0; j < n; j++) {
+//                if(lock[i][j] == 0) homs.add(new P(i, j));
+//            }
+//        }
+//        // 2. 열쇠 돌기 좌표 찾기
+//        dols = new ArrayList<>();
+//        for(int i = 0; i < m; i++) {
+//            for(int j = 0; j < m; j++) {
+//                if(key[i][j] == 1) dols.add(new P(i, j));
+//            }
+//        }
+//        // System.out.println(homs);
+//        // 2. 자물쇠의 홈 1개에 열쇠의 돌기 1개씩 맞춰보기
+//        for(P hom : homs) {
+//            for(P dol : dols) {
+//                for(int i = 0; i < 4; i++) {
+//                    if(isOpen(hom, dol, key)) return true;
+//                    if(i == 3) break;
+//                    key = turn(key);
+//                }
+//            }
+//        }
+//        return false;
+//    }
+//
+//    public int[][] turn(int[][] key) {
+//        int[][] tmp = new int[m][m];
+//        for(int i = 0; i < m; i++) {
+//            for(int j = 0; j < m; j++) {
+//                tmp[j][m - 1 - i] = key[i][j];
+//            }
+//        }
+//        return tmp;
+//    }
+//
+//    // 돌기, 홈
+//    public boolean isOpen(P hom, P dol, int[][] key) {
+//        // 홈과 돌기를 맞추기 위해 이동해야하는 거리
+//        int dx = dol.x - hom.x;
+//        int dy = dol.y - hom.y;
+//        for(P h : homs) {
+//            // 열쇠 좌표
+//            int x = h.x + dx;
+//            int y = h.y + dy;
+//            // 자물쇠의 홈을 열쇠의 돌기가 채우지 못하는 경우
+//            if(0 > x || x >= m || 0 > y || y >= m) return false;
+//            // 열쇠 좌표가 홈인 경우
+//            if(key[x][y] == 0) return false;
+//        }
+//        return true;
+//    }
 }
