@@ -6,14 +6,18 @@ import java.util.List;
 
 /**
  * [문제명] 자물쇠와 열쇠
- * [풀이시간] 1시간 15분(1시간 10분 + 5분)
+ * [풀이시간] 1시간 15분(1시간 10분 + 5분) / 1시간 40분(1시간 + 40분)
  * [한줄평] 복잡했으나 구현에 큰 어려움은 없었고 반례가 없었으면 해결하는데 시간이 오래걸렸을 것 같다.
+ * / 구현하기가 복잡했고 조건을 제대로 고려하지 않아서 반례를 찾지 못해 시간이 오래 걸렸다.
  * 1_v1. 완전탐색, 구현(실패 - 2,4,12 실패)
  * 1_v2. 완전탐색, 구현(성공)
  * [반례] 열쇠의 홈이 없는 경우 무조건 열 수 있음
- * 2_v1. 완전탐색, 구현(실패 - 2,4,12,23,25 실패)
+ * 2_v1. 완전탐색, 구현(실패 - 2,4,12,23,25,33 실패)
+ * 2_v2. 완전탐색, 구현(성공)
+ * [반례] 열쇠의 돌기, 자물쇠의 돌기가 만나는 경우 열 수 없음!
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/60059">문제</a>
  * @See <a href="https://school.programmers.co.kr/questions/35007">반례</a>
+ * @See <a href="https://school.programmers.co.kr/questions/13806">반례</a>
  */
 class Solution60059 {
     public static void main(String[] args) {
@@ -133,7 +137,7 @@ class Solution60059 {
         return (cnt == target) ? true : false;
     }
 
-    // 2_v1
+    // 2_v2
 //    class P {
 //        int x;
 //        int y;
@@ -151,8 +155,6 @@ class Solution60059 {
 //    List<P> homs;
 //    List<P> dols;
 //    public boolean solution(int[][] key, int[][] lock) {
-//        boolean answer = true;
-//
 //        // 0: 홈, 1: 돌기
 //        // 열쇠의 돌기 & 자물쇠의 홈
 //        m = key.length;
@@ -164,6 +166,7 @@ class Solution60059 {
 //                if(lock[i][j] == 0) homs.add(new P(i, j));
 //            }
 //        }
+//        if(homs.size() == 0) return true;
 //        // 2. 열쇠 돌기 좌표 찾기
 //        dols = new ArrayList<>();
 //        for(int i = 0; i < m; i++) {
@@ -174,12 +177,14 @@ class Solution60059 {
 //        // System.out.println(homs);
 //        // 2. 자물쇠의 홈 1개에 열쇠의 돌기 1개씩 맞춰보기
 //        for(P hom : homs) {
-//            for(P dol : dols) {
-//                for(int i = 0; i < 4; i++) {
-//                    if(isOpen(hom, dol, key)) return true;
-//                    if(i == 3) break;
-//                    key = turn(key);
+//            // 4가지 방향으로 검사
+//            for(int i = 0; i < 4; i++) {
+//                // 한 방향에서
+//                for(P dol : dols) {
+//                    if(isOpen(dol.x - hom.x, dol.y - hom.y, key, lock)) return true;
 //                }
+//                if(i == 3) break;
+//                key = turn(key);
 //            }
 //        }
 //        return false;
@@ -195,19 +200,24 @@ class Solution60059 {
 //        return tmp;
 //    }
 //
-//    // 돌기, 홈
-//    public boolean isOpen(P hom, P dol, int[][] key) {
-//        // 홈과 돌기를 맞추기 위해 이동해야하는 거리
-//        int dx = dol.x - hom.x;
-//        int dy = dol.y - hom.y;
-//        for(P h : homs) {
-//            // 열쇠 좌표
-//            int x = h.x + dx;
-//            int y = h.y + dy;
-//            // 자물쇠의 홈을 열쇠의 돌기가 채우지 못하는 경우
-//            if(0 > x || x >= m || 0 > y || y >= m) return false;
-//            // 열쇠 좌표가 홈인 경우
-//            if(key[x][y] == 0) return false;
+//    // 홈과 돌기를 맞추기 위해 열쇠를 이동시킨 거리
+//    public boolean isOpen(int dx, int dy, int[][] key, int[][] lock) {
+//        // (i, j): 자물쇠 좌표
+//        for(int i = 0; i < n; i++) {
+//            for(int j = 0; j < n; j++) {
+//                // (x, y): 열쇠 좌표
+//                int x = i + dx;
+//                int y = j + dy;
+//                if(0 > x || x >= m || 0 > y || y >= m) {
+//                    // 자물쇠와 열쇠의 범위가 겹치는 부분이 아닌 경우
+//                    // 자물쇠가 홈이면 열 수 없음
+//                    if(lock[i][j] == 0) return false;
+//                } else {
+//                    // 자물쇠와 열쇠의 범위가 겹치는 부분인 경우
+//                    // (자물쇠가 홈, 열쇠가 홈) 이거나 (자물쇠가 돌기, 열쇠가 돌기)인 경우 열 수 없음
+//                    if((key[x][y] | lock[i][j]) == 0) return false;
+//                }
+//            }
 //        }
 //        return true;
 //    }
