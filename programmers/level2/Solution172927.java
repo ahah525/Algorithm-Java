@@ -3,9 +3,10 @@ package programmers.level2;
 
 /**
  * [문제명] 광물 캐기
- * [풀이시간] 29분
- * [한줄평] N의 범위가 크지 않아 완전탐색으로 풀었던 문제다.
- * 1_v1. 완전탐색, DFS(성공)
+ * [풀이시간] 29분 / 22분
+ * [한줄평] N의 범위가 크지 않아 완전탐색으로 풀었던 문제다. / 첫번째 풀이와 차이는 광물의 인덱스를 구할 때 map 을 사용했다는 것밖에 없다.
+ * 1_v1. 완전탐색, DFS(성공) -> 빠름
+ * 2_v1. 완전탐색, DFS(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/172927">문제</a>
  */
 class Solution172927 {
@@ -88,4 +89,57 @@ class Solution172927 {
                 return 2;
         }
     }
+
+    // 2_v1
+//    int n;
+//    int[][] arr = {
+//            {1, 1, 1},
+//            {5, 1, 1},
+//            {25, 5, 1}
+//    };
+//    Map<String, Integer> map;
+//    int answer;
+//    public int solution(int[] picks, String[] minerals) {
+//        answer = Integer.MAX_VALUE;
+//        // 다이아몬드, 철, 돌 곡괭이
+//        map = new HashMap<>();
+//        map.put("diamond", 0);
+//        map.put("iron", 1);
+//        map.put("stone", 2);
+//        // 필요한 곡괭이 수
+//        int cnt = 0;
+//        for(int p : picks) {
+//            cnt += p;
+//        }
+//        n = Math.min((int) Math.ceil((double) minerals.length / 5), cnt);
+//        // System.out.println(n);
+//        dfs(0, 0, picks, minerals);
+//
+//        return answer;
+//    }
+//
+//    public void dfs(int depth, int sum, int[] picks, String[] minerals) {
+//        if(depth == n) {
+//            // System.out.println(sum);
+//            answer = Math.min(answer, sum);
+//            return;
+//        }
+//        for(int i = 0; i < picks.length; i++) {
+//            if(picks[i] == 0) continue;
+//            --picks[i];
+//            dfs(depth + 1, sum + calc(depth, i, minerals), picks, minerals);
+//            ++picks[i];
+//        }
+//    }
+//
+//    public int calc(int depth, int pick, String[] minerals) {
+//        int sum = 0;
+//        int end = Math.min((depth + 1) * 5, minerals.length);
+//        for(int i = depth * 5; i < end; i++) {
+//            int mineral = map.get(minerals[i]);
+//            sum += arr[pick][mineral];
+//        }
+//        // System.out.println(sum);
+//        return sum;
+//    }
 }
