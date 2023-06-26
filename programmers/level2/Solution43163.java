@@ -1,17 +1,22 @@
 package programmers.level2;
 
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
  * [문제명] 단어 변환
- * [풀이시간] 30분 / 30분
- * [한줄평] DFS로 풀 수 있는 간단한 문제였다. / 최단 경로 문제로 생각하고 BFS 로 풀었다. 이론상으로는 2번이 더 효율적이지만 실제 테스트 케이스에서는 1번이 빨랐다.
+ * [풀이시간] 30분 / 30분 / 20분
+ * [한줄평] DFS로 풀 수 있는 간단한 문제였다.
+ * / 최단 경로 문제로 생각하고 BFS 로 풀었다. 이론상으로는 2번이 더 효율적이지만 실제 테스트 케이스에서는 1번이 빨랐다.
+ * / 아주 기초적인 BFS 문제였다.
  * 1_v1. DFS(성공)
- * [접근법] 최소 변환 횟수 = target 을 만들 수 있는 모든 경우의 수 중 최소 횟수 -> 모든 경우의 수를 구해봐야 앎
- * 2_v1. BFS(성공) -> 추천
- * [접근법] 최소 변환 횟수 = 최초로 target 에 도달했을 때 횟수 -> 최초로 찾은 것이 정답
+ * [풀이] 최소 변환 횟수 = target 을 만들 수 있는 모든 경우의 수 중 최소 횟수 -> 모든 경우의 수를 구해봐야 앎
+ * 2_v1. BFS(성공)
+ * [풀이] 최소 변환 횟수 = 최초로 target 에 도달했을 때 횟수 -> 최초로 찾은 것이 정답
+ * 3_v1. BFS(성공) -> 빠름
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/43163">문제</a>
  * @See <a href="https://real-012.tistory.com/202">DFS BFS 비교</a>
  */
@@ -137,6 +142,52 @@ class Solution43163 {
         for(int i = 0; i < a.length(); i++) {
             if(a.charAt(i) == b.charAt(i)) continue;
             cnt++;
+            if(cnt == 2) return false;
+        }
+        return true;
+    }
+
+    // 3_v1
+    public int solution3(String begin, String target, String[] words) {
+        // 1. 리스트에 begin 넣기
+        List<String> list = new ArrayList<>();
+        list.add(begin);
+        int idx = 1;
+        int targetIdx = -1;
+        // 2. target 인덱스 찾기
+        for(String w : words) {
+            list.add(w);
+            if(w.equals(target)) targetIdx = idx;
+            idx++;
+        }
+        // 3. target 이 없으면 0 리턴
+        if(targetIdx == -1) return 0;
+        //
+        Queue<Integer> q = new LinkedList<>();
+        int[] visited = new int[list.size()];
+        // 4. 시작 단어 방문 처리
+        q.add(0);
+        visited[0] = 1;
+        //
+        while(!q.isEmpty()) {
+            int v = q.poll();
+            // 5. target 을 찾으면 리턴
+            if(v == targetIdx) return visited[v] - 1;
+            // 6. 아직 방문하지 않고 바꿀 수 있는 단어 선택하기
+            for(int i = 0; i < list.size(); i++) {
+                if(visited[i] == 0 && isPossible(list.get(v), list.get(i))) {
+                    q.add(i);
+                    visited[i] = visited[v] + 1;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public boolean isPossible(String a, String b) {
+        int cnt = 0;
+        for(int i = 0; i < a.length(); i++) {
+            if(a.charAt(i) != b.charAt(i)) cnt++;
             if(cnt == 2) return false;
         }
         return true;
