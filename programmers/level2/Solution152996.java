@@ -8,12 +8,13 @@ import java.util.Map;
 
 /**
  * [문제명] 시소 짝꿍
- * [풀이시간] 34분(24분+10분)
+ * [풀이시간] 34분(24분+10분) / 22분
  * [한줄평] 처음에는 전체에서 2명씩 뽑아서 경우의 수를 구하려다가 시간 초과가 날 것 같아서 Map으로 풀었던 문제다.
  * 1_v1. HashMap(실패 - 2~15 실패)
  * - 몸무게가 같은 사람들의 수를 생각하지 않고 몸무게 쌍으로만 경우의 수를 셈
  * 1_v2. HashMap(성공)
  * [반례] [100, 100, 100] >> 3
+ * 2_v1. (실패 - 12~15 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/152996">문제</a>
  */
 class Solution152996 {
@@ -63,6 +64,45 @@ class Solution152996 {
         if(max * 2 == min * 3) return true;
         if(max * 2 == min * 4) return true;
         if(max * 3 == min * 4) return true;
+        return false;
+    }
+
+    // 2_v1
+    public long solution2(int[] weights) {
+        long answer = 0;
+        // (몸무게, 사람수)
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int w : weights) {
+            map.put(w, map.getOrDefault(w, 0) + 1);
+        }
+        // System.out.println(map);
+        List<Integer> list = new ArrayList<>(map.keySet());
+        // System.out.println(list);
+        for(int i = 0; i < list.size(); i++) {
+            int a = list.get(i);
+            for(int j = i + 1; j < list.size(); j++) {
+                int b = list.get(j);
+                if(isSame(a, b)) {
+                    answer += map.get(a) * map.get(b);
+                }
+            }
+        }
+        //
+        for(int w : list) {
+            int cnt = map.get(w);
+            if(cnt == 1) continue;
+            answer += cnt * (cnt - 1) / 2;
+        }
+
+        return answer;
+    }
+
+    public boolean isSame(int a, int b) {
+        int min = Math.min(a, b);
+        int max = Math.max(a, b);
+        if(min * 4 == max * 2) return true;
+        if(min * 4 == max * 3) return true;
+        if(min * 3 == max * 2) return true;
         return false;
     }
 }
