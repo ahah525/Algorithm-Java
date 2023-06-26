@@ -5,17 +5,20 @@ import java.util.*;
 
 /**
  * [문제명] 베스트 앨범
- * [풀이시간] / 40분 / 18분
- * [한줄평] 문제가 어렵지는 않았으나 Map 을 Value 값을 기준으로 정렬하는 부분은 검색을 통해 해결했던 약간은 까다로운 문제였다. / Set 을 정렬하려면 List 로 바꿔서 정렬해아한다.
- * 6번에서 PriorityQueue 의 값을 역순으로 리스트에 넣을 때 이렇게 로직을 짜도 괜찮은건지 궁금하다. 만약 최대 2개가 아니라 n개 라면 어떻게 로직을 바꿔야할지 생각해봐야겠다.
+ * [풀이시간] / 40분 / 18분 / 20분
+ * [한줄평] 문제가 어렵지는 않았으나 Map 을 Value 값을 기준으로 정렬하는 부분은 검색을 통해 해결했던 약간은 까다로운 문제였다.
+ * / Set 을 정렬하려면 List 로 바꿔서 정렬해아한다. 6번에서 PriorityQueue 의 값을 역순으로 리스트에 넣을 때 이렇게 로직을 짜도 괜찮은건지 궁금하다. 만약 최대 2개가 아니라 n개 라면 어떻게 로직을 바꿔야할지 생각해봐야겠다.
  * / 3번째 푸니까 확실히 쉽게 풀 수 있었던 문제다.
+ * / 더 이상 안풀어도 쉽게 풀 수 있는 문제다.
+ * / 익숙한 문제라 더 안풀어도 봐도 될 것 같다.
  * 1_v1. HashMap 2개, ArrayList 1개(성공)
  * - HashMap : (장르명, 장르별 총재생횟수), (장르명, 장르별 앨범에 들어갈 노래)
  * - ArrayList : 앨범에 들어갈 노래의 고유번호 리스트
  * 2_v1. HashMap, 정렬(성공)
- * [접근법] 우선순위 큐에 최대 2개만 넣는다.
+ * [풀이] 우선순위 큐에 최대 2개만 넣는다.
  * 3_v1. HashMap, 정렬(성공) -> 빠름
- * [접근법] 우선순위 큐에 모든 곡을 넣고 2개만 꺼낸다.
+ * [풀이] 우선순위 큐에 모든 곡을 넣고 2개만 꺼낸다.
+ * 4_v1. HashMap, 정렬(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42579">문제</a>
  */
 class Solution42579 {
@@ -27,7 +30,6 @@ class Solution42579 {
     }
 
     /**
-     *
      * @param genres 노래의 장르를 나타내는 문자열 배열
      * - 장르 종류는 100개 미만
      * @param plays 노래별 재생 횟수를 나타내는 정수 배열
@@ -146,9 +148,11 @@ class Solution42579 {
         return answer;
     }
 
-    // 3_v1
+    // 3_v1, 4_v1
     public int[] solution3(String[] genres, int[] plays) {
+        // (장르, 총 재생 횟수)
         Map<String, Integer> map2 = new HashMap<>();
+        // (장르, 노래 고유 번호)
         Map<String, Queue<Integer>> map1 = new HashMap<>();
         for(int i = 0; i < plays.length; i++) {
             if(!map1.containsKey(genres[i])) {
@@ -161,7 +165,7 @@ class Solution42579 {
             pq.add(i);
             map2.put(genres[i], map2.getOrDefault(genres[i], 0) + plays[i]);
         }
-        //
+        // 장르의 총 재생횟수 내림차순 정렬
         List<String> keys = new ArrayList<>(map2.keySet());
         Collections.sort(keys, (o1, o2) -> map2.get(o2) - map2.get(o1));
         //
