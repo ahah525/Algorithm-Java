@@ -5,11 +5,14 @@ import java.util.*;
 
 /**
  * [문제명] 무인도 여행
- * [풀이시간] 16분 / 23분, 13분
- * [한줄평] DFS/BFS 로 풀 수 있는 쉬운 문제였다. / BFS로 쉽게 풀 수 있는 문제였다.
+ * [풀이시간] 16분 / 23분, 13분 / 13분
+ * [한줄평] DFS/BFS 로 풀 수 있는 쉬운 문제였다.
+ * / BFS로 쉽게 풀 수 있는 문제였다.
+ * / 아주 기초적인 DFS/BFS 문제로 더 이상 안풀어봐도 될 것 같다.
  * 1_v1. BFS(성공)
  * 2_v1. BFS(성공)
  * 2_v2. DFS(성공) -> 빠름
+ * 3_v1. DFS(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/154540">문제</a>
  */
 class Solution154540 {
@@ -136,4 +139,55 @@ class Solution154540 {
         }
         return sum;
     }
+
+    // 3_v1
+//    int[] dx = {-1, 1, 0, 0};
+//    int[] dy = {0, 0, -1, 1};
+//    char[][] map;
+//    int cnt;
+//    int n, m;
+//    public int[] solution3(String[] maps) {
+//        n = maps.length;
+//        m = maps[0].length();
+//        // 1. map 초기화
+//        map = new char[n][m];
+//        for(int i = 0; i < n; i++) {
+//            for(int j = 0; j < m; j++) {
+//                map[i][j] = maps[i].charAt(j);
+//            }
+//        }
+//        // 2.
+//        List<Integer> list = new ArrayList<>();
+//        for(int i = 0; i < n; i++) {
+//            for(int j = 0; j < m; j++) {
+//                if(map[i][j] != 'X') {
+//                    cnt = 0;
+//                    dfs(i, j);
+//                    list.add(cnt);
+//                }
+//            }
+//        }
+//        // 3. -1 반환
+//        if(list.size() == 0) return new int[] {-1};
+//        // 4. 오름차순 정렬
+//        Collections.sort(list);
+//        // 5. 리스트를 배열로 변환
+//        int[] answer = new int[list.size()];
+//        for(int i = 0; i < list.size(); i++) {
+//            answer[i] = list.get(i);
+//        }
+//        return answer;
+//    }
+//
+//    public void dfs(int x, int y) {
+//        cnt += map[x][y] - '0';
+//        map[x][y] = 'X';
+//        for(int i = 0; i < 4; i++) {
+//            int nx = x + dx[i];
+//            int ny = y + dy[i];
+//            if(0 <= nx && nx < n && 0 <= ny && ny < m && map[nx][ny] != 'X') {
+//                dfs(nx, ny);
+//            }
+//        }
+//    }
 }
