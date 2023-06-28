@@ -6,10 +6,16 @@ import java.util.Queue;
 
 /**
  * [문제명] [PCCP 모의고사 #2] 카페 확장
- * [풀이시간] 38분 / 20분
- * [한줄평] CPU 스케줄링과 비슷한 문제였는데 쉬운듯 약간 복잡했던 문제였다. 다시 풀어보면 좋을 것 같은 문제다. / 다시 풀어봐도 좋을 문제다.
+ * [풀이시간] 38분 / 20분 / 42분(20분 + 22분)
+ * [한줄평] CPU 스케줄링과 비슷한 문제였는데 쉬운듯 약간 복잡했던 문제였다. 다시 풀어보면 좋을 것 같은 문제다.
+ * / 다시 풀어봐도 좋을 문제다.
+ * /
  * 1_v1. LinkedList(성공)
  * 2_v1. LinkedList(성공)
+ * 3_v1. LinkedList(실패 - 4,~5,7~8,10 실패)
+ * [풀이] 큐에 각 음료 제조 시간을 저장함
+ * 3_v2. LinkedList(성공)
+ * [풀이] 큐에 각 음료의 제조 완료 시각을 저장함
  * @See <a href="https://school.programmers.co.kr/learn/courses/15009/lessons/121689">문제</a>
  */
 class Solution121689 {
@@ -18,7 +24,7 @@ class Solution121689 {
         System.out.println();
     }
 
-    // 1_v1, 2_v1
+    // 1_v1, 2_v1, 3_v2
     /**
      * @param menu 각 음료들의 제조 시간을 담은 정수 배열
      * @param order 오늘 손님들이 주문한 음료가 순서대로 적힌 배열
