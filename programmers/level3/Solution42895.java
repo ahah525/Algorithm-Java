@@ -6,7 +6,7 @@ import java.util.Set;
 
 /**
  * [문제명] N으로 표현
- * [풀이시간] 1시간 10분 / 40분(21분 + 19분)
+ * [풀이시간] 1시간 10분 / 40분(21분 + 19분) / (30분)
  * [한줄평] 풀이를 봐도 이해가 어려웠던 문제였다. / 감을 찾기는 했지만 결국 반례를 해결하지 못해 풀이를 참고했다.
  * 1_v1. DP(성공)
  * 2_v1. (실패 - 5~9 실패)
@@ -18,6 +18,7 @@ import java.util.Set;
  * 2) n을 i번 사용해서 만든 수의 집합 = n을 (i - 2)번 사용해서 만든 수의 집합 X n을 2번 사용해서 만든 수의 집합
  * ...
  * 3) n을 i번 사용해서 만든 수의 집합 = n을 1번 사용해서 만든 수의 집합 X n을 (i - 1)번 사용해서 만든 수의 집합
+ * 3_v1. DP(실패 - 8~9 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42895">문제</a>
  * @See <a href="https://alreadyusedadress.tistory.com/115">풀이</a>
  */
