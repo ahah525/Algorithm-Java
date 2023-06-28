@@ -5,14 +5,16 @@ import java.util.*;
 
 /**
  * [문제명] [PCCP 모의고사 #1] 운영체제
- * [풀이시간] 2시간 이상 / 50분
+ * [풀이시간] 2시간 이상 / 50분 / 1시간
  * [한줄평] PriorityQueue 를 써야한다는 건 알았는데 대기시간을 계산하는게 많이 어려웠고 결국 풀이를 보고 이해했던 문제였다. 꼭 다시 한번 풀어봐야할 문제다!
  * / 푸는데 오래걸리긴 했지만 감을 조금 잡았던 것 같다.
+ * / 스케줄링 문제를 오랜만에 풀어서 그런지 너무 어려웠고 결국 두번째 풀이를 보고 해결했다.
  * 1_v1. List 1개, PriorityQueue 1개(성공)
  * - List: 호출시각 오름차순으로 정렬한 프로그램 리스트(대기큐에 넣을 후보)
  * - PriorityQueue: 점수 오름차순, 호출시각 오름차순 정렬한 대기큐
  * 2_v1. PriorityQueue(성공) -> 빠름
  * [반례] 대기큐가 비어있으면 예약상태에 있는 프로그램 1개를 대기큐로 이동시키기
+ * 3_v1. PriorityQueue(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/15008/lessons/121686">문제</a>
  * @See <a href="https://prod.velog.io/@now20412041/PCCP-%EB%AA%A8%EC%9D%98%EA%B3%A0%EC%82%AC-%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C">풀이 참고</a>
  */
