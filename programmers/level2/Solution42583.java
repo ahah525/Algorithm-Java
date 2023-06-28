@@ -6,8 +6,10 @@ import java.util.Queue;
 
 /**
  * [문제명] 다리를 지나는 트럭
- * [풀이시간] / 50분
- * [한줄평] 문제 설명이 조금 부실해서 문제를 이해하고 푸는데 생각보다 시간이 오래걸렸던 구현 문제였다. 나중에 다시 한번 꼭 풀어봐야겠다. / 문제를 이해하는데 오랜시간이 걸렸던 문제였다.
+ * [풀이시간] / 50분 / 40분
+ * [한줄평] 문제 설명이 조금 부실해서 문제를 이해하고 푸는데 생각보다 시간이 오래걸렸던 구현 문제였다. 나중에 다시 한번 꼭 풀어봐야겠다.
+ * / 문제를 이해하는데 오랜시간이 걸렸던 문제였다.
+ * / 문제 설명이 부족해서 다시 푸는데도 문제를 이해하는데 오래걸렸던 문제였다.
  * 1_v1. (실패-테스트 11)
  * [용어 정의]
  * - 진입: 다리를 건너기 시작함
@@ -17,6 +19,7 @@ import java.util.Queue;
  * 1_v2. (성공)
  * - 진출 -> 진입 순서로 진행해야한다.
  * 2_v1. LinkedList 2(성공) -> 더 빠름
+ * 3_v1. LinkedList(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42583">반례</a>
  * @See <a href="https://school.programmers.co.kr/questions/39010">반례</a>
  */
@@ -150,4 +153,46 @@ class Solution42583 {
         }
         return t;
     }
+
+    // 3_v1
+//    class Truck {
+//        int weight;
+//        int out;
+//
+//        Truck(int weight, int out) {
+//            this.weight = weight;
+//            this.out = out;
+//        }
+//
+//        public String toString() {
+//            return String.format("%d %d", weight, out);
+//        }
+//    }
+//    public int solution(int bridgeLength, int weight, int[] truckWeights) {
+//        int answer = 0;
+//        Queue<Truck> q = new LinkedList<>();
+//
+//        int i = 0; // 대기 트럭 인덱스
+//        int t = 0;
+//        int sum = 0;
+//        int pass = 0;
+//        while(pass < truckWeights.length) {
+//            // System.out.print(t + ", " + pass);
+//            // System.out.println(q);
+//            // 나갈 트럭이 있는지 검사
+//            while(!q.isEmpty() && q.peek().out == t) {
+//                pass++;
+//                sum -= q.poll().weight;
+//            }
+//            //
+//            if(i < truckWeights.length && q.size() < bridgeLength
+//                    && sum + truckWeights[i] <= weight) {
+//                q.add(new Truck(truckWeights[i], t + bridgeLength));
+//                sum += truckWeights[i];
+//                i++;
+//            }
+//            t++;
+//        }
+//        return t;
+//    }
 }
