@@ -6,14 +6,16 @@ import java.util.Queue;
 
 /**
  * [문제명] [PCCP 모의고사 #2] 보물 지도
- * [풀이시간] 1시간 45분 / 1시간(55분 + 5분)
+ * [풀이시간] 1시간 45분 / 1시간(55분 + 5분) / 24분
  * [한줄평] 예전에 비슷한 문제를 풀어본적이 있어서 3차원 배열로 접근해야한다는 건 알았는데 생각보다 푸는데 너무 오래걸렸고 결국 문제 풀이를 봤다.
  * / 3차원 배열로 접근해서 풀어야한다는 것은 알았는데, 막상 구현하는데 시간이 좀 걸렸다.
+ * / 3차원 배열 DP와 BFS로 풀어야한다는 것을 알아서 빨리 풀 수 있었다.
  * 1_v1. BFS(성공)
  * 2_v1. DP, BFS(실패 - 13, 15, 16 시간초과)
  * 2_v2. DP, BFS(성공)
  * [점화식] dp[j][x][y]: 점프를 j번 해서 (x, y)에 왔을 때 최소 이동 시간
  * [해결법] 가로, 세로가 최대 1000이길래 dp[j][x][y] 의 값을 최댓값을 2001 로 세팅했었는데, Integer.MAX_VALUE 로 초기화해서 해결함
+ * 3_v1. DP, BFS(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/15009/lessons/121690">문제</a>
  * @See <a href="https://www.acmicpc.net/problem/1600">유사 문제</a>
  */
@@ -95,7 +97,7 @@ class Solution121690 {
         return Math.min(visited[0][0][n - 1], visited[1][0][n - 1]) - 1;
     }
 
-    // 2_v1
+    // 2_v1, 3_v1
     int[] dx = {1, -1, 0, 0};
     int[] dy = {0, 0, 1, -1};
     int[] jx = {2, -2, 0, 0};
@@ -109,13 +111,6 @@ class Solution121690 {
         }
         // 2. dp 초기화
         int[][][] dp = new int[2][m][n];
-        for(int i = 0; i < 2; i++) {
-            for(int j = 0; j < m; j++) {
-                for(int k = 0; k < n; k++) {
-                    dp[i][j][k] = MAX_VALUE;
-                }
-            }
-        }
         // 3. 최소 이동 횟수 구하기
         return bfs(m - 1, 0, map, dp, m, n);
     }
@@ -131,14 +126,12 @@ class Solution121690 {
             int y = p.y;
             int j = p.jump;
             // 목적지 도달하면 리턴
-            if(x == 0 && y == n - 1)
-                return dp[j][x][y];
+            if(x == 0 && y == n - 1) return dp[j][x][y];
             // 1칸 이동
             for(int i = 0; i < 4; i++) {
                 int nx = p.x + dx[i];
                 int ny = p.y + dy[i];
-                if(0 <= nx && nx < m && 0 <= ny && ny < n
-                        && map[nx][ny] == 0 && dp[j][nx][ny] == MAX_VALUE) {
+                if(0 <= nx && nx < m && 0 <= ny && ny < n && map[nx][ny] == 0 && dp[j][nx][ny] == 0) {
                     q.add(new P(nx, ny, j));
                     dp[j][nx][ny] = dp[j][x][y] + 1;
                 }
@@ -148,8 +141,7 @@ class Solution121690 {
                 for(int i = 0; i < 4; i++) {
                     int nx = p.x + jx[i];
                     int ny = p.y + jy[i];
-                    if(0 <= nx && nx < m && 0 <= ny && ny < n
-                            && map[nx][ny] == 0 && dp[1][nx][ny] == MAX_VALUE) {
+                    if(0 <= nx && nx < m && 0 <= ny && ny < n && map[nx][ny] == 0 && dp[1][nx][ny] == 0) {
                         q.add(new P(nx, ny, 1));
                         dp[1][nx][ny] = dp[0][x][y] + 1;
                     }
