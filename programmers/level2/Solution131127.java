@@ -6,12 +6,15 @@ import java.util.Map;
 
 /**
  * [문제명] 할인 행사
- * [풀이시간] / 28분(23분 + 5분)
+ * [풀이시간] / 28분(23분 + 5분) / 20분
  * [한줄평] 쉬운 구현 문제였다. map 2개를 사용해 풀었지만 다른 풀이 방법도 있을 것 같아서 실행 결과를 비교해보고 싶다.
+ * /
+ * / 쉽게 풀 수 있는 문제였다.
  * 1_v1. 원하는 (제품명, 개수), 10일간 할인하는 (제품명, 개수) 를 위한 map 2개 사용(성공)
  * -  편의상 원하는 (제품명, 개수)를 저장하기 위해 map 을 사용했지만 굳이 따로 정보를 저장할 필요는 없을 것 같다.
  * 2_v1. (실패 - 1~11 실패)
- * 2_v2. HashMap, 슬라이딩 윈도우(성공) -> 빠름
+ * 2_v2. HashMap, 슬라이딩 윈도우(성공)
+ * 3_v1. HashMap, 슬라이딩 윈도우(성공) -> 빠름
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/131127">문제</a>
  */
 class Solution131127 {
@@ -97,6 +100,33 @@ class Solution131127 {
     public boolean isPossible(String[] want, int[] number, Map<String, Integer> map) {
         for(int i = 0; i < want.length; i++) {
             if(map.getOrDefault(want[i], 0) < number[i]) return false;
+        }
+        return true;
+    }
+
+    // 3_v1
+    Map<String, Integer> map;
+    public int solution3(String[] want, int[] number, String[] discount) {
+        int answer = 0;
+        // (제품 종류, 수량)
+        map = new HashMap<>();
+        for(int i = 0; i < 10; i++) {
+            map.put(discount[i], map.getOrDefault(discount[i], 0) + 1);
+        }
+        // 첫번째 경우 무조건 검사 검사
+        if(isPossible(want, number)) answer++;
+        for(int i = 10; i < discount.length; i++) {
+            map.put(discount[i], map.getOrDefault(discount[i], 0) + 1);
+            map.put(discount[i - 10], map.get(discount[i - 10]) - 1);
+            if(isPossible(want, number)) answer++;
+        }
+        return answer;
+    }
+
+    public boolean isPossible(String[] want, int[] number) {
+        for(int i = 0; i < want.length; i++) {
+            int cnt = map.getOrDefault(want[i], 0);
+            if(cnt < number[i]) return false;
         }
         return true;
     }
