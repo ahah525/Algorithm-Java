@@ -1,18 +1,24 @@
 package programmers.level3;
 
 
+import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 /**
  * [문제명] 합승 택시 요금
- * [풀이시간] 1시간 20분 / 22분 / 38분
+ * [풀이시간] 1시간 20분 / 22분 / 38분, 30분
  * [한줄평] 최단 거리를 구하는 문제의 일종으로 다익스트라로 접근해야한다는 것은 알았는데 그 이후에 어떻게 해야할지 몰라 결국 풀이 힌트를 보고 풀었다.
  * / 다익스트라 풀이를 응용만 해서 풀 수 있는 문제였다.
  * / 다익스트라 풀이 방법이 생각나지 않아서 알고리즘을 보고 풀었다. 주기적으로 복습이 꼭 필요하다.
  * 1_v1. 그래프(성공)
- * [풀이] 다익스트라
+ * [풀이] 다익스트라 -> 인접행렬,
  * 2_v1. 그래프(성공)
  * [풀이] 1_v1 동일
  * 3_v1. 그래프(성공)
  * [풀이] 1_v1 동일
+ * 3_v2. 그래프(성공)
+ * [풀이] 다익스트라 -> 인접행렬, PriorityQueue
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/72413">문제</a>
  * @See <a href="https://velog.io/@pppp0722/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-Level3-%ED%95%A9%EC%8A%B9-%ED%83%9D%EC%8B%9C-%EC%9A%94%EA%B8%88-Java">풀이 힌트</a>
  */
@@ -102,6 +108,45 @@ class Solution72413 {
                 if(visited[j]) continue;
                 // s => j, s => idx -> j 중 최솟값으로 갱신
                 d[j] = Math.min(d[j], d[idx] + map[idx][j]);
+            }
+        }
+        // System.out.println(Arrays.toString(d));
+        return d;
+    }
+
+    // 3_v2
+    class Node {
+        int index; // 인덱스
+        int cost;   // 시작 노드에서 해당 노드까지 최단 거리
+        Node(int index, int cost) {
+            this.index = index;
+            this.cost = cost;
+        }
+    }
+
+    public int[] dijkstra2(int s, int n) {
+        boolean[] visited = new boolean[n + 1];
+        // 최단 거리 노드를 찾기 위한 우선순위 큐
+        Queue<Node> pq = new PriorityQueue<>((o1, o2) -> o1.cost - o2.cost);
+        // 1. 시작 노드 삽입
+        pq.offer(new Node(s, 0));
+        // 2. 최단 거리 배열 초기화
+        int[] d = new int[n + 1];
+        Arrays.fill(d, INF);
+        d[s] = 0;
+        // 큐가 빌 때까지 반복
+        while(!pq.isEmpty()) {
+            // 3. 최단 거리 노드 방문 처리
+            int idx = pq.poll().index;
+            visited[idx] = true;
+            for(int i = 1; i <= n; i++) {
+                // 방문한 노드이거나 현재 최단 거리 노드(idx)에서 바로 연결되어있지 않으면 패스
+                if(visited[i] || map[idx][i] == INF) continue;
+                // 최단 거리 갱신, 큐에 삽입
+                if(d[i] > d[idx] + map[idx][i]) {
+                    d[i] = d[idx] + map[idx][i];
+                    pq.offer(new Node(i, d[i]));
+                }
             }
         }
         // System.out.println(Arrays.toString(d));
