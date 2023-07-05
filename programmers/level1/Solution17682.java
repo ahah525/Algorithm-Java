@@ -3,11 +3,15 @@ package programmers.level1;
 
 /**
  * [문제명] [1차] 다트 게임
- * [풀이시간] 60분 / 40분
+ * [풀이시간] 60분 / 40분 / 46분
  * [한줄평] 이렇게까지 오래걸릴 줄 몰랐는데, 어떻게 풀어야 효율적일지 고민하다가 시간을 많이 지체했다. 다음에 한번 더 풀어보면 좋을 것 같다.
  * / 간단한 구현 문제이긴 했지만 조건 처리할게 많아서 조금 오래걸렸다.
+ * / 어려운 문제는 아니었는데 구현하는데 시간이 조금 걸려서 나중에 다시 풀어봐도 좋을 문제다.
  * 1_v1. 구현(성공)
- * 1_v2. 문자열(성공) -> 빠름
+ * 2_v1. 문자열(성공) -> 빠름
+ * [풀이] 2번째 점수의 보너스를 발견했을 때 옵션을 반영하여 1번 점수를 합산하다.
+ * 3_v1. (성공)
+ * [풀이] 3번째 점수를 발견할 때 1번 점수를 합산한다.
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/17682">문제</a>
  */
 class Solution17682 {
@@ -115,5 +119,43 @@ class Solution17682 {
         // 5. 마지막 이전 숫자 정산
         answer += prevNum;
         return answer;
+    }
+
+    // 3_v1
+    public int solution3(String dartResult) {
+        int answer = 0;
+        int prev = 0;
+        int cur = 0;
+        for(int i = 0; i < dartResult.length(); i++) {
+            if(Character.isDigit(dartResult.charAt(i))) {
+                // 맨 첫번째 문자이거나 앞 문자가 숫자가 아닌 경우
+                if(i == 0 || !Character.isDigit(dartResult.charAt(i - 1))) {
+                    // 이전 점수 합산, 이전 점수&현재 점수 갱신
+                    answer += prev;
+                    prev = cur;
+                    cur = dartResult.charAt(i) - '0';
+                } else {
+                    cur = 10;
+                }
+            } else if('A' <= dartResult.charAt(i) && dartResult.charAt(i) <= 'Z') {
+                cur = calcBonus(cur, dartResult.charAt(i));
+            } else if(dartResult.charAt(i) == '*') {
+                prev *= 2;
+                cur *= 2;
+            } else {
+                cur = -cur;
+            }
+        }
+        return answer + prev + cur;
+    }
+
+    public int calcBonus(int score, char bonus) {
+        if(bonus == 'S') {
+            return score;
+        } else if(bonus == 'D') {
+            return score * score;
+        } else {
+            return score * score * score;
+        }
     }
 }
