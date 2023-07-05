@@ -3,14 +3,19 @@ package programmers.level1;
 
 /**
  * [문제명] 신규 아이디 추천
- * [풀이시간] 1시간 / 18분
- * [한줄평] 정규표현식을 이용하면 쉽게 풀 수 있는 문제였다. 2, 3단계 정규표현식을 잘못해서 결국 정답을 보고 해결했다... / 정규표현식 활용만 잘하면 쉽게 풀 수있는 문제다.
- * 1_v1. 정규표현식(실패 - 7, 12, 16, 24, 26)
- * 1_v2. 정규표현식(성공)
+ * [풀이시간] 1시간 / 18분 / 23분
+ * [한줄평] 정규표현식을 이용하면 쉽게 풀 수 있는 문제였다. 2, 3단계 정규표현식을 잘못해서 결국 정답을 보고 해결했다...
+ * / 정규표현식 활용만 잘하면 쉽게 풀 수있는 문제다.
+ * / 정규표현식을 사용하는 법을 익히면 쉽게 풀 수 있는 문제였다.
+ * 1_v1. 문자열(실패 - 7, 12, 16, 24, 26)
+ * 1_v2. 문자열(성공)
+ * [풀이] 정규표현식
  * 2_v1. 문자열, 구현(성공)
- * [접근법] 정규표현식
+ * [풀이] 정규표현식
  * 2_v2. 문자열, 구현(성공) -> 빠름
- * [접근법] StringBuilder 로 시간 단축
+ * [풀이] StringBuilder 로 시간 단축
+ * 3_v1. 문자열(성공)
+ * [풀이] 알파벳 소문자, 숫자, 빼기(-), 밑줄(_), 마침표(.)를 제외한 모든 문자를 제거하기 -> for 문으로 한글자씩 검사
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/72410">문제</a>
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/72410/solution_groups?language=java">문제 풀이</a>
  */
@@ -20,6 +25,7 @@ class Solution72410 {
         System.out.println(solution("...!@BaT#*..y.abcdefghijklm"));
     }
 
+    // 1_v2
     public static String solution(String newId) {
         // 1. 모든 대문자를 대응되는 소문자로 치환합니다.
         newId = newId.toLowerCase();
@@ -98,5 +104,34 @@ class Solution72410 {
             }
         }
         return sb.toString();
+    }
+
+    // 3_v1
+    public String solution4(String newId) {
+        newId = newId.toLowerCase();
+        StringBuilder sb = new StringBuilder();
+        for(char c : newId.toCharArray()) {
+            if(('a' <= c && c <= 'z') || Character.isDigit(c) || c == '-' || c == '_' || c == '.')
+                sb.append(c);
+        }
+        newId = sb.toString();
+        newId = newId.replaceAll("[.]{2,}+", ".")
+                .replaceAll("^[.]", "")
+                .replaceAll("[.]$", "");
+        if(newId.length() == 0) newId = "a";
+        else if(newId.length() >= 16) {
+            if(newId.charAt(14) == '.') {
+                newId = newId.substring(0, 14);
+            } else {
+                newId = newId.substring(0, 15);
+            }
+        }
+        if(newId.length() <= 2) {
+            char end = newId.charAt(newId.length() - 1);
+            while(newId.length() < 3) {
+                newId += end;
+            }
+        }
+        return newId;
     }
 }
