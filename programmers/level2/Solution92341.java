@@ -5,12 +5,18 @@ import java.util.*;
 
 /**
  * [문제명] 주차 요금 계산
- * [풀이시간] / 45분
- * [한줄평] 처음에 문제 조건을 꼼꼼하게 체크하지 않아 생각보다 시간이 오래걸렸던 문제였다. Map 2개를 쓰는 것과 Map 1개, Car 클래스를 쓰는 것 중 어느 것이 더 좋을지 고민해봐야할 문제 / 다시 푸니까 좀 더 쉬웠던 구현 문제였다.
- * 1_v1. TreeMap<String, Integer>(각 차의 누적 주차시간), ArrayList<String>(출차 기록없는 차량 번호 리스트)
- * 1_v2. TreeMap<String, Car>
- * - TreeMap 은 자동으로 key 값 기준 오름차순 정렬됨
- * 2_v1. HashMap<String, Car> -> 추천(더 빠름)
+ * [풀이시간] / 45분 / 35분
+ * [한줄평] 처음에 문제 조건을 꼼꼼하게 체크하지 않아 생각보다 시간이 오래걸렸던 문제였다. Map 2개를 쓰는 것과 Map 1개, Car 클래스를 쓰는 것 중 어느 것이 더 좋을지 고민해봐야할 문제
+ * / 다시 푸니까 좀 더 쉬웠던 구현 문제였다.
+ * / 해시를 이용해 풀 수 있는 쉬운 구현 문제였다. TreeMap 에 대한 복습이 필요하다.
+ * 1_v1. TreeMap, 구현(성공)
+ * [풀이] TreeMap(차번호, 누적주차시간), ArrayList(출차하지 않은 차번호 목록)
+ * 1_v2. TreeMap, 구현(성공)
+ * [풀이] TreeMap(차번호, 누적주차시간 & 출차여부),
+ * 2_v1. HashMap(성공)
+ * [풀이] HashMap(차번호, 누적주차시간 & 출차여부)
+ * 3_v1. HashMap, 구현(성공)
+ * [풀이] HashMap(차번호, 누적주차시간), LinkedList(출차하지 않은 차번호 목록)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/92341">문제</a>
  */
 class Solution92341 {
@@ -158,4 +164,64 @@ class Solution92341 {
         }
         return answer;
     }
+
+    // 3_v1
+//    Queue<String> q; // 출차하지 않은 차 목록
+//    int END_TIME = 23 * 60 + 59;
+//    int STANDARD_TIME, STANDARD_FEE, PER_TIME, PER_FEE;
+//    public int[] solution3(int[] fees, String[] records) {
+//        STANDARD_TIME = fees[0]; // 기본시간
+//        STANDARD_FEE = fees[1]; // 기본요금
+//        PER_TIME = fees[2]; // 단위시간
+//        PER_FEE = fees[3]; // 단위요금
+//        // 자동차 번호, 누적 주차 시간
+//        Map<String, Integer> map = new HashMap<>();
+//        // 출차하지 않은 차 목록
+//        q = new LinkedList<>();
+//        // 자동차 번호, 출차 여부
+//        for(String record : records) {
+//            String[] r = record.split(" ");
+//            int time = getTime(r[0]);
+//            String num = r[1];
+//            String type = r[2];
+//            int t = calc(num, time, type);
+//            map.put(num, map.getOrDefault(num, 0) + t);
+//        }
+//        // 출차하지 않은 차의 주차시간 정산
+//        while(!q.isEmpty()) {
+//            String num = q.poll();
+//            map.put(num, map.get(num) + END_TIME);
+//        }
+//        // 차번호 오름차순 정렬
+//        List<String> keys = new ArrayList<>(map.keySet());
+//        Collections.sort(keys);
+//        // 최종 주차 요금 계산
+//        int[] answer = new int[keys.size()];
+//        int i = 0;
+//        for(String num : keys) {
+//            answer[i++] = getFee(map.get(num));
+//        }
+//        return answer;
+//    }
+//
+//    public int getFee(int time) {
+//        int fee = STANDARD_FEE;
+//        int addTime = time - STANDARD_TIME;
+//        if(addTime <= 0) return fee;
+//        return fee + (int) Math.ceil((double) addTime / PER_TIME) * PER_FEE;
+//    }
+//
+//    public int getTime(String time) {
+//        String[] t = time.split(":");
+//        return Integer.parseInt(t[0]) * 60 + Integer.parseInt(t[1]);
+//    }
+//
+//    public int calc(String num, int time, String type) {
+//        if(type.equals("IN")) {
+//            q.add(num);
+//            return -time;
+//        }
+//        q.remove(num);
+//        return time;
+//    }
 }
