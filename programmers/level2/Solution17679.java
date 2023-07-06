@@ -3,19 +3,23 @@ package programmers.level2;
 
 /**
  * [문제명] [1차] 프렌즈4블록
- * [풀이시간] 1시간 / 1시간 10분(1시간 + 10분)
- * [한줄평] 생각보다 푸는데 시간이 좀 더 걸리긴했지만 어려운 구현 문제는 아니었다. / 그냥 구현문제였는데 결국 반례를 찾지 못해서 1번 방식을 참고해 풀었다.
+ * [풀이시간] 1시간 / 1시간 10분(1시간 + 10분) / 35분
+ * [한줄평] 생각보다 푸는데 시간이 좀 더 걸리긴했지만 어려운 구현 문제는 아니었다.
+ * / 그냥 구현문제였는데 결국 반례를 찾지 못해서 1번 방식을 참고해 풀었다.
+ * / 복잡하긴 했지만 구현만 하면 되는 문제였다.
  * 1_v1. 구현(성공)
  * 2_v1. 구현(실패 - 5, 10, 11 실패)
  * 2_v2. 구현(성공)
- * [접근법] tmp 에 1,2차 저장을 수행함
+ * [풀이] tmp 에 1,2차 저장을 수행함
  * - map[][] : 원본
  * - tmp[][] : 원본에서 블록 삭제한 결과 저장(1차) -> 빈칸이 있으면 블록을 아래로 이동한 결과를 저장(2차)
  * 2_v3. 구현(성공)
- * [접근법] tmp 에 1차 저장을 수행함
+ * [풀이] tmp 에 1차 저장을 수행함
  * - map[][] : 원본
  * - removed[][] : 블록 삭제 여부
  * - tmp[][] : 원본에서 블록 삭제 여부를 고려해 블록을 아래로 이동한 결과를 저장(1차)
+ * 3_v1. 구현(성공)
+ * [풀이] 2_v3 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/17679">문제</a>
  */
 class Solution17679 {
@@ -233,5 +237,68 @@ class Solution17679 {
             map = tmp;
         }
         return answer;
+    }
+
+    // 3_v1
+    int[] dx = {0, 1, 0, 1};
+    int[] dy = {0, 0, 1, 1};
+    int delete; // 이번 턴에서 삭제된 블록의 개수
+    public int solution4(int m, int n, String[] board) {
+        int answer = 0;
+        char[][] map = new char[m][n];
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                map[i][j] = board[i].charAt(j);
+            }
+        }
+        //
+        while(true) {
+            delete = 0;
+            map = play(m, n, map);
+            // 이번 턴에 삭제된 블록이 없으면 종료
+            if(delete == 0) break;
+            answer += delete;
+        }
+        return answer;
+    }
+
+    public char[][] play(int m, int n, char[][] map) {
+        // 삭제
+        boolean[][] deleted = new boolean[m][n];
+        for(int x = 0; x < m - 1; x++) {
+            for(int y = 0; y < n - 1; y++) {
+                if(canDelete(x, y, map)) {
+                    for(int i = 0; i < 4; i++) {
+                        int nx = x + dx[i];
+                        int ny = y + dy[i];
+                        if(deleted[nx][ny]) continue;
+                        deleted[nx][ny] = true;
+                        delete++;
+                    }
+                }
+            }
+        }
+        // 아래로 이동
+        char[][] tmp = new char[m][n];
+        for(int j = 0; j < n; j++) {
+            int x = m - 1;
+            for(int i = m - 1; i >= 0; i--) {
+                if(map[i][j] == '\0') break;
+                if(deleted[i][j]) continue;
+                tmp[x--][j] = map[i][j];
+            }
+        }
+        return tmp;
+    }
+
+    // (x,y)에서 4칸 삭제할 수 있는지
+    public boolean canDelete(int x, int y, char[][] map) {
+        if(map[x][y] == '\0') return false;
+        for(int i = 1; i <= 3; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if(map[nx][ny] != map[x][y]) return false;
+        }
+        return true;
     }
 }
