@@ -3,9 +3,10 @@ package programmers.level2;
 
 /**
  * [문제명] 혼자서 하는 틱택토
- * [풀이시간] (34분)
+ * [풀이시간] 2시간(34분, )
  * [한줄평]
  * 1_v1. (실패 - 1,3,4,7,8,11,14,17,19,21,25,26,29,31,32,34,36,38,39,41,43,45,46,48,49)
+ * 1_v2. (실패 - 14,26,46)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/160585">문제</a>
  */
 class Solution160585 {
@@ -26,9 +27,13 @@ class Solution160585 {
                 cnt[type]++;
             }
         }
+        // for(int[] arr : map) {
+        //     System.out.println(Arrays.toString(arr));
+        // }
         // System.out.println(Arrays.toString(cnt));
         //
-        if(cnt[1] != cnt[2] + 1 && cnt[1] != cnt[2]) return 0;
+        // O개수보다 X개수가 많은 경우, O개수와 X개수가 2개이상 차이나면
+        if(cnt[1] < cnt[2] || cnt[1] - cnt[2] > 1) return 0;
 
         for(int i = 0; i < 3; i++) {
             // 가로 검사
@@ -48,9 +53,20 @@ class Solution160585 {
             score[map[1][1]]++;
         }
         //
-        // System.out.println(score[1]);
-        // System.out.println(score[2]);
-        if(score[1] == 1 && score[2] == 1) return 0;
-        return 1;
+        // System.out.println(Arrays.toString(score));
+        // O, X 모두 빙고를 만들지 못한 경우
+        if(score[1] == 0 && score[2] == 0) return 1;
+        if(score[1] == 1 && score[2] == 0) {
+            // O가 1빙고 만들고 바로 종료한 경우
+            if(cnt[1] == cnt[2] + 1) return 1;
+        }
+        if(score[1] == 0 && score[2] == 1) {
+            // X가 1빙고 만들고 바로 종료한 경우
+            if(cnt[1] == cnt[1]) return 1;
+        }
+        if(score[1] == 2 && score[2] == 0) {
+            if(cnt[1] == cnt[2] + 1) return 1;
+        }
+        return 0;
     }
 }
