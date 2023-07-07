@@ -7,13 +7,19 @@ import java.util.Queue;
 
 /**
  * [문제명] 호텔 대실
- * [풀이시간] 21분(19분+2분) / 15분(13분 + 2분)
- * [한줄평] 문제를 꼼꼼하게 읽자. / 문제를 꼼꼼히 읽지 않아서 처음에 틀렸던 문제였다.
+ * [풀이시간] 21분(19분+2분) / 15분(13분 + 2분) / 11분
+ * [한줄평] 문제를 꼼꼼하게 읽자.
+ * / 문제를 꼼꼼히 읽지 않아서 처음에 틀렸던 문제였다.
+ * / PriorityQueue 로 풀 수 있는 쉬운 문제였다.
  * 1_v1. PriorityQueue(실패 - 3~4,6~18 실패)
  * 1_v2. PriorityQueue(성공)
- * [반례] 대실 종료 시각 10분 후 새로운 대실을 받을 수 있음
+ * [풀이] PriorityQueue 에 예약 시작, 종료 시각 저장
+ * [해결] 대실 종료 시각 10분 후 새로운 대실을 받을 수 있다는 조건을 고려
  * 2_v1. PriorityQueue(실패 - 3~4, 6~18 실패)
  * 2_v2. PriorityQueue(성공) -> 빠름
+ * [풀이] PriorityQueue 에 예약 종료 시각 저장
+ * 3_v1. PriorityQueue(성공)
+ * [풀이] 2_v2 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/155651">문제</a>
  */
 class Solution155651 {
@@ -72,19 +78,25 @@ class Solution155651 {
         return room.size();
     }
 
-    // 2_v1
+    // 2_v2, 3_v1
     public int solution2(String[][] bookTime) {
         int answer = 0;
         // 1. 시작 시각 오름차순 정렬
-        Arrays.sort(bookTime, (o1, o2) -> {
-            return o1[0].compareTo(o2[0]);
-        });
+        Arrays.sort(bookTime, (o1, o2) -> o1[0].compareTo(o2[0]));
+        // 2. 끝나는 시각이 오름차순 정렬된 큐
         Queue<Integer> pq = new PriorityQueue<>();
         for(String[] time : bookTime) {
+            // 3. 현재 예약 시작 시각, 종료 시각 계산
             int start = getTime(time[0]);
-            int end = getTime(time[1]);
-            if(!pq.isEmpty() && pq.peek() <= start) pq.poll();
-            pq.add(end + 10);
+            int end = getTime(time[1]) + 10;
+            while(!pq.isEmpty()) {
+                // 4. 가장 이른 종료 시각 > 현재 예약 시작 시각, 큐에서 뺄 수 없음
+                if(pq.peek() > start) break;
+                pq.poll();
+            }
+            // 5. 현재 예약 큐에 넣기
+            pq.add(end);
+            // 6. 현재 큐에 있는 객실 수 갱신
             answer = Math.max(answer, pq.size());
         }
         return answer;
