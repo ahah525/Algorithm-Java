@@ -6,13 +6,18 @@ import java.util.List;
 
 /**
  * [문제명] [카카오 인턴] 수식 최대화
- * [풀이시간] 1시간 45분(1시간 15분 + 30분) / 1시간 5분
+ * [풀이시간] 1시간 45분(1시간 15분 + 30분) / 1시간 5분 / 40분
  * [한줄평] 순열로 각 경우의 수에 따라 연산 결과를 모두 구하고 최댓값을 구해야겠다고 생각은 했는데 구현하는게 생각보다 조금 복잡했던 것 같다.
  * 로직은 맞는 것 같은데 계속 실패가 떠서 결국 반례를 봤는데 조건을 생각안하고 자료형을 잘못사용해서 통과하지 못했다는게 정말 허무했다. 다시 한번 조건을 잘 읽자..
- * 1_v1. 순열로 완전탐색 + 구현(실패 - 정확성 테스트: 11~15, 24, 27~29 실패)
- * 1_v2. 순열로 완전탐색 + 구현(성공)
- * - "expression의 중간 계산값과 최종 결괏값은 절댓값이 2^63 - 1 이하" 조건 -> int 대신 long 으로 변경
+ * / 복잡하긴 하지만 완전탐색으로 구현하면 어렵지않게 풀 수 있는 문제였다. 다음에 한번 더 풀어봐도 좋을 문제다.
+ * 1_v1. 완전탐색(실패 - 정확성 테스트: 11~15, 24, 27~29 실패)
+ * [풀이] 연산자 우선순위를 순열로 완전탐색
+ * 1_v2. 완전탐색(성공)
+ * [해결] "expression의 중간 계산값과 최종 결괏값은 절댓값이 2^63 - 1 이하" 조건 -> int 대신 long 으로 변경
  * 2_v1. 완전탐색(성공)
+ * [풀이] 경우의 수는 항상 6개로 고정되어있기 때문에 순열로 구하지 않고 초기화함
+ * 3_v1. 완전탐색(성공)
+ * [풀이] 1_v1 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/62757">문제</a>
  */
 class Solution67257 {
@@ -198,5 +203,84 @@ class Solution67257 {
         }
         // 3. 절댓값 리턴
         return Math.abs(nums.get(0));
+    }
+
+    // 3_v1
+    char[] path;
+    char[] op = {'+', '-', '*'};
+    boolean[] visited;
+    List<Integer> originNums;
+    List<Character> originOps;
+    long answer;
+    public long solution3(String expression) {
+        answer = 0;
+        path = new char[3];
+        visited = new boolean[3];
+        // 1. 원본 숫자, 연산자 리스트에 저장
+        originNums = new ArrayList<>();
+        originOps = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        for(char c : expression.toCharArray()) {
+            if(Character.isDigit(c)) sb.append(c);
+            else {
+                originOps.add(c);
+                originNums.add(Integer.parseInt(sb.toString()));
+                sb.setLength(0);
+            }
+        }
+        originNums.add(Integer.parseInt(sb.toString()));
+        perm(0);
+
+        return answer;
+    }
+
+    public void perm(int depth) {
+        if(depth == 3) {
+            // 1. 복사본 숫자, 연산자 리스트 초기화
+            List<Long> nums = new ArrayList<>();
+            for(int num : originNums) {
+                nums.add((long) num);
+            }
+            List<Character> ops = new ArrayList<>();
+            for(char c : originOps) {
+                ops.add(c);
+            }
+            // 2. 가장 우선순위가 높은 연산자부터 연산
+            long res = 0;
+            for(char op : path) {
+                int i = 0;
+                while(i < ops.size()) {
+                    // 3. 수행해야하는 연산자가 아니면 패스
+                    if(ops.get(i) != op) {
+                        i++;
+                        continue;
+                    }
+                    // 4. 수행해야하는 연산자이면 연산 수행
+                    if(op == '+') {
+                        res = nums.get(i) + nums.get(i + 1);
+                    } else if(op == '-') {
+                        res = nums.get(i) - nums.get(i + 1);
+                    } else {
+                        res = nums.get(i) * nums.get(i + 1);
+                    }
+                    // 5. 리스트에서 해당 연산자 삭제
+                    ops.remove(i);
+                    // 6. 리스트에서 두 숫자 삭제, 결과값 삽입
+                    nums.remove(i);
+                    nums.remove(i);
+                    nums.add(i, res);
+                }
+            }
+            // 7. 최댓값 갱신
+            answer = Math.max(answer, Math.abs(res));
+            return;
+        }
+        for(int i = 0; i < 3; i++) {
+            if(visited[i]) continue;
+            visited[i] = true;
+            path[depth] = op[i];
+            perm(depth + 1);
+            visited[i] = false;
+        }
     }
 }
