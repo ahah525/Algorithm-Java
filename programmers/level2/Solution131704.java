@@ -5,13 +5,15 @@ import java.util.Stack;
 
 /**
  * [문제명] 택배상자
- * [풀이시간] 50분(25분 + 25분) / 35분(30분 + 5분)
+ * [풀이시간] 50분(25분 + 25분) / 35분(30분 + 5분) / 13분
  * [한줄평] 문제 이해하기가 조금 까다로웠고 생각보다 푸는데 더 어려웠던 문제였다.. 다음에 한번 더 풀어볼만한 문제다.
+ * / 쉽게 풀긴 했지만 다음에 한 번 더 풀어보면 좋을 문제다.
  * 1_v1. Stack(실패 - 6, 7, 9, 10 시간초과)
  * 1_v2. Stack(성공)
  * 2_v1. Stack(실패 - 6~10 실패)
  * 2_v2. Stack(성공)
- * [해결법] 트럭에 싣는 경우에도 container++ 하기
+ * [해결] 트럭에 싣는 경우에도 container++ 하기
+ * 3_v1. Stack(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/131704">문제</a>
  * @See <a href="https://velog.io/@biny22/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%ED%83%9D%EB%B0%B0%EC%83%81%EC%9E%90">문제 설명</a>
  */
@@ -21,6 +23,7 @@ class Solution131704 {
         System.out.println();
     }
 
+    // 1_v1
     public int solution(int[] order) {
         int idx = 0;    // 현재 실어야 하는 택배가 몇 개째인지
         Stack<Integer> stack = new Stack<>();
@@ -75,6 +78,37 @@ class Solution131704 {
                     break;
                 }
             }
+        }
+        return answer;
+    }
+
+    // 3_v1
+    public int solution3(int[] order) {
+        int answer = 0; // 실은 상자 개수
+        int box = 1; // 컨테이너에서 꺼낼 상자 번호
+        Stack<Integer> stack = new Stack<>();
+        while(answer < order.length) {
+            int target = order[answer];
+            if(target > box) {
+                // 1. 실어야 하는 상자 번호 > 컨테이너에서 꺼낸 상자 번호, 스택에 보관
+                stack.push(box++);
+            } else if(target == box) {
+                // 2. 실어야 하는 상자 번호 == 컨테이너에서 꺼낸 상자 번호, 바로 상자 싣기
+                box++;
+                answer++;
+            } else {
+                // 3. 실어야 하는 상자 번호 < 컨테이너에서 꺼낸 상자 번호, 이미 스택에 들어있으므로 스택 맨위 상자와 비교
+                if(target != stack.peek()) break;
+                stack.pop();
+                answer++;
+            }
+        }
+        // 4. 스택에 남은 상자에 대해 반복
+        while(!stack.isEmpty()) {
+            int target = order[answer];
+            if(target != stack.peek()) break;
+            stack.pop();
+            answer++;
         }
         return answer;
     }
