@@ -6,10 +6,13 @@ import java.util.Map;
 
 /**
  * [문제명] 공원 산책
- * [풀이시간] 37분 / 30분
- * [한줄평] 단순 구현 문제였는데, 코드를 복붙하다가 생긴 오류를 해결하느라 오래걸렸다. / 쉬운 문제였는데, 방향 설정을 잘못해서 시간을 허비했다.
+ * [풀이시간] 37분 / 30분 / 17분
+ * [한줄평] 단순 구현 문제였는데, 코드를 복붙하다가 생긴 오류를 해결하느라 오래걸렸다.
+ * / 쉬운 문제였는데, 방향 설정을 잘못해서 시간을 허비했다.
+ * / 단순 구현 문제로 더 안풀어봐도 될 것 같은 문제다.
  * 1_v1. 구현(성공)
  * 2_v1. 구현(성공)
+ * 3_v1. 구현(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/172928">문제</a>
  */
 class Solution172928 {
@@ -141,5 +144,60 @@ class Solution172928 {
             y = ny;
         }
         return new int[] {x, y};
+    }
+
+    // 3_v1
+    // NSWE
+    int[] dx = {-1, 1, 0, 0};
+    int[] dy = {0, 0, -1, 1};
+    int h, w;
+    char[][] map;
+    Map<String, Integer> dir;
+    public int[] solution3(String[] park, String[] routes) {
+        // 1. 방향 인덱스 초기화
+        dir = new HashMap<>();
+        dir.put("N", 0);
+        dir.put("S", 1);
+        dir.put("W", 2);
+        dir.put("E", 3);
+        // 2. 맵 초기화 및 시작 좌표 저장
+        h = park.length;
+        w = park[0].length();
+        map = new char[h][w];
+        int x = 0;
+        int y = 0;
+        for(int i = 0; i < h; i++) {
+            for(int j = 0; j < w; j++) {
+                map[i][j] = park[i].charAt(j);
+                if(map[i][j] == 'S') {
+                    x = i;
+                    y = j;
+                }
+            }
+        }
+        //
+        for(String route : routes) {
+            String[] r = route.split(" ");
+            int d = dir.get(r[0]);
+            int n = Integer.parseInt(r[1]);
+            if(canMove(x, y, d, n)) {
+                x += (dx[d] * n);
+                y += (dy[d] * n);
+            }
+        }
+        return new int[] {x, y};
+    }
+
+    // (x, y)에서 d 방향으로 n칸 갈 수 있는지
+    public boolean canMove(int x, int y, int d, int n) {
+        int nx = x;
+        int ny = y;
+        for(int i = 0; i < n ; i++) {
+            nx += dx[d];
+            ny += dy[d];
+            if(nx < 0 || h <= nx || ny < 0 || w <= ny) return false;
+            if(map[nx][ny] == 'X') return false;
+        }
+        return true;
     }
 }
