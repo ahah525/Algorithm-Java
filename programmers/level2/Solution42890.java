@@ -5,8 +5,10 @@ import java.util.*;
 
 /**
  * [문제명] 후보키
- * [풀이시간] 1시간(47분 + 13분) / (50분)
+ * [풀이시간] 1시간(47분 + 13분) / (50분) / 1시간 12분
  * [한줄평] 그대로 구현만 하면되는 문제였는데, 반례를 찾지 못해서 어려웠던 문제였다.
+ * /
+ * / 처음에는 컬럼의 경우의 수를 어떤식으로 저장할지 고민하다가 선택한 컬럼번호를 문자열로 이어붙이는 방향으로 풀었다.
  * 1_v1. 완전탐색, DFS(실패 - 18~20,22,25 실패)
  * 1_v2. 완전탐색, DFS(성공)
  * [해결] 후보키A가 후보키B에 있는 모든 문자를 포함하고 있는지 여부를 검사할 때 contains() 를 사용하면 안된다!
@@ -16,6 +18,8 @@ import java.util.*;
  * - "12" : 후보키X
  * -> "012" : 후보키O(문제)
  * 2_v1. 완전탐색, DFS(실패 - 18~20,22,25,28 실패)
+ * 3_v1. 완전탐색, DFS(성공)
+ * [풀이] 유일성을 만족하면 list에 path(컬럼을 i개 선택한 경우의 수)를 추가한다.
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42890">문제</a>
  * @See <a href="https://school.programmers.co.kr/questions/7476">반례</a>
  * @See <a href="https://velog.io/@yanghl98/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%ED%9B%84%EB%B3%B4%ED%82%A4-JAVA%EC%9E%90%EB%B0%94-2019-%EC%B9%B4%EC%B9%B4%EC%98%A4-%EA%B8%B0%EC%B6%9C">반례</a>
@@ -26,7 +30,7 @@ class Solution42890 {
         System.out.println();
     }
 
-    // 1_v1
+    // 1_v2
     int answer;
     boolean[] visited;  // 컬럼 선택 여부
     Set<String> keys;   // 후보키 집합
@@ -201,4 +205,87 @@ class Solution42890 {
         }
         return true;
     }
+
+    // 3_v1
+//    int col, row;
+//    boolean[] visited;
+//    List<String> list;
+//    public int solution(String[][] relation) {
+//        col = relation[0].length;
+//        row = relation.length;
+//        visited = new boolean[col]; // 컬럼 선택여부
+//        list = new ArrayList<>();   // 컬럼 조합 리스트
+//        // 1.
+//        dfs(0, -1, "", relation);
+//        // 2. lists[i] = 길이가 i인(컬럼을 i개 선택한) 경우의 수 리스트
+//        List<String>[] lists = new ArrayList[col + 1];
+//        for(int i = 0; i <= col; i++) {
+//            lists[i] = new ArrayList<>();
+//        }
+//        for(String s : list) {
+//            lists[s.length()].add(s);
+//        }
+//        //
+//        int answer = 0;
+//        int len = 1;
+//        while(len < col) {
+//            // 3. 컬럼을 len개 선택한 경우의 수 더하기
+//            answer += lists[len].size();
+//            for(String a : lists[len]) {
+//                for(int i = len + 1; i <= col; i++) {
+//                    int j = 0;
+//                    while(j < lists[i].size()) {
+//                        String b = lists[i].get(j);
+//                        if(!isMinimal(a, b)) {
+//                            // 4. 컬럼을 j개 선택한 경우의 수 원소들이 컬럼을 len개 선택한 경우의 수의 원소들을 모두 포함하고 있다면, 해당 경우의 수 삭제
+//                            lists[i].remove(b);
+//                            continue;
+//                        }
+//                        // 5. 다음 경우의 수 검사
+//                        j++;
+//                    }
+//                }
+//            }
+//            len++;
+//        }
+//        answer += lists[len].size();
+//
+//        return answer;
+//    }
+//
+//    // b의 원소들에 a의 모든 원소가 포함되는지 여부
+//    public boolean isMinimal(String a, String b) {
+//        String[] arr = a.split("");
+//        for(String c : arr) {
+//            if(!b.contains(c)) return true;
+//        }
+//        return false;
+//    }
+//
+//    public void dfs(int depth, int prev, String path, String[][] relation) {
+//        //
+//        if(depth != 0 && isUnique(relation)) {
+//            list.add(path);
+//        }
+//        if(depth == col) return;
+//        for(int i = prev + 1; i < col; i++) {
+//            visited[i] = true;
+//            dfs(depth + 1, i, path + i, relation);
+//            visited[i] = false;
+//        }
+//    }
+//
+//    public boolean isUnique(String[][] relation) {
+//        Set<String> set = new HashSet<>();
+//        for(int r = 0; r < row; r++) {
+//            StringBuilder sb = new StringBuilder();
+//            for(int c = 0; c < col; c++) {
+//                if(!visited[c]) continue;
+//                sb.append(relation[r][c]);
+//            }
+//            if(set.contains(sb.toString())) return false;
+//            set.add(sb.toString());
+//        }
+//        return true;
+//    }
 }
