@@ -12,6 +12,7 @@ import java.util.*;
  * 1_v2. DFS, 이분탐색(성공)
  * [풀이] 리스트에서 특정 점수 이상인 사람수 구할 때 => 이분탐색 수행
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/72412">문제</a>
+ * @See <a href="https://record-developer.tistory.com/68">풀이 참고</a>
  */
 class Solution72412 {
     public static void main(String[] args) {
