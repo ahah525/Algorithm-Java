@@ -3,15 +3,16 @@ package programmers.level3;
 
 /**
  * [문제명] 기지국 설치
- * [풀이시간] / 24분 / (11분)
+ * [풀이시간] / 24분 / 20분(11분 + 9분)
  * [한줄평] n 의 범위가 크기때문에, 배열에 하나씩 체크하면 안되고 각 범위를 커버할 수 있는 기지국의 개수를 수식으로 만들어 계산해야 하는 구현 문제였다.
  * 아이디어는 나름 쉽게 떠올렸는데, 생각보다 구현하는데 시간이 오래걸렸던 문제로 다시 한번 꼭 풀어봐야겠다.
  * / 쉽게 풀 수 있는 문제였는데, 문제 조건을 제대로 읽지 않고 불필요하게 정렬을 했다가 시간초과가 났던 문제였다.
  * 1_v1. 수학(성공)
  * 2_v1. 수학(실패 - 효율성 테스트 2~3 시간초과)
  * 2_v2. 수학(성공) -> 빠름
- * [해결법] stations는 오름차순으로 정렬되어 있기때문에 배열을 정렬하는 코드를 삭제한다.
+ * [해결] stations는 오름차순으로 정렬되어 있기때문에 배열을 정렬하는 코드를 삭제한다.
  * 3_v1. 수학(실패 - 정확성 3,9 실패, 효율성 1 실패, 3 시간초과)
+ * 3_v2. 수학(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12979">문제</a>
  * @See <a href="https://i.postimg.cc/mDkjcvyW/3.png">그림 참고</a>
  */
@@ -69,7 +70,6 @@ class Solution12979 {
     int size;
     public int solution2(int n, int[] stations, int w) {
         int answer = 0;
-//        Arrays.sort(stations);
         size = 2 * w + 1;
         answer += calc(1, stations[0] - w - 1);
         for(int i = 0; i < stations.length - 1; i++) {
@@ -86,5 +86,25 @@ class Solution12979 {
      */
     public int calc(int s, int e) {
         return (s > e) ? 0 : (int) Math.ceil((double) (e - s + 1) / size);
+    }
+
+    // 3_v1
+    public int solution3(int n, int[] stations, int w) {
+        int answer = 0;
+        int prevEnd = 0;    // 이전 기지국의 범위의 끝
+        int range = 2 * w + 1;
+        int dis;
+        for(int station : stations) {
+            // 이전 기지국 ~ 현재 기지국 범위 사이에 포함되지 않는 범위 계산
+            dis = (station - w) - prevEnd - 1;
+            if(dis > 0) answer += Math.ceil((double) dis / range);
+            // 이전 기지국 범위의 끝 갱신
+            prevEnd = station + w;
+        }
+        // 마지막 기지국 이후 범위 계산
+        dis = n - prevEnd;
+        if(dis > 0) answer += Math.ceil((double) dis / range);
+
+        return answer;
     }
 }
