@@ -6,13 +6,16 @@ import java.util.List;
 
 /**
  * [문제명] 삼각 달팽이
- * [풀이 시간] 1시간 10분 / 30분
+ * [풀이 시간] 1시간 10분 / 30분 / 24분
  * [한줄평] 예전에 백준에서 비슷한 문제를 풀었던 적이 있었던 것 같다. 시계 반대방향으로 하나씩 값을 기록한 후 2차원 배열 값을 리스트에 옮기는 방식으로 구현했다.
  * 다만 각 경우에 따라 좌표값을 정확히 설정하지 않으면 인덱스 오류가 날 수 있기 때문에 정확한 수식을 도출해내는게 무엇보다 중요했던 문제였다!
  * / 문제에 나온 규칙대로 값을 기록하기만 하면 되는 쉬운 구현 문제였다.
+ * / 마지막에 한 점만 기록하는 경우를 처리해주는 것 때문에 시간이 걸리긴 했지만 규칙만 찾으면 쉽게 풀 수 있는 문제였다. 다시 풀어봐도 좋을 문제다.
  * 1_v1. 구현(성공)
  * 2_v1. 구현(성공)
- * [접근법] 세로 -> 가로 -> 대각선 순서로 2차원 배열에 기록, 1차원 배열에 옮기기
+ * [풀이] 세로 -> 가로 -> 대각선 순서로 2차원 배열에 기록, 1차원 배열에 옮기기
+ * 3_v1. 구현(성공)
+ * [풀이] 2_v1 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/68645">문제</a>
  */
 class Solution68645 {
@@ -108,6 +111,43 @@ class Solution68645 {
         for(int i = 0; i < n; i++) {
             for(int j = 0; j <= i; j++) {
                 answer[idx++] = arr[i][j];
+            }
+        }
+        return answer;
+    }
+
+    // 3_v1
+    public int[] solution3(int n) {
+        int[][] map = new int[n][n];
+        int x = 0, y = 0;   // 기준점
+        int num = 0; // 기록한 숫자 개수
+        int len = n - 1;
+        while(len > 0) {
+            // 1. 위 -> 아래
+            for(int j = 0; j < len; j++) {
+                map[x + j][y] = ++num;
+            }
+            // 2. 왼 -> 오
+            for(int j = 0; j < len; j++) {
+                map[x + len][y + j] = ++num;
+            }
+            // 3. 오른쪽 아래 -> 왼쪽 위
+            for(int j = 0; j < len; j++) {
+                map[x + len - j][y + len - j] = ++num;
+            }
+            // 4. 기준점, 길이 갱신
+            x += 2;
+            y += 1;
+            len -= 3;
+        }
+        // 5. 길이가 0인 경우 기준점만 기록
+        if(len == 0) map[x][y] = ++num;
+        // 6. 1차원 배열로 복사
+        int[] answer = new int[num];
+        int idx = 0;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < i + 1; j++) {
+                answer[idx++] = map[i][j];
             }
         }
         return answer;
