@@ -7,12 +7,15 @@ import java.util.Queue;
 
 /**
  * [문제명] 거리두기 확인하기
- * [풀이시간] 32분 / 47분
- * [한줄평] 생각보다 쉽게 풀 수 있었던 문제였다. / BFS로 풀면 어렵지 않게 풀 수 있었다.
+ * [풀이시간] 32분 / 47분 / 27분
+ * [한줄평] 생각보다 쉽게 풀 수 있었던 문제였다.
+ * / BFS로 풀면 어렵지 않게 풀 수 있었다.
+ * / 풀이 방식이 바로 떠올라서 빨리 풀 수 있었다. 다시 한 번 더 복습하면 좋을 문제다.
  * 1_v1. BFS(성공)
- * - P 인 지점에서 매번 BFS 를 수행하며 2 이내에 P 가 있는지 검사하는 방법
+ * [풀이] P 인 지점에서 매번 BFS 를 수행하며 2 이내에 P 가 있는지 검사하는 방법
  * 2_v1. BFS(성공)
- * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/">문제</a>
+ * 3_v1. BFS(성공)
+ * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/81302">문제</a>
  */
 class Solution81302 {
     public static void main(String[] args) {
@@ -171,4 +174,75 @@ class Solution81302 {
         }
         return true;
     }
+
+    // 3_v1
+//    class P {
+//        int x;
+//        int y;
+//        P(int x, int y) {
+//            this.x = x;
+//            this.y = y;
+//        }
+//    }
+//    public int[] solution(String[][] places) {
+//        int[] answer = new int[5];
+//        char[][][] map = new char[5][5][5];
+//        for(int i = 0; i < 5; i++) {
+//            for(int j = 0; j < 5; j++) {
+//                for(int k = 0; k < 5; k++) {
+//                    map[i][j][k] = places[i][j].charAt(k);
+//                }
+//            }
+//        }
+//        //
+//        for(int i = 0; i < 5; i++) {
+//            //
+//            int flag = 1;
+//            int[][] visited = new int[5][5];
+//            l1:
+//            for(int x = 0; x < 5; x++) {
+//                for(int y = 0; y < 5; y++) {
+//                    if(map[i][x][y] == 'P') {
+//                        if(!bfs(x, y, map[i], visited)) {
+//                            flag = 0;
+//                            break l1;
+//                        }
+//                    }
+//                }
+//            }
+//            answer[i] = flag;
+//        }
+//
+//        return answer;
+//    }
+//
+//    // (sx, sy) 좌표 사람이 응시 규칙을 만족했는지(맨해튼 거리가 2 이하인 곳에 다른 응시생이 없는지)
+//    public boolean bfs(int sx, int sy, char[][] map, int[][] visited) {
+//        int[] dx = {-1, 1, 0 ,0};
+//        int[] dy = {0, 0, -1, 1};
+//        Queue<P> q = new LinkedList<>();
+//        q.add(new P(sx, sy));
+//        visited[sx][sy] = 1;
+//        while(!q.isEmpty()) {
+//            P p = q.poll();
+//            int x = p.x;
+//            int y = p.y;
+//            // 거리가 2이상 이면 인접 좌표 탐색X
+//            if(visited[x][y] > 2) break;
+//            for(int i = 0; i < 4; i++) {
+//                int nx = x + dx[i];
+//                int ny = y + dy[i];
+//                if(!canMove(nx, ny) || map[nx][ny] == 'X' || visited[nx][ny] != 0) continue;
+//                if(map[nx][ny] == 'P') return false;
+//                q.add(new P(nx, ny));
+//                visited[nx][ny] = visited[x][y] + 1;
+//            }
+//        }
+//        return true;
+//    }
+//
+//    public boolean canMove(int x, int y) {
+//        if(0 > x || x >= 5 || 0 > y || y >= 5) return false;
+//        return true;
+//    }
 }
