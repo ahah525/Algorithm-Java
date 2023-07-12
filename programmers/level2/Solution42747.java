@@ -19,7 +19,9 @@ import java.util.Arrays;
  * 3_v1. 정렬(실패)
  * [풀이] h의 값을 인용수 값으로만 설정함
  * 3_v2. 정렬(성공)
- * [풀이] 2_v2 동일
+ * [풀이] h번 이상 인용된 논문 수 구하기 => for 문으로 탐색
+ * 3_v3. 정렬, 이분탐색(성공)
+ * [풀이] h번 이상 인용된 논문 수 구하기 => 이분탐색
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42747">문제</a>
  */
 class Solution42747 {
@@ -77,5 +79,37 @@ class Solution42747 {
             h--;
         }
         return 0;
+    }
+
+    // 3_v3
+    int n;
+    public int solution3(int[] citations) {
+        int answer = 0;
+        Arrays.sort(citations);
+        n = citations.length;
+        int h = Math.min(citations[n - 1], n);
+        while(h >= 0) {
+            int cnt = getCount(h, citations);
+            if(cnt >= h) return h;
+            h--;
+        }
+        return 0;
+    }
+
+    // h번 이상 인용된 논문수
+    public int getCount(int h, int[] citations) {
+        int start = 0;
+        int end = n - 1;
+        int idx = 0;
+        while(start <= end) {
+            int mid = (start + end) / 2;
+            if(citations[mid] >= h) {
+                end = mid - 1;
+                idx = mid;
+            } else {
+                start = mid + 1;
+            }
+        }
+        return n - idx;
     }
 }
