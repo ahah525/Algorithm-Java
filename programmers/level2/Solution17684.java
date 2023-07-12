@@ -5,14 +5,15 @@ import java.util.*;
 
 /**
  * [문제명] [3차] 압축
- * [풀이시간] / 40분
+ * [풀이시간] / 40분 / 34분
  * [한줄평] map 을 사용해서 그대로 구현하기만 하면 쉽게 풀 수 있는 문제였다. / 가장 긴 문자열을 찾는데 시간을 줄이기 위해 고민하느라 오래 걸렸던 구현 문제였다.
- * v1. map(사전 관리용) 1개, list(정답 리턴용) 1개 사용 (성공)
- * [접근법] 가장 긴 문자열을 찾기 위해 substring() 을 사용
+ * 1_v1. map(사전 관리용) 1개, list(정답 리턴용) 1개 사용 (성공)
+ * [풀이] 가장 긴 문자열을 찾기 위해 substring() 을 사용
  * - 현재 입력(msg)에서 substring() 으로 길이를 하나씩 줄여가며 사전에 해당 단어가 있는지 검사한다.
  * - 가정) 현재입력: ABCD, 사전: A,B,C,..., ABC => ABCD, ABC, AB, A 순서로 각 단어가 사전에 있는지 검사한다.
  * 2_v1. HashMap(사전), LinkedList(문자열) (성공) -> 추천(빠름)
- * [접근법] 가장 긴 문자열을 찾기 위해 LinkedList 를 사용
+ * [풀이] 가장 긴 문자열을 찾기 위해 LinkedList 를 사용
+ * 3_v1. HashMap(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/17684">문제</a>
  */
 class Solution17684 {
@@ -91,6 +92,37 @@ class Solution17684 {
             // 5. 다음 글자가 있을 때만 사전에 등록
             if(!c.equals(""))
                 map.put(w + c, i++);
+        }
+        return answer;
+    }
+
+    // 3_v1
+    public int[] solution3(String msg) {
+        // 1. 초기화
+        Map<String, Integer> map = new HashMap<>();
+        int num = 1;
+        for(int i = 0; i < 26; i++) {
+            map.put(String.valueOf((char) ('A' + i)), num++);
+        }
+        // 2.
+        List<Integer> list = new ArrayList<>();
+        int p = 0;
+        while(p < msg.length()) {
+            String w = msg.charAt(p) + "";
+            while(++p < msg.length()) {
+                char c = msg.charAt(p);
+                if(!map.containsKey(w + c)) {
+                    map.put(w + c, num++);
+                    break;
+                }
+                w += c;
+            }
+            list.add(map.get(w));
+        }
+        //
+        int[] answer = new int[list.size()];
+        for(int i = 0; i < list.size(); i++) {
+            answer[i] = list.get(i);
         }
         return answer;
     }
