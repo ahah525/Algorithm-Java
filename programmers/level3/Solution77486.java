@@ -7,13 +7,15 @@ import java.util.Map;
 
 /**
  * [문제명] 다단계 칫솔 판매
- * [풀이시간] 52분(47분 + 5분) / 29분
- * [한줄평] Map 을 이용해서 푸는 구현 문제로 어렵지는 않았으나 반례를 찾지 못해 힌트를 보고 해결했다. / 쉽게 풀 수 있는 구현 문제였다.
+ * [풀이시간] 52분(47분 + 5분) / 29분 / 24분
+ * [한줄평] Map 을 이용해서 푸는 구현 문제로 어렵지는 않았으나 반례를 찾지 못해 힌트를 보고 해결했다.
+ * / 쉽게 풀 수 있는 구현 문제였다.
+ * / DFS 로 풀 수 있는 쉬운 문제였지만 복습해도 좋을 문제다.
  * 1_v1. HashMap 2(실패-11~13 시간초과)
  * 1_v2. 구현(성공)
- * [접근법] 반복문
- * 2_v1. 구현(성공)
- * [접근법] 재귀
+ * [풀이] 반복문
+ * 2_v1. DFS(성공)
+ * 3_v1. DFS(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/77486">문제</a>
  * @See <a href="https://school.programmers.co.kr/questions/29442">반례</a>
  */
@@ -96,4 +98,44 @@ class Solution77486 {
         // 부모 재귀 호출
         dfs(referral[c], parentAmount, referral);
     }
+
+    // 3_v1
+//    Map<String, Integer> map;
+//    int[] answer;
+//    public int[] solution(String[] enroll, String[] referral, String[] seller, int[] amount) {
+//        int n = enroll.length;
+//        //
+//        map = new HashMap<>();
+//        for(int i = 0; i < n; i++) {
+//            map.put(enroll[i], i);
+//        }
+//        //
+//        answer = new int[n];
+//        for(int i = 0; i < seller.length; i++) {
+//            int sellerIdx = map.get(seller[i]);
+//            int profit = 100 * amount[i];
+//            dfs(0, sellerIdx, profit, referral);
+//        }
+//
+//        return answer;
+//    }
+//
+//    // child 의 부모 인덱스 조회
+//    public int getParentIdx(int childIdx, String[] referral) {
+//        String parent = referral[childIdx];
+//        if(parent.equals("-")) return -1;
+//        return map.get(parent);
+//    }
+//
+//    // child 이익 정산
+//    public void dfs(int depth, int childIdx, int profit, String[] referral) {
+//        int parentIdx = getParentIdx(childIdx, referral);
+//        int profitP = profit / 10;
+//        int profitC = profit - profitP;
+//        // 본인 이익 정산
+//        answer[childIdx] += profitC;
+//        // 부모 이익 정산
+//        if(parentIdx == -1 || profitP == 0) return;
+//        dfs(depth + 1, parentIdx, profitP, referral);
+//    }
 }
