@@ -4,12 +4,16 @@ import java.util.*;
 
 /**
  * [문제명] [1차] 뉴스 클러스터링
- * [풀이시간] / 32분
- * [한줄평] 문제 설명대로 풀기만 하면 되는 구현문제였다. 실제로 집합을 구하는 것이 아니라 map 에 원소 개수를 저장해두고 수학적으로 풀었다. / 2번째 풀어서 쉽게 풀수 있었다.
- * 1_v1. map 2개, 수학으로 풀이(성공)
- * - substring() 으로 길이가 2인 문자열 추출
- * 2_v1. map 2개(성공) -> 추천
- * - charAt() 2개를 이어 붙여 문자열 추출
+ * [풀이시간] / 32분 / 47분
+ * [한줄평] 문제 설명대로 풀기만 하면 되는 구현문제였다. 실제로 집합을 구하는 것이 아니라 map 에 원소 개수를 저장해두고 수학적으로 풀었다.
+ * / 2번째 풀어서 쉽게 풀수 있었다.
+ * / 두 글자씩 끊어서 자를 떄 영문자가 아닌 것은 제외시킨다는 조건을 잘못 이해해서 푸는데 오래걸렸던 문제다.
+ * 1_v1. HashMap(성공)
+ * [풀이] substring() 으로 길이가 2인 문자열 추출
+ * 2_v1. HashMap(성공) -> 추천
+ * [풀이] charAt() 2개를 이어 붙여 문자열 추출
+ * 3_v1. HashMap(성공)
+ * [풀이] 1_v1 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/17677">문제</a>
  */
 class Solution17677 {
@@ -125,5 +129,55 @@ class Solution17677 {
             }
         }
         return (int) ((double) a / b * 65536);
+    }
+
+    // 3_v1
+    public int solution3(String str1, String str2) {
+        int NUM = 65536;
+        //
+        Map<String, Integer> map1 = split(str1);
+        Map<String, Integer> map2 = split(str2);
+        //
+        if(map1.size() >= map2.size()) return (int) (calc(map1, map2) * NUM);
+        return (int) (calc(map2, map1) * NUM);
+
+    }
+
+    // s 를 두글자씩 자른 원소 map 구하기
+    public Map<String, Integer> split(String s) {
+        s = s.toLowerCase();
+        Map<String, Integer> map = new HashMap<>();
+        for(int i = 0; i < s.length() - 1; i++) {
+            String key = s.substring(i, i + 2);
+            if(!isValid(key)) continue;
+            map.put(key, map.getOrDefault(key, 0) + 1);
+        }
+        return map;
+    }
+
+    // s가 영문자로만 이루어져 있는지
+    public boolean isValid(String s) {
+        for(char c : s.toCharArray()) {
+            if('a' > c || c > 'z') return false;
+        }
+        return true;
+    }
+
+    // map1의 크기 >= map2의 크기
+    public double calc(Map<String, Integer> map1, Map<String, Integer> map2) {
+        int min = 0; // 교집합
+        int max = 0; // 합집합
+        for(String key : map1.keySet()) {
+            int cnt1 = map1.get(key);
+            int cnt2 = map2.getOrDefault(key, 0);
+            min += Math.min(cnt1, cnt2);
+            max += Math.max(cnt1, cnt2);
+        }
+        for(String key : map2.keySet()) {
+            if(map1.containsKey(key)) continue;
+            max += map2.get(key);
+        }
+        if(max == 0) return 1;
+        return (double) min / max;
     }
 }
