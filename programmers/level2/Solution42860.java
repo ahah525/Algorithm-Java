@@ -3,11 +3,13 @@ package programmers.level2;
 
 /**
  * [문제명] 조이스틱
- * [풀이시간] 1시간 50분(50분 + 1시간) / 1시간 10분
- * [한줄평] 문제 풀이를 이해하는데에도 너무 어려웠던 문제였다. / 결국 또 풀이를 보고 해결했고 다시 풀어도 너무 어려웠다.
+ * [풀이시간] 1시간 50분(50분 + 1시간) / 1시간 10분 / (38분)
+ * [한줄평] 문제 풀이를 이해하는데에도 너무 어려웠던 문제였다.
+ * / 결국 또 풀이를 보고 해결했고 다시 풀어도 너무 어려웠다.
  * 1_v1. (실패 - 11,13~14,18,20,22~27 실패)
  * 1_v2. (성공)
  * 2_v1. (성공)
+ * 3_v1. (실패 - 17 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42860">문제</a>
  * @See <a href="https://born2bedeveloper.tistory.com/26">풀이 참고</a>
  */
@@ -47,5 +49,36 @@ class Solution42860 {
             ));
         }
         return answer + move;
+    }
+
+    // 3_v1
+    public int solution3(String name) {
+        int answer = 0;
+        // 1.
+        for(char c : name.toCharArray()) {
+            if(c == 'A') continue;
+            answer += moveUpAndDown(c);
+        }
+        //
+        int n = name.length();
+        int min = n - 1;
+        for(int i = 0; i < n - 1; i++) {
+            if(name.charAt(i) != 'A' && name.charAt(i + 1) == 'A') {
+                // 연속된 A의 다음 인덱스
+                int j = i + 2;
+                while(j < n && name.charAt(j) == 'A') {
+                    j++;
+                }
+                //
+                min = Math.min(min, 2 * i + (n - j));
+                min = Math.min(min, i + 2 * (n - j));
+            }
+        }
+        return answer + min;
+    }
+
+    // 'A'를 c 로 바꿀 때 조작 횟수의 최솟값
+    public int moveUpAndDown(char c) {
+        return Math.min(c - 'A', 'Z' - c + 1);
     }
 }
