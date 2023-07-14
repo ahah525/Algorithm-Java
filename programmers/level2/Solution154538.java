@@ -12,6 +12,7 @@ import java.util.Arrays;
  * [점화식] d[i] = Math.min(d[i], d[i - n], d[i / 2], d[i / 3])
  * 2_v1. DP(성공) -> 빠름
  * 2_v2. DP(성공)
+ * 3_v1. DP(실패 - 1 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/154538">문제</a>
  */
 class Solution154538 {
@@ -64,5 +65,20 @@ class Solution154538 {
                 d[i * 3] = Math.min(d[i * 3], d[i] + 1);
         }
         return d[y] == INF ? -1 : d[y];
+    }
+
+    //
+    public int solution3(int x, int y, int n) {
+        int[] dp = new int[y + 1];
+        Arrays.fill(dp, 1000000);
+        //
+        dp[x] = 0;
+        for(int i = x + 1; i <= y; i++) {
+            if(i - n >= x) dp[i] = dp[i - n] + 1;
+            if(i % 2 == 0) dp[i] = Math.min(dp[i], dp[i / 2] + 1);
+            if(i % 3 == 0) dp[i] = Math.min(dp[i], dp[i / 3] + 1);
+        }
+        if(dp[y] == 1000000) return -1;
+        return dp[y];
     }
 }
