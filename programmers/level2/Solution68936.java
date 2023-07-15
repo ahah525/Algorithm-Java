@@ -3,10 +3,13 @@ package programmers.level2;
 
 /**
  * [문제명] 쿼드압축 후 개수 세기
- * [풀이시간] / 14분
- * [한줄평] 전형적인 분할정복 문제로 쉽게 풀 수 있었던 문제였다. / 쉬운 문제였지만 오랜만에 푸니까 생각보다 시간이 걸렸던 문제였다.
+ * [풀이시간] / 14분 / 10분
+ * [한줄평] 전형적인 분할정복 문제로 쉽게 풀 수 있었던 문제였다.
+ * / 쉬운 문제였지만 오랜만에 푸니까 생각보다 시간이 걸렸던 문제였다.
+ * / DFS로 풀 수 있는 쉬운 문제였다.
  * 1_v1. 분할정복(성공)
  * 2_v1. 분할정복(성공)
+ * 3_v1. 분할정복, DFS(성공)
  * <a href="https://school.programmers.co.kr/learn/courses/30/lessons/68936">문제</a>
  */
 class Solution68936 {
@@ -82,4 +85,37 @@ class Solution68936 {
         divide(x + n, y, n, arr);
         divide(x + n, y + n, n, arr);
     }
+
+    // 3_v1
+//    int[] answer;
+//    public int[] solution2(int[][] arr) {
+//        answer = new int[2];
+//        dfs(0, 0, arr.length, arr);
+//        return answer;
+//    }
+//
+//    //
+//    public void dfs(int x, int y, int n, int[][] arr) {
+//        if(n == 1 || isSame(x, y, n, arr)) {
+//            answer[arr[x][y]]++;
+//            return;
+//        }
+//        //
+//        n /= 2;
+//        dfs(x, y, n, arr);
+//        dfs(x, y + n, n, arr);
+//        dfs(x + n, y, n, arr);
+//        dfs(x + n, y + n, n, arr);
+//    }
+//
+//    // (x, y)점에서 길이가 n인 정사각형이 모두 같은 숫자인지
+//    public boolean isSame(int x, int y, int n, int[][] arr) {
+//        int target = arr[x][y];
+//        for(int i = x; i < x + n; i++) {
+//            for(int j = y; j < y + n; j++) {
+//                if(arr[i][j] != target) return false;
+//            }
+//        }
+//        return true;
+//    }
 }
