@@ -3,10 +3,13 @@ package programmers.level1;
 
 /**
  * [문제명] [카카오 인턴] 키패드 누르기
- * [풀이시간] 28분 / 19분
- * [한줄평] 문제 설명대로 구현하기만 하면 되는 나름 간단한 문제였다. static 하게 좌표값을 미리 저장해두는 방법도 있지만 내가 푼 방식이 더 시간이 빨랐다. / 쉽게 해결할 수 있는 구현문제였다.
+ * [풀이시간] 28분 / 19분 / 29분
+ * [한줄평] 문제 설명대로 구현하기만 하면 되는 나름 간단한 문제였다. static 하게 좌표값을 미리 저장해두는 방법도 있지만 내가 푼 방식이 더 시간이 빨랐다.
+ * / 쉽게 해결할 수 있는 구현문제였다.
+ * / 0을 11로 변환해주는 로직을 빼먹어서 푸는데 오래걸렸다. 나중에 한 번 더 풀어보면 좋을 문제다.
  * 1_v1. 구현(성공)
  * 2_v1. 구현(성공)
+ * 3_v1. 구현(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/67256">문제</a>
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/67256/solution_groups?language=java">다른 풀이</a>
  */
@@ -75,5 +78,49 @@ class Solution67256 {
             }
         }
         return sb.toString();
+    }
+
+    // 3_v1
+    StringBuilder sb;
+    int l, r;
+    public String solution2(int[] numbers, String hand) {
+        sb = new StringBuilder();
+        // 1. 시작 위치, 왼손잡이 여부 초기화
+        l = 9;
+        r = 11;
+        boolean isLeft = (hand.equals("left")) ? true : false;
+        for(int num : numbers) {
+            // 2. 0 -> 11로 변환
+            if(num == 0) num = 11;
+            int y = (num - 1) % 3;
+            if(y == 0) moveLeft(num);
+            else if(y == 2) moveRight(num);
+            else {
+                int x = (num - 1) / 3;
+                int dl = getDistance(x, y, l / 3, l % 3);
+                int dr = getDistance(x, y, r / 3, r % 3);
+                if(dl < dr) moveLeft(num);
+                else if(dl > dr) moveRight(num);
+                else {
+                    if(isLeft) moveLeft(num);
+                    else moveRight(num);
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    public int getDistance(int x1, int y1, int x2, int y2) {
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
+
+    public void moveLeft(int num) {
+        sb.append("L");
+        l = num - 1;
+    }
+
+    public void moveRight(int num) {
+        sb.append("R");
+        r = num - 1;
     }
 }
