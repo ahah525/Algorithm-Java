@@ -80,17 +80,16 @@ class Solution87946 {
      * @param visited 던전 탐험 여부
      */
     public void dfs(int depth, int power, boolean[] visited, int[][] dungeons) {
-        // 1. 모두 탐험했다면 종료
-        if(depth == dungeons.length + 1) return;
-        // 2. 탐헌한 던전 최대 개수 업데이트
+        // 1. 탐헌한 던전 최대 개수 업데이트
         answer = Math.max(answer, depth);
+        // 2. 모두 탐험했다면 종료
+        if(depth == dungeons.length) return;
         // 3. 아직 탐험하지 않았고 현재 필요도가 최소 필요도 이상이면, 탐험
         for(int i = 0; i < dungeons.length; i++) {
-            if(!visited[i] && power >= dungeons[i][0]) {
-                visited[i] = true;
-                dfs(depth + 1, power - dungeons[i][1], visited, dungeons);
-                visited[i] = false;
-            }
+            if(visited[i] || power < dungeons[i][0]) continue;
+            visited[i] = true;
+            dfs(depth + 1, power - dungeons[i][1], visited, dungeons);
+            visited[i] = false;
         }
     }
 }
