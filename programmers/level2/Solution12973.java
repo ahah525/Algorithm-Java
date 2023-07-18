@@ -8,12 +8,14 @@ import java.util.Stack;
  * [풀이시간] 45분(15분 + 30분) / 9분
  * [한줄평] 이 문제는 StringBuilder 로 delete 해가면서 푸는 게 아니라, 스택을 이용해야만 시간초과를 해결할 수 있는 문제로 시간복잡도 계산이 필요하다!!
  * / 처음에는 StringBuilder 로 풀려다가 문자열의 길이가 너무 길어 시간초과가 날 것 같아서 stack 으로 풀었던 문제다.
+ * / 더 이상 안풀어봐도 될 것 같은 문제다.
  * 1_v1. StringBuilder(실패 - 효율성 테스트 모두 시간초과)
  * - 시간초과가 날 것을 고려해 StringBuilder 를 써서 포인터를 옮겨가는 방식으로 풀었는데 시간초과가 났다.
  * - 제한시간 1초일 때, 약 1억개 연산이 가능하다. 즉, N이 1억(10^8) 이상이면 시간초과가 난다.
  * - while 문 = O(N), StringBuilder 의 delete() = O(N) -> 대략 O(N^2) 인데, 문자열의 길이가 최대 10^6 이기때문에 O(10^12) 으로는 시간초과가 난다.
  * 1_v2. Stack(성공)
  * 2_v1. Stack(성공)
+ * 3_v1. Stack(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12973">문제</a>
  */
 class Solution12973 {
@@ -50,7 +52,7 @@ class Solution12973 {
         }
     }
 
-    // 1_v2, 2_v1
+    // 1_v2, 2_v1, 3_v1
     /**
      * @param s 알파벳 소문자로 이루어진 문자열(길이는 1,000,000이하)
      * @return 짝지어 제거하기를 성공적으로 수행할 수 있는지(성공적으로 수행할 수 있으면 1을, 아닐 경우 0)
