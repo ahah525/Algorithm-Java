@@ -5,10 +5,13 @@ import java.util.Arrays;
 
 /**
  * [문제명] 카펫
- * [풀이시간] 20분 / 17분
- * [한줄평] 10분 내로 풀 수 있는 쉬운 문제였는데, 생각보다 오래걸렸다.. 쉬운문제에서 무조건 시간단축을 하자! / 방정식만 세우면 쉽게 풀 수 있는 문제다.
+ * [풀이시간] 20분 / 17분 / 5분
+ * [한줄평] 10분 내로 풀 수 있는 쉬운 문제였는데, 생각보다 오래걸렸다.. 쉬운문제에서 무조건 시간단축을 하자!
+ * / 방정식만 세우면 쉽게 풀 수 있는 문제다.
+ * / 더 이상 안풀어봐도 될 쉬운 문제다.
  * 1_v1. 수학(성공)
  * 2_v1. 수학(성공)
+ * 3_v1. 완전탐색, 수학(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42842">문제</a>
  */
 class Solution42842 {
@@ -59,5 +62,21 @@ class Solution42842 {
             m--;
         }
         return new int[] {m, n};
+    }
+
+    // 3_v1
+    public int[] solution3(int brown, int yellow) {
+        int[] answer = new int[2];
+        int sum = brown + yellow;
+        for(int h = 3; h <= Math.sqrt(sum); h++) {
+            if(sum % h != 0) continue;
+            int w = sum / h;
+            if((w - 2) * (h - 2) == yellow) {
+                answer[0] = w;
+                answer[1] = h;
+                break;
+            }
+        }
+        return answer;
     }
 }
