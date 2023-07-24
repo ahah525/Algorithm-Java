@@ -1,4 +1,4 @@
-package softeer;
+package softeer.level3;
 
 
 import java.io.BufferedReader;
