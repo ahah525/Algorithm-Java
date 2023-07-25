@@ -3,15 +3,19 @@ package programmers.level2;
 
 /**
  * [문제명] 문자열 압축
- * [풀이시간] 28분, 20분 / 1시간 5분(1시간 + 5분)
+ * [풀이시간] 28분, 20분 / 1시간 5분(1시간 + 5분) / 12분
  * [한줄평] 문자열을 다루는 구현 문제로 split() 을 써서 바로 비교했을 때 시간이 훨씬 빨랐다.
+ * /
+ * / 3번째 풀다보니 쉽게 풀었던 문제였다.
  * 1_v1. 문자열 구현(성공)
- * [접근법] 직접 문자열 분리 후 비교
- * 1_v2. 문자열 구현(성공) -> 추천
- * [접근법] split() 으로 분리와 동시에 비교
+ * [풀이] 직접 문자열 분리 후 비교
+ * 1_v2. 문자열 구현(성공)
+ * [풀이] split() 으로 분리와 동시에 비교
  * 2_v1. 문자열(실패 - 5 실패)
  * 2_v2. 문자열(성공)
  * [반례] 문자열 길이가 1인 경우, 최솟값 = 1
+ * 3_v1. 문자열, 완전탐색(성공) -> 빠름
+ * [풀이] substring()으로 문자열 n글자씩 분리
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/60057">문제</a>
  * @See <a href="https://school.programmers.co.kr/questions/20870">반례</a>
  */
@@ -38,8 +42,7 @@ class Solution60057 {
             for(String str : arr) {
                 if(!str.equals(prev)) {
                     // 이전 문자
-                    if(cnt != 1)
-                        sb.append(cnt);
+                    if(cnt != 1) sb.append(cnt);
                     sb.append(prev);
                     //
                     prev = str;
@@ -168,5 +171,35 @@ class Solution60057 {
             len++;;
         }
         return len;
+    }
+
+    // 3_v1
+    public int solution4(String s) {
+        int answer = s.length();
+        for(int len = 1; len <= s.length() / 2; len++) {
+            String prev = "";
+            int cnt = 0;
+            StringBuilder sb = new StringBuilder();
+            int start = 0;
+            while(start < s.length()) {
+                int end = Math.min(start + len, s.length());
+                String now = s.substring(start, end);
+                if(prev.equals(now)) {
+                    cnt++;
+                } else {
+                    if(cnt != 0) {
+                        if(cnt != 1) sb.append(cnt);
+                        sb.append(prev);
+                    }
+                    prev = now;
+                    cnt = 1;
+                }
+                start += len;
+            }
+            if(cnt != 1) sb.append(cnt);
+            sb.append(prev);
+            answer = Math.min(answer, sb.length());
+        }
+        return answer;
     }
 }
