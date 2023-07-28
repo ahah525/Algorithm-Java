@@ -1,18 +1,19 @@
 package programmers.level3;
 
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * [문제명] 부대복귀
- * [풀이시간] 14분 /
+ * [풀이시간] 14분 / 18분(10분+8분)
  * [한줄평] 레벨3 문제였지만 너무 기초적인 BFS 문제여서 쉽게 풀었다.
+ * / 처음에 풀이했던 방법이 시간초과가 났다. 기초 문제지만 복습이 필요하다.
  * 1_v1. BFS(성공)
  * [풀이] 인접리스트
  * 2_v1. BFS(실패 - 12,13 시간초과)
+ * [풀이] 입력되는 출발지마다 bfs 실행 -> 최대 500번 수행
+ * 2_v2. BFS(성공)
+ * [풀이] 도착지를 출발지로 가정하고 bfs 1번만 수행
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/132266">문제</a>
  */
 class Solution132266 {
@@ -21,48 +22,44 @@ class Solution132266 {
         System.out.println();
     }
 
-    // 1_v1
-    List<Integer>[] graph; // 인접 리스트
+    // 2_v2
+    List<Integer>[] graph;
+    int[] visited;  // visited[i]: destination 에서 i까지 최단거리
 
-    /**
-     * @param n 강철부대가 위치한 지역을 포함한 총지역의 수
-     * @param roads 두 지역을 왕복할 수 있는 길 정보를 담은 2차원 정수 배열
-     * @param sources 각 부대원이 위치한 서로 다른 지역들을 나타내는 정수 배열
-     * @param destination 강철부대의 지역
-     * @return 주어진 sources의 원소 순서대로 강철부대로 복귀할 수 있는 최단시간을 담은 배열
-     */
     public int[] solution(int n, int[][] roads, int[] sources, int destination) {
-        // 1. 인접 리스트 초기화
+        // 1. 최단거리 -1로 초기화
+        visited = new int[n + 1];
+        Arrays.fill(visited, -1);
+        // 2. 인접리스트 초기화
         graph = new ArrayList[n + 1];
-        for(int i = 0; i <= n; i++) {
+        for(int i = 1; i <= n; i++) {
             graph[i] = new ArrayList<>();
         }
-        for(int[] road : roads) {
-            graph[road[0]].add(road[1]);
-            graph[road[1]].add(road[0]);
+        for(int[] r : roads) {
+            graph[r[0]].add(r[1]);
+            graph[r[1]].add(r[0]);
         }
-        // 2. 출발지 -> 목적기 최단거리 계산, 저장
+        // 3. destination이 출발지일 때 다른 모든 노드들까지 최단거리 계산
+        bfs(destination);
+        //
         int[] answer = new int[sources.length];
         for(int i = 0; i < sources.length; i++) {
-            answer[i] = bfs(sources[i], destination, new int[n + 1]);
+            answer[i] = visited[sources[i]];
         }
         return answer;
     }
 
-    // start -> destination 까지 최단거리
-    public int bfs(int start, int destination, int[] visited) {
+    public void bfs(int s) {
         Queue<Integer> q = new LinkedList<>();
-        q.add(start);
-        visited[start] = 1;
+        q.add(s);
+        visited[s] = 0;
         while(!q.isEmpty()) {
             int v = q.poll();
-            if(v == destination) return visited[v] - 1;
             for(int nv : graph[v]) {
-                if(visited[nv] != 0) continue;
+                if(visited[nv] != -1) continue;
                 q.add(nv);
                 visited[nv] = visited[v] + 1;
             }
         }
-        return -1;
     }
 }
