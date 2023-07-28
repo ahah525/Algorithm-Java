@@ -7,11 +7,12 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * [문제명] 달리기 경주
- * [풀이시간] 14분
+ * [문제명] 부대복귀
+ * [풀이시간] 14분 /
  * [한줄평] 레벨3 문제였지만 너무 기초적인 BFS 문제여서 쉽게 풀었다.
  * 1_v1. BFS(성공)
  * [풀이] 인접리스트
+ * 2_v1. BFS(실패 - 12,13 시간초과)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/132266">문제</a>
  */
 class Solution132266 {
