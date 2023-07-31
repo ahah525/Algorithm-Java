@@ -6,10 +6,13 @@ import java.util.Queue;
 
 /**
  * [문제명] 리코쳇 로봇
- * [풀이시간] 1시간 10분
+ * [풀이시간] 1시간 10분 / 32분
  * [한줄평] 문제 자체를 이해하지 못해서 힌트를 봤다. 처음에는 3차원 배열로 방문처리를 해야된다고 생각했는데 그럴 필요가 없었다. 다시 한번 꼭 풀어봐야할 문제다.
+ * / 문제를 이해해서인지 쉽게 풀 수 있었다.
  * 1_v1. BFS(성공)
  * [풀이] 장애물을 만나거나 맨 끝에 부딪힐 때까지 이동한 경로는 방문처리를 하면 안된다!!
+ * 2_v1. BFS(성공)
+ * [풀이] 1_v1 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/169199">문제</a>
  * @See <a href="https://ksb-dev.tistory.com/291">문제 이해</a>
  */
@@ -19,7 +22,7 @@ class Solution169199 {
         System.out.println();
     }
 
-    // 1_v1
+    // 1_v1, 2_v1
     class P {
         int x;
         int y;
