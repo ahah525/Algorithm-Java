@@ -8,9 +8,13 @@ import java.util.Set;
 
 /**
  * [문제명] 신고 결과 받기
- * [풀이시간] 18분
+ * [풀이시간] 18분 / 18분
  * [한줄평] 해시로 구현하면 쉽게 풀 수 있는 문제였다.
+ * / 더 이상 안풀어봐도 될 것 같은 쉬운 문제였다.
  * 1_v1. HashMap(성공)
+ * [풀이] (id, 번호), (신고 당한 유저 id, 신고한 유저 id의 집합) 저장
+ * 2_v1. HashMap(성공)
+ * [풀이] 1_v1 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/92334">문제</a>
  */
 class Solution92334 {
@@ -19,7 +23,7 @@ class Solution92334 {
         System.out.println();
     }
 
-    // 1_v1
+    // 1_v1, 2_v1
     /**
      * @param idList 이용자의 ID가 담긴 문자열 배열
      * @param report 각 이용자가 신고한 이용자의 ID 정보가 담긴 문자열 배열
