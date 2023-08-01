@@ -1,15 +1,14 @@
 package programmers.level2;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * [문제명] 시소 짝꿍
- * [풀이시간] 34분(24분+10분) / 24분(22분+2분)
+ * [풀이시간] 34분(24분+10분) / 24분(22분+2분) / 17분
  * [한줄평] 처음에는 전체에서 2명씩 뽑아서 경우의 수를 구하려다가 시간 초과가 날 것 같아서 Map으로 풀었던 문제다.
+ * /
+ * / 해시로 쉽게 풀 수 있었던 문제다.
  * 1_v1. HashMap(실패 - 2~15 실패)
  * 1_v2. HashMap(성공)
  * [반례] [100, 100, 100] >> 3
@@ -17,6 +16,8 @@ import java.util.Map;
  * 2_v1. HashMap(실패 - 12~15 실패)
  * 2_v2. HashMap(성공)
  * [해결] 전체 경우의 수(answer)은 long 타입이기 때문에 더해줄 때 long 으로 형변환 해주어야 한다.
+ * 3_v1. HashMap(성공)
+ * [풀이] (몸무게, 사람수)를 구하고 몸무게를 오름차순 정렬한다. 각 조합에서 나올 수 있는 경우의 수를 계산한다.
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/152996">문제</a>
  */
 class Solution152996 {
@@ -66,5 +67,31 @@ class Solution152996 {
         if(min * 4 == max * 3) return true;
         if(min * 3 == max * 2) return true;
         return false;
+    }
+
+    // 3_v1
+    Map<Integer, Integer> map;  // (몸무게, 사람수)
+    public long solution2(int[] weights) {
+        long answer = 0;
+        map = new HashMap<>();
+        for(int w : weights) {
+            map.put(w, map.getOrDefault(w, 0) + 1);
+        }
+        List<Integer> keys = new ArrayList<>(map.keySet());
+        Collections.sort(keys);
+        for(int i = 0; i < keys.size(); i++) {
+            for(int j = i; j < keys.size(); j++) {
+                answer += calc(keys.get(i), keys.get(j));
+            }
+        }
+        return answer;
+    }
+
+    // a, b의 경우의 수 계산(a <= b)
+    public long calc(int a, int b) {
+        if(a == b) return (long) map.get(a) * (map.get(a) - 1) / 2;
+        if(a * 4 == b * 3 || a * 4 == b * 2 || a * 3 == b * 2)
+            return (long) map.get(a) * map.get(b);
+        return 0;
     }
 }
