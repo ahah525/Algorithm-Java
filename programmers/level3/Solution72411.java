@@ -5,13 +5,16 @@ import java.util.*;
 
 /**
  * [문제명] 메뉴 리뉴얼
- * [풀이시간] 2시간 이상 / 50분
- * [한줄평] 결국 풀이를 보고 이해했던 문제였다. 꼭 다시 한번 풀어봐야할 문제다!! / 구현하는게 조금 복잡했던 문제였다.
+ * [풀이시간] 2시간 이상 / 50분 / 1시간 12분
+ * [한줄평] 결국 풀이를 보고 이해했던 문제였다. 꼭 다시 한번 풀어봐야할 문제다!!
+ * / 구현하는게 조금 복잡했던 문제였다.
+ * / 왜 그런지 모르겠지만 PriorityQueue가 정렬이 잘 안되서 결국에는 ArrayList로 풀었다. 다시 한 번 꼭 풀어봐야할 문제다.
  * 1_v1. HashMap 2개, ArrayList 1개(성공)
  * - Map<String, Integer>: (코스명, 주문수)
  * - Map<Integer, PriorityQueue<Course>>: (코스에 속한 메뉴 수, 코스정보 -> 점수 내림차순, 이름 오름차순 정렬)
  * - List<String>: 코스명 길이별로 가장 주문수가 많은 결과를 오름차순 정렬한 리스트
  * 2_v1. DFS(성공)
+ * 3_v1. DFS, HashMap(성공) -> 빠름
  * @See <a href="https://school.programmers.co.kr/learn/courses/15008/lessons/72411">문제</a>
  */
 class Solution72411 {
@@ -185,4 +188,70 @@ class Solution72411 {
         }
         return cnt;
     }
+
+    // 3_v1
+//    Map<Integer, List<String>> map; // (메뉴개수, 메뉴개수만큼 뽑아서 만든 코스명 리스트)
+//    Map<String, Integer> cntMap;    // (코스명, 주문수)
+//    Set<Integer> set;   // 코스요리를 구성하는 메뉴 개수 집합
+//    public String[] solution(String[] orders, int[] course) {
+//        cntMap = new HashMap<>();
+//        // 1. 코스요리를 구성하는 메뉴 개수 집합 초기화
+//        set = new HashSet<>();
+//        for(int c : course) {
+//            set.add(c);
+//        }
+//        // 2. 메뉴 개수에 대한 리스트 생성
+//        map = new HashMap<>();
+//        for(int c : course) {
+//            // map.put(c, pq);
+//            map.put(c, new ArrayList<>());
+//        }
+//
+//        for(String s : orders) {
+//            // 3. 메뉴 오름차순 정렬
+//            char[] arr = s.toCharArray();
+//            Arrays.sort(arr);
+//            // 4. 단품 메뉴들로 구성할 수 있는 조합 모두 구하기
+//            dfs(0, -1, "", arr);
+//        }
+//
+//        List<String> list = new ArrayList<>();
+//        for(int n : map.keySet()) {
+//            // 5. n개의 메뉴를 뽑아 만든 코스 메뉴구성
+//            List<String> comb = map.get(n);
+//            if(comb.isEmpty()) continue;
+//            // 6. 주문수 내림차순 정렬
+//            Collections.sort(comb, (o1, o2) -> cntMap.get(o2) - cntMap.get(o1));
+//            // 7. 최대 주문수 구하기
+//            int max = cntMap.get(comb.get(0));
+//            // 8. 2번 보다 적게 주문된 구성은 패스
+//            if(max < 2) continue;
+//            // 9. 가장 많이 주문된 모든 메뉴 구성을 결과 리스트에 추가
+//            for(String name : comb) {
+//                if(cntMap.get(name) != max) break;
+//                list.add(name);
+//            }
+//        }
+//        // 10. 메뉴 구성 오름차순 정렬, 리스트를 배열로 변환
+//        String[] answer = new String[list.size()];
+//        Collections.sort(list);
+//        for(int i = 0; i < list.size(); i++) {
+//            answer[i] = list.get(i);
+//        }
+//        return answer;
+//    }
+//
+//    public void dfs(int depth, int prev, String path, char[] arr) {
+//        if(set.contains(depth)) {
+//            // 1. 주문수 갱신
+//            cntMap.put(path, cntMap.getOrDefault(path, 0) + 1);
+//            // 2. 중복을 제거하기 위해 처음에만 삽입
+//            if(cntMap.get(path) == 1)
+//                map.get(depth).add(path);
+//        }
+//        if(depth == arr.length) return;
+//        for(int i = prev + 1; i < arr.length; i++) {
+//            dfs(depth + 1, i, path + arr[i], arr);
+//        }
+//    }
 }
