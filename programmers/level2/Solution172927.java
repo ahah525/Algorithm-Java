@@ -3,10 +3,15 @@ package programmers.level2;
 
 /**
  * [문제명] 광물 캐기
- * [풀이시간] 29분 / 22분
- * [한줄평] N의 범위가 크지 않아 완전탐색으로 풀었던 문제다. / 첫번째 풀이와 차이는 광물의 인덱스를 구할 때 map 을 사용했다는 것밖에 없다.
+ * [풀이시간] 29분 / 22분 / 23부
+ * [한줄평] N의 범위가 크지 않아 완전탐색으로 풀었던 문제다.
+ * / 첫번째 풀이와 차이는 광물의 인덱스를 구할 때 map 을 사용했다는 것밖에 없다.
+ * / 중복 순열로 풀 수 있는 문제로 기초적인 문제지만 다시 풀어봐도 좋을 문제다.
  * 1_v1. 완전탐색, DFS(성공) -> 빠름
  * 2_v1. 완전탐색, DFS(성공)
+ * [풀이] 중복순열
+ * 3_v1. 완전탐색, DFS(성공)
+ * [풀이] 2_v1 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/172927">문제</a>
  */
 class Solution172927 {
@@ -90,7 +95,7 @@ class Solution172927 {
         }
     }
 
-    // 2_v1
+    // 2_v1, 3_v1
 //    int n;
 //    int[][] arr = {
 //            {1, 1, 1},
@@ -107,10 +112,7 @@ class Solution172927 {
 //        map.put("iron", 1);
 //        map.put("stone", 2);
 //        // 필요한 곡괭이 수
-//        int cnt = 0;
-//        for(int p : picks) {
-//            cnt += p;
-//        }
+//        int cnt = picks[0] + picks[1] + picks[2];
 //        n = Math.min((int) Math.ceil((double) minerals.length / 5), cnt);
 //        // System.out.println(n);
 //        dfs(0, 0, picks, minerals);
