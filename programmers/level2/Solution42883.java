@@ -5,11 +5,12 @@ import java.util.Stack;
 
 /**
  * [문제명] 큰 수 만들기
- * [풀이시간] 2시간 / 32분(30분 + 2분) / 18분(13분 + 5분)
+ * [풀이시간] 2시간 / 32분(30분 + 2분) / 18분(13분 + 5분) / 12분
  * [한줄평] stack 을 사용해야겠다는 것은 떠올렸는데 구현하는 과정에서 경우의 수를 처리하는 부분이 어려웠다.
  * 결국 풀이를 보고 해결했는데, 생각보다 너무 코드가 짧아서 놀랐고 꼭 다시 한번 풀어봐야할 문제인 것 같다. stack 이 아닌 for 문으로 해결한 풀이법도 있었다.
  * / 결국 stack 이라는 힌트를 보고 해결했던 문제였다.
  * / 두 번째 풀 때와 마찬가지로 같은 반례를 해결하지 못해서 시간이 좀 걸렸다.
+ * / 여러 번 풀어서 쉽게 풀 수 있었던 문제였다.
  * 1_v1. stack(실패)
  * - 경우에 따라서 스택에 선택적으로 넣고 빼는 방식으로 구현했다가 실패했다.
  * 1_v2. stack(성공)
@@ -29,6 +30,8 @@ import java.util.Stack;
  * 3_v1. stack(실패 - 12 실패)
  * 3_v2. stack(성공)
  * [해결] 2_v2 반례와 동일
+ * 4_v1. stack(성공)
+ * [풀이] 1_v2 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42883">문제</a>
  * @See <a href="https://school.programmers.co.kr/questions/25858">반례</a>
  * @See <a href="https://velog.io/@soo5717/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%ED%81%B0-%EC%88%98-%EB%A7%8C%EB%93%A4%EA%B8%B0-%ED%8C%8C%EC%9D%B4%EC%8D%AC">문제 힌트</a>
@@ -53,7 +56,7 @@ class Solution42883 {
         System.out.println(solution(number3, k3));
     }
 
-    // 1_v2, 2_v2, 3_v2
+    // 1_v2, 2_v2, 3_v2, 4_v1
     /**
      * @param number 2자리 이상, 1,000,000자리 이하인 숫자
      * @param k 제거할 수의 개수
