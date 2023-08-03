@@ -6,16 +6,21 @@ import java.util.Queue;
 
 /**
  * [문제명] [PCCP 모의고사 #2] 카페 확장
- * [풀이시간] 38분 / 20분 / 42분(20분 + 22분)
+ * [풀이시간] 38분 / 20분 / 42분(20분 + 22분) / 13분
  * [한줄평] CPU 스케줄링과 비슷한 문제였는데 쉬운듯 약간 복잡했던 문제였다. 다시 풀어보면 좋을 것 같은 문제다.
  * / 다시 풀어봐도 좋을 문제다.
  * /
+ * / 문제 설명대로 구현만 하면 쉽게 풀 수 있는 문제다.
  * 1_v1. LinkedList(성공)
+ * [풀이] 큐에 각 음료의 제조 완료 시각을 저장함
  * 2_v1. LinkedList(성공)
+ * [풀이] 1_v1 동일
  * 3_v1. LinkedList(실패 - 4,~5,7~8,10 실패)
  * [풀이] 큐에 각 음료 제조 시간을 저장함
  * 3_v2. LinkedList(성공)
- * [풀이] 큐에 각 음료의 제조 완료 시각을 저장함
+ * [풀이] 1_v1 동일
+ * 4_v1. LinkedList(성공)
+ * [풀이] 1_v1 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/15009/lessons/121689">문제</a>
  */
 class Solution121689 {
@@ -62,5 +67,28 @@ class Solution121689 {
             t += k;
         }
         return max;
+    }
+
+    // 4_v1
+    public int solution2(int[] menu, int[] order, int k) {
+        int answer = 0;
+        // 예상 종료시각
+        int t = 0;
+        int prevEnd = 0;    // 이전 음료 완료 시각
+        Queue<Integer> q = new LinkedList<>();
+        for(int num : order) {
+            // 1. 대기하는 사람 중 이미 음료 제조가 완료된 사람은 out
+            while(!q.isEmpty()) {
+                if(q.peek() > t) break;
+                q.poll();
+            }
+            // 2. 현재 음료의 예상 종료 시각 계산, 큐에 넣기, 이전 음료 완료 시각 갱신
+            int nowEnd = Math.max(prevEnd, t) + menu[num];
+            q.add(nowEnd);
+            prevEnd = nowEnd;
+            answer = Math.max(answer, q.size());
+            t += k;
+        }
+        return answer;
     }
 }
