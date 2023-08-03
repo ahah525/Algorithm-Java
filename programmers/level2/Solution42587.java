@@ -7,12 +7,20 @@ import java.util.Queue;
 
 /**
  * [문제명] 프린터
- * [풀이시간] / 16분 / 28분
- * [한줄평] Iterator 사용법을 검색해서 풀었던 문제였다. / 2번째라서 쉽게 풀었지만 우선순위큐를 이용한 풀이방법이 있다는 것도 알게되었다. / 쉬웠는데 배열을 잘못봐서 문제를 해결하는데 오래걸렸다.
- * 1_v1. Queue, Iterator(성공)
- * 2_v1. Queue, 향상된 for 문(성공)
+ * [풀이시간] / 16분 / 28분 / 11분
+ * [한줄평] Iterator 사용법을 검색해서 풀었던 문제였다.
+ * / 2번째라서 쉽게 풀었지만 우선순위큐를 이용한 풀이방법이 있다는 것도 알게되었다.
+ * / 쉬웠는데 배열을 잘못봐서 문제를 해결하는데 오래걸렸다.
+ * / 그냥 있는대로 구현하기만 하면 되는 아주 쉬운 문제로 다시 풀어볼 필요는 없을 것 같다.
+ * 1_v1. LinkedList, Iterator(성공)
+ * 2_v1. LinkedList, for-each(성공)
+ * [풀이] LinkedList에 (인덱스, 우선순위)를 저장하고 큐의 맨 앞에 있는 프로세스보다 우선순위가 더 큰 것이 있는지를 for-each로 하나씩 확인한다.
  * 2_v2. PriorityQueue(성공)
+ * [풀이]
  * 3_v1. LinkedList(성공)
+ * [풀이] 2_v1 동일
+ * 4_v1. LinkedList(성공)
+ * [풀이] LinkedList에 (우선순위)만 저장하고 큐의 맨 앞에 있는 프로세스보다 우선순위가 더 큰 것이 있는지를 for-each로 하나씩 확인한다.
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42587">문제</a>
  * @See <a href="https://fbtmdwhd33.tistory.com/223">다른 풀이 참고</a>
  */
@@ -88,6 +96,33 @@ class Solution42587 {
                         break l1;
                     }
                 }
+            }
+        }
+        return answer;
+    }
+
+    // 4_v1
+    public int solution3(int[] priorities, int location) {
+        int answer = 1;
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0; i < priorities.length; i++) {
+            q.add(i);
+        }
+        while(true) {
+            int now = priorities[q.peek()];
+            boolean canPlay = true;
+            for(int loc : q) {
+                if(now < priorities[loc]) {
+                    canPlay = false;
+                    break;
+                }
+            }
+            int loc = q.poll();
+            if(canPlay) {
+                if(loc == location) break;
+                answer++;
+            } else {
+                q.add(loc);
             }
         }
         return answer;
