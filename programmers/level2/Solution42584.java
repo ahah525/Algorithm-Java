@@ -6,9 +6,11 @@ import java.util.Stack;
 
 /**
  * [문제명] 주식가격
- * [풀이시간] / 26분, 40분 / 28분
- * [한줄평] 구현은 어렵지 않으나, 문제에 대한 이해가 부족하면 풀 수 없는 문제였다. / 반복문으로 풀면 시간초과가 날 것 같아서 접근법을 고민하다가 결국 해답을 찾지 못하고 반복문으로 풀었다.
+ * [풀이시간] / 26분, 40분 / 28분 / 21분
+ * [한줄평] 구현은 어렵지 않으나, 문제에 대한 이해가 부족하면 풀 수 없는 문제였다.
+ * / 반복문으로 풀면 시간초과가 날 것 같아서 접근법을 고민하다가 결국 해답을 찾지 못하고 반복문으로 풀었다.
  * / 3번째 풀었지만 스택 문제인 줄 몰랐다면 못풀었을 것 같은 문제다.
+ * / 스택 유형의 문제라는 것을 몰랐으면 또 못풀었을 것 같다. 꼭 복습이 필요하다!
  * 1_v1. 2중 for 문(실패: 테스트 1 제외하고 모두 실패)
  * - i : 0 ~ n - 1
  * - j : i + 1 ~ n - 1
@@ -20,9 +22,12 @@ import java.util.Stack;
  *  - 5 -> 4로 가격이 떨어진다고 했을 때, 실제로 1초간 가격이 5로 유지된 것이므로 0이 아닌 1로 계산해야 한다
  * 2_v1. 2중 for 문(성공)
  * 2_v2. Stack(성공) -> 추천
- * - 주식 감소 시점에 이전 시점들의 떨어지지 않은 기간을 계산하는 것이 핵심이다!!!
+ * [풀이] 주식 감소 시점에 이전 시점들의 떨어지지 않은 기간을 계산하는 것이 핵심이다!!!
  * - A, B, C 시점까지 계속 증가하다가 D 시점에 처음 감소했다면, 시점(C -> B -> A)순으로 prices[시점] > prices[D] 인 곳의 떨어지지 않은 기간을 계산하는 방식
  * 3_v1. Stack(성공)
+ * [풀이] 2_v2 동일
+ * 4_v1. Stack(성공)
+ * [풀이] 2_v2 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42584">문제</a>
  * @see <a href="https://school.programmers.co.kr/questions/39058">질문 힌트</a>
  * @see <a href="https://girawhale.tistory.com/7">Stack 풀이</a>
@@ -58,7 +63,7 @@ class Solution42584 {
         return answer;
     }
 
-    // 2_v2, 3_v1
+    // 2_v2, 3_v1, 4_v1
     public static int[] solution2(int[] prices) {
         int[] answer = new int[prices.length];
         Stack<Integer> stack = new Stack<>();   // 떨어지지 않은 기간을 계산해야하는 시점들
