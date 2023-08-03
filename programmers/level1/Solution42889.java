@@ -5,17 +5,22 @@ import java.util.*;
 
 /**
  * [문제명] 실패율
- * [풀이시간] 40분(30분 + 10분) / 38분 / 1시간 10분
+ * [풀이시간] 40분(30분 + 10분) / 38분 / 1시간 10분 / 31분
  * [한줄평] 30분 내에 충분히 풀 수 있는 문제였는데, 생각보다 시간이 걸렸다. 문제 조건을 잘 확인하자!!
  * / 처음에 PriorityQueue 로 풀려고 했는데 이상하게 계속 정렬이 제대로 안돼서 결국 리스트를 정렬해서 해결했다. 아직까지 무슨이유에서인지 파악하지 못했다.
  * / 예전에 풀었던 문제임에도 푸는데 너무 오래걸렸기 때문에 다시 꼭 풀어봐야겠다.
+ * / 이전에 PriorityQueue로 정렬에 실패했던 이유는 for-each문으로 탐색을 했기 때문인 것 같다.
  * 1_v1. 정렬(실패 - 7, 9, 13 테스트 실패)
- * - 각 stage 번호별로 실패율을 모두 계산한 후에 정렬을 하는 방식으로 구현했는데, 3개의 테스트에서 실패했다.
+ * [해결] "스테이지에 도달한 유저가 없는 경우 해당 스테이지의 실패율은 0 으로 정의한다." 라는 조건 고려
  * 1_v2. 정렬(성공)
- * - "스테이지에 도달한 유저가 없는 경우 해당 스테이지의 실패율은 0 으로 정의한다." 라는 조건에 따라
- * 2_v1. 정렬(성공) -> 빠름
+ * [풀이] Collections.sort()로 list 정렬
+ * 2_v1. 정렬(성공)
+ * [풀이] Arrays.sort(stages)로 원본배열 오름차순 정렬 후 로직 구현
  * 3_v1. 정렬(성공)
- * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons42889/">문제</a>
+ * [풀이] 2_v1 동일
+ * 4_v1. 정렬(성공) -> 빠름
+ * [풀이] PriorityQueue로 정렬
+ * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42889">문제</a>
  */
 class Solution42889 {
     public static void main(String[] args) {
@@ -85,10 +90,6 @@ class Solution42889 {
     public int[] solution2(int N, int[] stages) {
         int[] answer = new int[N];
         List<Stage> list =new ArrayList<>();
-//        Queue<Stage> pq = new PriorityQueue<>((o1, o2) -> {
-//            if(o1.fail == o2.fail) return o1.num - o2.num;
-//            return o2.fail > o1.fail ? 1 : -1;
-//        });
         // 1. 정렬
         Arrays.sort(stages);
         // 2. 스테이지별 실패율 계산
@@ -96,7 +97,6 @@ class Solution42889 {
         int noClear; // 스테이지에 도달했으나 아직 클리어하지 못한 플레이어 수
         int j = 0;
         for(int i = 1; i <= N; i++) {
-            // System.out.println(pq);
             noClear = 0;
             while(j < stages.length && i == stages[j]) {
                 noClear++;
@@ -108,7 +108,6 @@ class Solution42889 {
                 fail = (double) noClear / clear;
                 clear -= noClear;
             }
-//            pq.add(new Stage(i, fail));
             list.add(new Stage(i, fail));
         }
         // 3. 실패율 내림차순, 번호 오름차순 정렬
@@ -116,8 +115,6 @@ class Solution42889 {
             if(o1.fail == o2.fail) return o1.num - o2.num;
             return o2.fail > o1.fail ? 1 : -1;
         });
-        // System.out.println(pq);
-        // System.out.println(list);
         int i = 0;
         for(Stage stage : list) {
             answer[i] = stage.num;
@@ -158,4 +155,7 @@ class Solution42889 {
         }
         return answer;
     }
+
+    // 4_v1
+
 }
