@@ -4,13 +4,19 @@ import java.util.*;
 
 /**
  * [문제명] 이중우선순위큐
- * [풀이시간] / 45분 / 10분
- * [한줄평] / 3번째 풀다보니 어렵지 않게 풀 수 있었던 것 같다.
- * 1_v1. 최소힙, 최대힙, Map(성공)
- * 2_v1. 최소힙, 최대힙(성공)
- * 2_v2. 최소힙, 최대힙(성공)
- * - PriorityQueue 의 remove() 함수 사용하면 특정 값을 삭제할 수 있다
- * 3_v1. 최소힙, 최대힙(성공)
+ * [풀이시간] / 45분 / 10분 / 9분
+ * [한줄평]
+ * / 3번째 풀다보니 어렵지 않게 풀 수 있었던 것 같다.
+ * / 처음 풀때는 어려웠는데 더이상 안풀어봐도 될 정도로 쉽게 풀었다.
+ * 1_v1. PriorityQueue, Map(성공)
+ * [풀이] 최소힙, 최대힙
+ * 2_v1. PriorityQueue(성공)
+ * 2_v2. PriorityQueue(성공)
+ * [풀이] PriorityQueue 의 remove() 함수 사용하면 특정 값을 삭제할 수 있다
+ * 3_v1. PriorityQueue(성공)
+ * [풀이] 2_v2 동일
+ * 4_v1. PriorityQueue(성공)
+ * [풀이] 2_v2 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42628">문제</a>
  */
 class Solution42628 {
@@ -103,7 +109,7 @@ class Solution42628 {
         return answer;
     }
 
-    // 2_v2, 3_v1
+    // 2_v2, 3_v1, 4_v1
     public static int[] solution2(String[] operations) {
         int[] answer = new int[2];  // (최댓값, 최솟값)
         Queue<Integer> minHeap = new PriorityQueue<>(); // 최소힙
