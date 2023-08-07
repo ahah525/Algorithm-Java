@@ -9,10 +9,13 @@ import java.util.List;
  * [문제명] 길 찾기 게임
  * [풀이시간] 1시간(50분 + 10분)
  * [한줄평] 이진탐색트리를 구성하는 방법에 대한 풀이를 참고 해서 풀었다. PriorityQueue 를 사용했을 때 제대로 정렬이 되지 않은 이유를 모르겠다..
+ * / 결국 힌트를 보고 해결했다. 여전히 조금 어려웠기 때문에 이진 탐색 트리를 구현하는 방법에 대한 복습이 꼭 필요하다.
  * 1_v1. 이진탐색트리(실패)
- * [풀이] PriorityQueue 에 정렬 기준을 설정해서 노드 정렬
+ * [풀이] PriorityQueue 에 정렬 기준을 설정하고 for-each문으로 순회했다.
  * 1_v2. 이진탐색트리(성공)
  * [풀이] ArrayList 에 노드를 넣고 Collections.sort()로 정렬
+ * 2_v1. 이진탐색트리(성공)
+ * [풀이] 1_v2 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42892">문제</a>
  * @See <a href="https://moonsbeen.tistory.com/175"></a>
  */
