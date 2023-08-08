@@ -3,12 +3,16 @@ package programmers.level1;
 /**
  * [문제명] 약수의 합
  * [풀이시간] / 13분(3분 + 10분)
- * [한줄평] / 반례를 찾지 못해서 결국 답을 봤는데, 생각지못하게 제곱근 판별 수식을 틀려서 애를 먹었다.
+ * [한줄평]
+ * / 반례를 찾지 못해서 결국 답을 봤는데, 생각지못하게 제곱근 판별 수식을 틀려서 애를 먹었다.
+ * / 더이상 풀어볼 필요 없는 쉬운 문제다.
  * 1_v1. 수학(성공)
  * 2_v1. 수학(실패 - 3~5,8,10,13 실패)
- * [접근법] 제곱근인지 판별할 때 if(sqrt * sqrt == n)을 사용
+ * [풀이] 제곱근 판별 방법: (sqrt * sqrt == n) 사용
  * 2_v2. 수학(성공)
- * [해결법] 제곱근인지 판별할 때 (Math.floor(sqrt) == sqrt)을 사용
+ * [해결] 제곱근 판별 방법: (Math.floor(sqrt) == sqrt) 사용
+ * 3_v1. 수학(성공)
+ * [풀이] 제곱근 판별 방법: (Math.sqrt(n) % 1 == 0) 사용
  */
 class Solution12928 {
     public static void main(String[] args) {
@@ -56,6 +60,17 @@ class Solution12928 {
         }
         // 실수값이 정수인지 판별
         if(Math.floor(sqrt) == sqrt) answer -= sqrt;
+        return answer;
+    }
+
+    // 3_v1
+    public int solution3(int n) {
+        int answer = 0;
+        double sqrt = Math.sqrt(n);
+        for(int i = 1; i <= sqrt; i++) {
+            if(n % i == 0) answer += i + (n / i);
+        }
+        if(sqrt % 1 == 0) answer -= sqrt;
         return answer;
     }
 }
