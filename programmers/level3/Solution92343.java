@@ -6,10 +6,13 @@ import java.util.List;
 
 /**
  * [문제명] 양과 늑대
- * [풀이시간] 1시간 30분
+ * [풀이시간] 1시간 30분 / 35분
  * [한줄평] 처음보는 유형의 DFS 문제였고 풀이를 보고도 이해하는데 오래걸렸다. 꼭 다시 풀어봐야할 문제다.
+ * / 아이디어를 빨리 떠올리긴 했지만 다음에 갈 노드를 관리하는 코드를 짜는데 풀이를 참고했기 때문에 다시 꼭 풀어봐야겠다.
  * 1_v1. DFS(성공)
  * [풀이] 현재 노드에서 갈 수 있는 노드 리스트 = (현재 노드룰 제외하고)부모 노드에서 갈 수 있는 노드 리스트 + 현재 노드의 자식 노드 리스트
+ * 2_v1. DFS(성공)
+ * [풀이] 1_v1 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/92343">문제</a>
  * @See <a href="https://jangcenter.tistory.com/120">풀이 참고1</a>
  * @See <a href="https://g-egg.tistory.com/76">풀이 참고2</a>
@@ -20,7 +23,7 @@ class Solution92343 {
         System.out.println();
     }
 
-    // 1_v1
+    // 1_v1, 2_v1
     List<Integer>[] graph; // graph[i]: i번 노드의 자식 노드 리스트
     int answer;
     public int solution(int[] info, int[][] edges) {
