@@ -10,6 +10,8 @@ import java.util.List;
  * [풀이시간] (1시간 3분)
  * [한줄평]
  * 1_v1. (실패-정확성 29 실패)
+ * [해결] A, B, C는 -100,000 이상 100,000 이하인 정수이므로 두 수의 곱이 최대 10^10으로 int 범위를 초과하기 때문에 long타입으로 계산한다.
+ * 1_v2. (실패-정확성 28 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/87377">문제</a>
  */
 class Solution87377 {
@@ -30,13 +32,13 @@ class Solution87377 {
         int maxY = MIN;
         // ax+by+c=0
         for(int i = 0; i < line.length; i++) {
-            int a = line[i][0];
-            int b = line[i][1];
-            int e = line[i][2];
+            long a = line[i][0];
+            long b = line[i][1];
+            long e = line[i][2];
             for(int j = i + 1; j < line.length; j++) {
-                int c = line[j][0];
-                int d = line[j][1];
-                int f = line[j][2];
+                long c = line[j][0];
+                long d = line[j][1];
+                long f = line[j][2];
                 //
                 double x = (double) (b * f - e * d) / (a * d - b * c);
                 double y = (double) (e * c - a * f) / (a * d - b * c);
