@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
 
 /**
  * [문제명] 표 편집
- * [풀이시간] 2시간(50분 + 1시간 10분) / 47분
+ * [풀이시간] 2시간(50분 + 1시간 10분) / 1시간 5분(47분, 18분)
  * [한줄평] 양방향 연결리스트를 직접 구현해서 풀어야하는 것을 풀이를 보고 이해했던 문제로 반드시 복습이 필요하다.
  * / 양방향 연결 리스트를 구현하는 코드 힌트를 보고 풀었기 때문에 꼭 복습이 필요하다.
  * 1_v1. (실패 - 정확성 테스트 5,9,11~22,24,27,29~30 실패, 효율성 테스트 모두 실패)
@@ -15,6 +15,7 @@ import java.util.StringTokenizer;
  * [풀이] 양방향 연결리스트 구현
  * 2_v1. 구현(성공)
  * [풀이] 1_v2 동일
+ * 2_v2. 구현(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/81303">문제</a>
  * @See <a href="https://jangcenter.tistory.com/125">풀이 참고</a>
  */
@@ -115,4 +116,90 @@ class Solution81303 {
         }
         return sb.toString();
     }
+
+    // 2_v2
+//    class Node {
+//        int idx;
+//        Node prev;
+//        Node next;
+//
+//        Node(int idx) {
+//            this.idx = idx;
+//        }
+//    }
+//
+//    public String solution2(int n, int k, String[] cmd) {
+//        boolean[] isDeleted = new boolean[n];
+//
+//        Node now = new Node(0);
+//        Node cur = null;
+//        for(int i = 1; i < n; i++) {
+//            Node next = new Node(i);
+//            if(i == k) cur = next;
+//            next.prev = now;
+//            now.next = next;
+//            now = next;
+//        }
+//        Stack<Node> stack = new Stack<>();
+//        for(String s : cmd) {
+//            StringTokenizer st = new StringTokenizer(s);
+//            String type = st.nextToken();
+//            switch(type) {
+//                case "U": {
+//                    // 현재 선택된 행에서 X칸 위에 있는 행 선택
+//                    int x = Integer.parseInt(st.nextToken());
+//                    for(int i = 0; i < x; i++) {
+//                        cur = cur.prev;
+//                    }
+//                    break;
+//                }
+//                case "D": {
+//                    // 현재 선택된 행에서 X칸 아래에 있는 행 선택
+//                    int x = Integer.parseInt(st.nextToken());
+//                    for(int i = 0; i < x; i++) {
+//                        cur = cur.next;
+//                    }
+//                    break;
+//                }
+//                case "C": {
+//                    // 현재 선택된 행 삭제, 아래 행 선택
+//                    isDeleted[cur.idx] = true;
+//                    stack.push(cur);
+//                    // 현재 노드의 이전 노드&다음 노드 연결하기
+//                    Node prev = cur.prev;
+//                    Node next = cur.next;
+//                    // 이전 노드가 있으면
+//                    if(prev != null) prev.next = next;
+//                    if(next == null) {
+//                        // 다음 노드가 없다면(가장 마지막 행이라면)
+//                        cur = prev;
+//                    } else {
+//                        // 다음 노드가 있으면
+//                        next.prev = prev;
+//                        cur = next;
+//                    }
+//                    break;
+//                }
+//                case "Z": {
+//                    // 가장 최근에 삭제된 행 원상복구
+//                    Node node = stack.pop();
+//                    isDeleted[node.idx] = false;
+//                    //
+//                    Node prev = node.prev;
+//                    Node next = node.next;
+//                    //
+//                    if(prev != null) prev.next = node;
+//                    if(next != null) next.prev = node;
+//                    break;
+//                }
+//            }
+//        }
+//        //
+//        StringBuilder sb = new StringBuilder();
+//        for(boolean flag : isDeleted) {
+//            if(flag) sb.append("X");
+//            else sb.append("O");
+//        }
+//        return sb.toString();
+//    }
 }
