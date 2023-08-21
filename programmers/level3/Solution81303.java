@@ -6,12 +6,15 @@ import java.util.StringTokenizer;
 
 /**
  * [문제명] 표 편집
- * [풀이시간] 2시간(50분 + 1시간 10분)
+ * [풀이시간] 2시간(50분 + 1시간 10분) / 47분
  * [한줄평] 양방향 연결리스트를 직접 구현해서 풀어야하는 것을 풀이를 보고 이해했던 문제로 반드시 복습이 필요하다.
+ * / 양방향 연결 리스트를 구현하는 코드 힌트를 보고 풀었기 때문에 꼭 복습이 필요하다.
  * 1_v1. (실패 - 정확성 테스트 5,9,11~22,24,27,29~30 실패, 효율성 테스트 모두 실패)
  * [풀이] ArrayList 에 행 번호 저장, 삭제
  * 1_v2. 자료구조(성공)
  * [풀이] 양방향 연결리스트 구현
+ * 2_v1. 구현(성공)
+ * [풀이] 1_v2 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/81303">문제</a>
  * @See <a href="https://jangcenter.tistory.com/125">풀이 참고</a>
  */
@@ -21,7 +24,7 @@ class Solution81303 {
         System.out.println();
     }
 
-    // 1_v2
+    // 1_v2, 2_v1
     class Node {
         Node prev; // 이전 노드
         Node next; // 다음 노드
@@ -77,17 +80,14 @@ class Solution81303 {
                     // 현재 노드의 이전 노드, 다음 노드
                     Node prev = cur.prev;
                     Node next = cur.next;
-                    if(prev != null) {
-                        // 이전 노드가 있으면, 이전 노드 -> 다음 노드 연결
-                        prev.next = next;
-                    }
+                    // 이전 노드가 있으면, 이전 노드 -> 다음 노드 연결
+                    if(prev != null) prev.next = next;
                     if(next != null) {
-                        // 다음 노드가 있으면, 이전 노드 <- 다음 노드 연결
+                        // 다음 노드가 있으면, 이전 노드 <- 다음 노드 연결, 아래 행 선택
                         next.prev = prev;
-                        // 아래 행 선택
                         cur = next;
                     } else {
-                        // 이전 행 선택
+                        // 다음 노드가 없으면, 이전 행 선택
                         cur = prev;
                     }
                     break;
