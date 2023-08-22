@@ -10,6 +10,8 @@ import java.util.Queue;
  * [한줄평] 정답률이 낮은 것에 비해 너무 쉬운 문제였다. DFS/BFS 아무 방식으로나 풀 수 있다.
  * 1_v1. 완전탐색, BFS(성공)
  * [풀이] 0이 아닌 곳에서 BFS를 돌려서 영역의 개수와 영역 크기의 최댓값을 구한다.
+ * 1_v2. 완전탐색, DFS(성공)
+ * [풀이] 0이 아닌 곳에서 DFS를 돌려서 영역의 개수와 영역 크기의 최댓값을 구한다.
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/1829">문제</a>
  */
 class Solution1829 {
@@ -65,6 +67,34 @@ class Solution1829 {
                 q.add(new P(nx, ny));
                 visited[nx][ny] = true;
             }
+        }
+        return cnt;
+    }
+
+    // 1_v2
+    public int[] solution2(int m, int n, int[][] picture) {
+        visited = new boolean[m][n];
+        int cnt = 0;
+        int max = 0;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(visited[i][j] || picture[i][j] == 0) continue;
+                max = Math.max(max, dfs(i, j, m, n, picture));
+                cnt++;
+            }
+        }
+        return new int[] {cnt, max};
+    }
+
+    public int dfs(int x, int y, int m, int n, int[][] picture) {
+        visited[x][y] = true;
+        int cnt = 1;
+        for(int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if(0 > nx || nx >= m || 0 > ny || ny >= n) continue;
+            if(visited[nx][ny] || picture[nx][ny] != picture[x][y]) continue;
+            cnt += dfs(nx, ny, m, n, picture);
         }
         return cnt;
     }
