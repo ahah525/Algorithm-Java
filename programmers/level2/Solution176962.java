@@ -7,11 +7,14 @@ import java.util.Stack;
 
 /**
  * [문제명] 과제 진행하기
- * [풀이시간] 2시간 35분(2시간 25분 + 10분)
+ * [풀이시간] 2시간 35분(2시간 25분 + 10분) / 2시간 20분
  * [한줄평] 너무 어려운 구현 문제여서 꼭 한번 다시 풀어봐야겠다.
+ * / 다시 푸는데도 너무 복잡해서 어려웠다.
  * 1_v1. 구현(실패 - 1~10,12,18,20 실패)
  * 1_v2. 구현(성공)
  * [반례] 스택에 있는 과제를 꺼내서 종료했을 경우에도 기록해야 함
+ * 2_v1. 구현(성공)
+ * [풀이] 1_v2 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/176962">문제</a>
  * @See <a href="https://school.programmers.co.kr/questions/46698">참고</a>
  */
@@ -52,42 +55,41 @@ class Solution176962 {
         Stack<Assignment> stack = new Stack<>();    // 잠시 멈춘 과제 스택
         // 2. 첫번째 과제로 초기화
         Assignment cur = pq.poll(); // 진행중인 과제
-        int t = cur.start; // 진행중인 과제의 시작 시각
+        int curS = cur.start; // 진행중인 과제의 시작 시각
         int idx = 0; // 완료한 과제 개수
         // 3. 모든 과제를 시작할 때까지 반복
         while(!pq.isEmpty()) {
             // 4. 큐에서 과제 1개 꺼내기
             Assignment a = pq.poll();
             // 5. 현재 과제를 시작하기 전에 처리할 일 수행
-            if(t + cur.play <= a.start) {
+            if(curS + cur.play <= a.start) {
                 // 진행 중인 과제 종료 시각 <= 현재 과제 시작 시각
                 // 1. 진행 중인 과제 종료
                 answer[idx++] = cur.name;
                 // 2. (진행 중인 과제 종료 시각 ~ 현재 과제 시작 시각) 사이 남은 시간 계산
-                int remain = a.start - t - cur.play;
+                int remain = a.start - curS - cur.play;
                 // 3. 현재 과제 시작까지 남은 시간 동안 스택에 있는 과제 진행
                 while(!stack.isEmpty() && remain > 0) {
-                    Assignment pop = stack.pop();
-                    cur = pop;
-                    if(remain < pop.play) {
+                    cur = stack.pop();
+                    if(remain < cur.play) {
                         // 남은 시간 < 진행 시간, 남은 시간 동안 스택에서 꺼낸 과제 진행, 남은 과제 시간 갱신
-                        pop.play -= remain;
-                        stack.push(pop);
+                        cur.play -= remain;
+                        stack.push(cur);
                         break;
                     }
                     // 남은 시간 >= 진행 시간 -> 스택에서 꺼낸 과제 종료, 남은 시간 갱신
                     answer[idx++] = cur.name;
-                    remain -= pop.play;
+                    remain -= cur.play;
                 }
             } else {
                 // 진행 중인 과제가 끝난 시각 > 현재 과제 시작 시각
                 // 1. 진행 중인 과제 남은 시각 갱신, 스택으로 이동
-                cur.play = (t + cur.play - a.start);
+                cur.play = (curS + cur.play - a.start);
                 stack.push(cur);
             }
             // 6. 현재 과제 시작
             cur = a;
-            t = a.start;
+            curS = a.start;
         }
         // 7. 마지막 과제 완료 처리
         answer[idx++] = cur.name;
