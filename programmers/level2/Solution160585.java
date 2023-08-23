@@ -3,8 +3,9 @@ package programmers.level2;
 
 /**
  * [문제명] 혼자서 하는 틱택토
- * [풀이시간] 2시간(34분, )
+ * [풀이시간] 2시간 / 58분
  * [한줄평] 쉬운 문제라고 생각했는데, 반례를 잡는게 너무너무 어려웠다.
+ * 경우의 수를 모두 직접 구해서 풀었던 문제였다. 나중에 다시 한 번 더 풀어봐야겠다.
  * 1_v1. 구현(실패 - 1,3,4,7,8,11,14,17,19,21,25,26,29,31,32,34,36,38,39,41,43,45,46,48,49)
  * 1_v2. 구현(실패 - 14,26,46)
  * 1_v3. 구현(성공)
@@ -16,6 +17,8 @@ package programmers.level2;
  * 2. O가 1빙고 만들고 바로 종료한 경우
  * 3. X가 1빙고 만들고 바로 종료한 경우
  * 4. O가 마지막 공격때 한 번에 2빙고 만들고 바로 종료한 경우
+ * 2_v1. 구현(성공)
+ * [풀이] 1_v3 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/160585">문제</a>
  * @See <a href="https://inspirer9.tistory.com/443">풀이 참고</a>
  */
@@ -74,6 +77,44 @@ class Solution160585 {
             // O가 마지막 공격때 한번에 2빙고 만들고 바로 종료한 경우 => 가능
             if(cnt[1] == cnt[2] + 1) return 1;
         }
+        return 0;
+    }
+
+    // 2_v1
+    public int solution2(String[] board) {
+        int[][] map = new int[3][3];
+        int[] cnt = new int[3];
+        int[] bingo = new int[3];
+        // 1. 맵 초기화, o/x 개수 세기
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                char c = board[i].charAt(j);
+                if(c == 'O') {
+                    cnt[1]++;
+                    map[i][j] = 1;
+                } else if(c == 'X') {
+                    cnt[2]++;
+                    map[i][j] = 2;
+                }
+            }
+        }
+        // 2. o의 개수는 x와 같거나 x보다 1개 많아야 한다.
+        if(cnt[1] != cnt[2] && cnt[1] != cnt[2] + 1) return 0;
+        // 3. 빙고 개수 세기
+        for(int i = 0; i < 3; i++) {
+            // 가로
+            if(map[i][0] == map[i][1] && map[i][1] == map[i][2]) bingo[map[i][0]]++;
+            // 세로
+            if(map[0][i] == map[1][i] && map[1][i] == map[2][i]) bingo[map[0][i]]++;
+        }
+        // 대각선
+        if(map[0][0] == map[1][1] && map[1][1] == map[2][2]) bingo[map[0][0]]++;
+        if(map[0][2] == map[1][1] && map[1][1] == map[2][0]) bingo[map[0][2]]++;
+        // 4. 가능한 경우 처리
+        if(bingo[1] == 0 && bingo[2] == 0) return 1;
+        if(bingo[1] == 2 && bingo[2] == 0) return 1;
+        if(cnt[1] > cnt[2] && bingo[1] > bingo[2]) return 1;
+        if(cnt[1] == cnt[2] && bingo[1] < bingo[2]) return 1;
         return 0;
     }
 }
