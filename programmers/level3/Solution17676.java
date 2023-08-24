@@ -6,12 +6,16 @@ import java.util.List;
 
 /**
  * [문제명] [1차] 추석 트래픽
- * [풀이시간] 1시간 30분
+ * [풀이시간] 1시간 30분, 10분
  * [한줄평] 감을 잡지 못해서 결국 풀이를 보고 이해했던 문제로 꼭 복습이 필요하다.
  * 1_v1. (성공)
- * [풀이] 한 로그의 시작점, 끝점을 기준으로 [시작점,시작점+999], [끝점,끝점+999] 두 구간에 대해 각 로그가 구간에 걸쳐있는지를 검사한다.
- * [시간 복잡도] O(2 * n^2)
+ * [풀이] 한 로그의 시작점, 끝점을 기준으로 "[시작점,시작점+999], [끝점,끝점+999] 두 구간"에 대해 각 로그가 구간에 걸쳐있는지를 "모든 로그"를 대상으로 검사한다.
+ * [시간 복잡도] O(2 * N^2)
  * - n: 로그의 개수
+ * 1_v2. 그리디(성공) -> 빠름
+ * [풀이] 한 로그의 끝점을 기준으로 "[끝점,끝점+999] 한 구간"에 대해 각 로그가 구간에 걸쳐있는지를 "해당 로그를 포함한 이후 로그"를 대상으로 검사한다.
+ * 이미 끝점을 기준으로 오름차순 되어있기 때문에 이전 로그는 [끝점,끝점+999]범위에 걸치지않는다. 그렇기 때문에 모든 로그가 아닌 현재 로그를 포함한 이후 로그를 검사한다.
+ * [시간 복잡도] O(N * logN)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/17676">문제</a>
  * @See <a href="https://velog.io/@pppp0722/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-Level3-1%EC%B0%A8-%EC%B6%94%EC%84%9D-%ED%8A%B8%EB%9E%98%ED%94%BD-Java">풀이 참고1</a>
  * @See <a href="https://j-sik.tistory.com/117">풀이 참고2</a>
@@ -79,5 +83,30 @@ class Solution17676 {
     public boolean isPossible(int s, int e, int ns, int ne) {
         if(e < ns || ne < s) return false;
         return true;
+    }
+
+    // 1_v2
+    public int solution2(String[] lines) {
+        int max = 0;
+        // 1. 모든 로그의 시작 시각, 끝 시각 구하기
+        List<Work> list = new ArrayList<>();
+        for(String line : lines) {
+            list.add(calc(line));
+        }
+        // 2. 각 로그의 끝시각을 기준으로 한 구간에 대해 처리량 구하기
+        for(int i = 0; i < list.size(); i++) {
+            Work w = list.get(i);
+            // 3. 로그의 끝시각을 기준으로 한 구간의 시작점, 끝점 구하기
+            int s2 = w.end;
+            int e2 = w.end + 999;
+            int cnt2 = 0;   // [s2, e2] 구간의 처리량
+            // 4. [s2, e2] 구간의 처리량 계산
+            for(int j = i; j < list.size(); j++) {
+                Work nw = list.get(j);
+                if(isPossible(s2, e2, nw.start, nw.end)) cnt2++;
+            }
+            max = Math.max(max, cnt2);
+        }
+        return max;
     }
 }
