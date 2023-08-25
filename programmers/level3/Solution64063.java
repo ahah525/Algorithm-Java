@@ -6,11 +6,12 @@ import java.util.Map;
 
 /**
  * [문제명] 호텔 방 배정
- * [풀이시간] 52분(32분 + 20분)
+ * [풀이시간] 52분(32분 + 20분) / (20분)
  * [한줄평] 처음에 배열로 풀려고 했는데 k의 크기가 너무 커서 힌트를 얻어 HashMap을 사용했다. 결국 시간초과 문제를 해결하지 못해서 풀이를 봤는데 재귀로 구현한 것을 이해하는 것이 너무 어려웠다.
  * 1_v1. HashMap(실패 - 효율성 테스트 1~4,6~7 시간초과)
  * 1_v2. HashMap(성공)
  * [풀이] 재귀
+ * 2_v1. HashMap(실패-효율성 테스트 3,4,6 시간초과)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/64063">문제</a>
  * @See <a href="https://bcp0109.tistory.com/188">풀이 참고</a>
  */
@@ -48,5 +49,23 @@ class Solution64063 {
         long emptyRoom = findEmptyRoom(nextRoom);
         map.put(room, emptyRoom);   //
         return emptyRoom;
+    }
+
+    // 2_v1
+    public long[] solution2(long k, long[] roomNumber) {
+        long[] answer = new long[roomNumber.length];
+        Map<Long, Long> map = new HashMap<>();
+        int i = 0;
+        for(long num : roomNumber) {
+            long reserve = num;
+            while(map.containsKey(reserve)) {
+                reserve = map.get(reserve);
+            }
+            answer[i++] = reserve;
+            //
+            map.put(num, reserve + 1);
+            map.put(reserve, reserve + 1);
+        }
+        return answer;
     }
 }
