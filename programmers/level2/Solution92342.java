@@ -3,9 +3,10 @@ package programmers.level2;
 
 /**
  * [문제명] 양궁대회
- * [풀이시간] 3시간
+ * [풀이시간] 3시간 / (35분)
  * [한줄평] DFS로 완전탐색해야 한다는 것은 알았는데, 생각보다 구현하기가 복잡해서 어려웠던 문제였다.
  * 1_v1. DFS, 완전탐색(성공)
+ * 2_v1. DFS, 완전탐색(실패-1~18,20~22,24~25 실패)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/92342">문제</a>
  * @See <a href="https://velog.io/@pppp0722/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-Level2-%EC%96%91%EA%B6%81%EB%8C%80%ED%9A%8C-Java">풀이 참고</a>
  */
@@ -106,5 +107,59 @@ class Solution92342 {
         // System.out.println(Arrays.toString(pathA));
         // System.out.println(Arrays.toString(pathB));
         return b - a;
+    }
+
+
+    // 2_v1
+    int[] answer;
+    int[] path;
+    int max;
+    public int[] solution2(int n, int[] info) {
+        path = new int[11];
+        max = 0;
+        answer = new int[11];
+
+        dfs(0, 0, n, info);
+        if(max == 0) return new int[] {-1};
+        return answer;
+    }
+
+    public void dfs(int depth, int prev, int n, int[] info) {
+        if(depth == n) {
+            int a = 0;
+            int b = 0;
+            for(int i = 0; i <= 10; i++) {
+                // 둘 다 점수 획득X
+                if(info[i] == 0 && path[i] == 0) continue;
+                if(info[i] >= path[i]) a += (10 - i);
+                else b += (10 - i);
+            }
+            // 최종 점수 어피치 < 라이언, 라이언 우승
+            int diff = b - a;
+            if(diff > 0 && max < diff) {
+                for(int i = 10; i >= 0; i--) {
+                    if(info[i] == path[i]) continue;
+                    if(info[i] < path[i]) {
+                        // 최댓값 갱신, 복사
+                        max = diff;
+                        deepCopy();
+                    }
+                    break;
+                }
+            }
+            return;
+        }
+
+        for(int i = prev; i <= 10; i++) {
+            path[i]++;
+            dfs(depth + 1, prev, n, info);
+            path[i]--;
+        }
+    }
+
+    public void deepCopy() {
+        for(int i = 0; i <= 10; i++) {
+            answer[i] = path[i];
+        }
     }
 }
