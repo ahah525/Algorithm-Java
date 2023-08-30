@@ -7,10 +7,13 @@ import java.util.List;
 
 /**
  * [문제명] 무지의 먹방 라이브
- * [풀이시간] 2시간 5분(1시간 33분 + 32분)
+ * [풀이시간] 2시간 5분(1시간 33분 + 32분) / (20분)
  * [한줄평] 생각보다 어려웠고 결국 풀이를 보고 이해했던 문제다. 솔직히 답을 안봤으면 정렬을 해야겠다는 생각조차 못했을 것 같다.
+ * /
  * 1_v1. (실패 - 정확성 14.7, 효율성 0)
  * 1_v2. 구현, 정렬(성공)
+ * 2_v1. 구현(실패 - 정확성 16,19,20,23 시간초과, 효율성 1~8 시간초과)
+ * [풀이] 무식하게 k번 반복
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42891">문제</a>
  * @See <a href="https://moonsbeen.tistory.com/371">풀이</a>
  * @See <a href="https://www.youtube.com/watch?v=4MWxAt4fx5I">풀이</a>
@@ -21,7 +24,7 @@ class Solution42891 {
         System.out.println();
     }
 
-    // 1_v1
+    // 1_v2
     class Food {
         int idx;
         int time;
@@ -61,5 +64,24 @@ class Solution42891 {
             len--;
         }
         return -1;
+    }
+
+    // 2_v1
+    public int solution2(int[] foodTimes, long k) {
+        int idx = 0;
+        while(k > 0) {
+            if(foodTimes[idx] != 0) {
+                foodTimes[idx]--;
+                k--;
+                // System.out.println(Arrays.toString(foodTimes));
+            }
+            idx++;
+            if(idx == foodTimes.length) idx = 0;
+        }
+        while(foodTimes[idx] == 0) {
+            idx++;
+            if(idx == foodTimes.length) idx = 0;
+        }
+        return idx + 1;
     }
 }
