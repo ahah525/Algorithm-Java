@@ -7,15 +7,19 @@ import java.util.List;
 
 /**
  * [문제명] 여행경로
- * [풀이시간] 35분 / 1시간 45분 / 40분
+ * [풀이시간] 35분 / 1시간 45분 / 40분 / 21분
  * [한줄평] DFS 로 풀어야겠다는 것은 알았지만 경로를 리스트 대신 문자열로 다룬다는 힌트를 얻었기 때문에 다시 한번 풀어봐야할 문제다.
  * / 경로를 처음부터 문자열 배열에 저장하는 것이 가장 빠른 방법이다.
+ * /
+ * / 원본 배열을 정렬하면 굳이 완전탐색을 하지 않아도 풀 수 있는 문제였다.
  * 1_v1. DFS(성공)
- * [접근법] 정렬없이 완전탐색, 경로를 문자열로 저장 후 문자열 배열로 분리
- * 2_v1. DFS(성공) -> 가장 빠름
- * [접근법] 티켓 출발지,도착지 오름차순 정렬, 경로를 문자열 배열에 저장
+ * [풀이] 정렬없이 완전탐색, 경로를 문자열로 저장 후 문자열 배열로 분리
+ * 2_v1. DFS(성공)
+ * [풀이] 티켓 출발지,도착지 오름차순 정렬, 경로를 문자열 배열에 저장
  * 3_v1. DFS(성공)
- * [접근법] 티켓 출발지,도착지 오름차순 정렬, 경로를 문자열로 저장 후 문자열 배열로 분리
+ * [풀이] 티켓 출발지,도착지 오름차순 정렬, 경로를 문자열로 저장 후 문자열 배열로 분리
+ * 4_v1. DFS(성공) -> 가장 빠름
+ * [풀이] 알파벳 순서상 제일 앞에 있는 경로 = 티켓 도착지 오름차순 정렬한 상태에서 찾은 첫번째 경로
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/43164">문제</a>
  * @See <a href="https://velog.io/@rari_1110/DFS-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%EC%97%AC%ED%96%89%EA%B2%BD%EB%A1%9C-JAVA">힌트</a>
  */
@@ -150,4 +154,38 @@ class Solution43164 {
             }
         }
     }
+
+    // 4_v1
+//    int n;
+//    boolean isFind;
+//    String[] answer;
+//    public String[] solution4(String[][] tickets) {
+//        n = tickets.length;
+//        isFind = false;
+//        answer = new String[n + 1];
+//        answer[0] = "ICN";
+//        // 1. 도착지 오름차순 정렬
+//        Arrays.sort(tickets, (o1, o2) -> o1[1].compareTo(o2[1]));
+//        dfs4(1, "ICN", new boolean[n], tickets);
+//
+//        return answer;
+//    }
+//
+//    public void dfs4(int depth, String start, boolean[] visited, String[][] tickets) {
+//        // 1. 도착지 n개를 다 선택했으면
+//        if(depth == n + 1) {
+//            isFind = true;
+//            return;
+//        }
+//        // 2. 출발지가 start인 티켓 선택
+//        for(int i = 0; i < n; i++) {
+//            if(visited[i] || !tickets[i][0].equals(start)) continue;
+//            visited[i] = true;
+//            answer[depth] = tickets[i][1];
+//            dfs4(depth + 1, tickets[i][1], visited, tickets);
+//            // 3. 이미 답을 찾았으면 더 탐색할 필요없이 종료
+//            if(isFind) return;
+//            visited[i] = false;
+//        }
+//    }
 }
