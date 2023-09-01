@@ -10,18 +10,20 @@ import java.util.StringTokenizer;
 
 /**
  * [문제명] 숨바꼭질 4
- * [풀이시간] (16분)
+ * [풀이시간] (16분+9분)
  * [한줄평]
  * 1_v1. BFS(실패-시간초과)
- * [풀이]
+ * [풀이] String으로 경로 저장
+ * 2_v1. BFS(실패-시간초과)
+ * [풀이] StringBuilder로 경로 저장
  * @See <a href="https://www.acmicpc.net/problem/13913">문제</a>
  */
 class Boj13913 {
     static class Node {
         int value;
-        String path;
+        StringBuilder path;
 
-        Node(int value, String path) {
+        Node(int value, StringBuilder path) {
             this.value = value;
             this.path = path;
         }
@@ -45,22 +47,24 @@ class Boj13913 {
 
     public static String bfs(int start, int target) {
         Queue<Node> q = new LinkedList<>();
-        q.add(new Node(start, String.valueOf(start)));
+        q.add(new Node(start, new StringBuilder().append(start)));
         visited[start] = 1;
         //
         while(!q.isEmpty()) {
             Node cur = q.poll();
             int v = cur.value;
-            String path = cur.path;
+            StringBuilder path = cur.path;
             if(v == target) {
                 minTime = visited[v] - 1;
-                return path;
+                return path.toString();
             }
             int[] next = {v - 1, v + 1, 2 * v};
             for(int nv : next) {
                 if(!isRange(nv)) continue;
                 if(visited[nv] == 0) {
-                    q.add(new Node(nv, path + " " + nv));
+                    StringBuilder newPath = new StringBuilder();
+                    newPath.append(path).append(" ").append(nv);
+                    q.add(new Node(nv, newPath));
                     visited[nv] = visited[v] + 1;
                 }
             }
