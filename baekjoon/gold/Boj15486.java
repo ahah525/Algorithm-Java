@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 /**
  * [문제명] 퇴사 2
  * [풀이시간] 40분(35분+5분)
- * [한줄평] 역방향으로 값을 기록한다는 힌트를 보고 풀었던 문제다.
+ * [한줄평] 역방향으로 값을 기록한다는 힌트를 보고 풀었던 문제다. 조금 새로운 방식의 문제여서 꼭 복습해보면 좋을 것 같다.
  * 1_v1. DP(실패)
  * [반례] 6,7일의 상담 뿐 아니라 경우에 따라 1일의 상담도 기간 내에 수행하지 못할 수 있음
  * [점화식]
@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
  * @See <a href="https://j2wooooo.tistory.com/42">풀이</a>
  */
 class Boj15486 {
-    // 1_v1
+    // 1_v2
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());    //
