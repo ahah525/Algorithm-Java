@@ -1,19 +1,23 @@
 package programmers.level2;
 
 
-import java.util.Arrays;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * [문제명] 배달
- * [풀이시간] 3시간 / 40분 / 55분
- * [한줄평] 이해하는데 너무 오래걸렸다... 나중에 복습 무조건 해야할 문제다. / 유형에 대한 문제 풀이 복습이 꼭 필요하다.
- * 1_v1. 다익스트라(성공)
- * [접근법] 최단 거리가 가장 짧은 노드를 선택하기 위해 for문 으로 직접 탐색
+ * [풀이시간] 3시간 / 40분 / 55분 / 35분
+ * [한줄평] 이해하는데 너무 오래걸렸다... 나중에 복습 무조건 해야할 문제다.
+ * / 유형에 대한 문제 풀이 복습이 꼭 필요하다.
+ * /
+ * / 다익스트라를 구현할 수 만 있으면 쉽게 풀 수 있는 문제였다.
+ * 1_v1. 다익스트라(성공) -> 빠름
+ * [풀이] 간선 정보를 인접행렬에 저장하고, 최단 거리가 가장 짧은 노드를 선택하기 위해 for문 으로 직접 탐색
  * 2_v1. 다익스트라(성공)
- * [접근법] 최단 거리가 가장 짧은 노드를 선택하기 위해 PriorityQueue 사용
+ * [풀이] 간선 정보를 인접행렬에 저장하고, 최단 거리가 가장 짧은 노드를 선택하기 위해 PriorityQueue 사용했다.
  * 3_v1. 다익스트라(성공)
+ * [풀이]
+ * 4_v1. 그래프/다익스트라(성공)
+ * [풀이] 간선 정보를 인접리스트에 저장하고, 최단 거리가 가장 짧은 노드를 선택하기 위해 PriorityQueue 사용했다.
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/12978">문제</a>
  * @See <a href="https://velog.io/@yanghl98/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%EB%B0%B0%EB%8B%AC-JAVA%EC%9E%90%EB%B0%94">풀이 참고</a>
  */
@@ -180,5 +184,58 @@ class Solution12978 {
             }
         }
         return answer;
+    }
+
+    // 4_v1
+    int INF = 500000;
+    class Node {
+        int num;
+        int cost;
+        Node(int num, int cost) {
+            this.num = num;
+            this.cost = cost;
+        }
+    }
+    public int solution4(int N, int[][] road, int K) {
+        int answer = 0;
+        // 1. 인접리스트 초기화
+        List<List<Node>> graph = new ArrayList<>();
+        for(int i = 0; i <= N; i++) {
+            graph.add(new ArrayList<>());
+        }
+        for(int[] r : road) {
+            graph.get(r[0]).add(new Node(r[1], r[2]));
+            graph.get(r[1]).add(new Node(r[0], r[2]));
+        }
+        return dijkstra(1, graph, N, K);
+    }
+
+    public int dijkstra(int start, List<List<Node>> graph, int n, int k) {
+        int cnt = 0;
+        boolean[] visited = new boolean[n + 1];
+        // 1. 최단거리 배열 초기화
+        int[] d = new int[n + 1];
+        Arrays.fill(d, INF);
+        // 2. 시작노드 설정
+        Queue<Node> pq = new PriorityQueue<>((o1, o2) -> o1.cost - o2.cost);
+        pq.add(new Node(start, 0));
+        d[start] = 0;
+        while(!pq.isEmpty()) {
+            // 3. 최단 거리에 있는 노드 1개 꺼내기
+            Node cur = pq.poll();
+            if(visited[cur.num]) continue;
+            // 4. start~>cur 까지 최단 거리가 k이하면, 카운트
+            if(d[cur.num] <= k) cnt++;
+            visited[cur.num] = true;
+            // 5. cur과 연결된 노드들에 대해
+            for(Node next : graph.get(cur.num)) {
+                // start~>next, start~>cur-> next 중 최솟값으로 갱신
+                if(visited[next.num] || d[next.num] <= d[cur.num] + next.cost) continue;
+                d[next.num] = d[cur.num] + next.cost;
+                pq.add(new Node(next.num, d[next.num]));
+            }
+        }
+        // System.out.println(Arrays.toString(d));
+        return cnt;
     }
 }
