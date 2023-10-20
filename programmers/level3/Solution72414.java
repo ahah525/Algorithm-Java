@@ -3,9 +3,10 @@ package programmers.level3;
 
 /**
  * [문제명] 광고 삽입
- * [풀이시간] 1시간 30분 / 1시간 10분, 20분
+ * [풀이시간] 1시간 30분 / 1시간 10분, 20분 / 50분
  * [한줄평] 접근 방법에 대한 감을 못잡아서 결국 풀이를 봤는데 이해하는데 시간이 너무 오래걸렸다.
  * / 1_v1 풀이는 최악의 상황에 O(30만 * 36만)으로 시간초과가 발생할 수도 있는데 실제로는 해당 테스트 케이스가 포함되지 않아 통과하는 것 같다. 그래서 2_v2 풀이를 참고해서 다시 풀었다.
+ * / 어떻게 누적합을 활용할 수 있는지 몰라서 결국 풀이를 봤고 IMOS 알고리즘을 적용해서 풀었다. 꼭 복습이 필요하다!
  * 1_v1. 누적합, 투포인터(성공)
  * [풀이] 특정 초에 시청중인 사람의 수를 계산하는 방법1 : 구간의 모든 값에 +1 하기
  * 1. times[i]++ (start <= i < end)
@@ -21,6 +22,8 @@ package programmers.level3;
  * [시간복잡도] O(N + M)
  * - N: log 개수(최대 300,000)
  * - M: 동영상 재생 시간(최대 360,000)
+ * 3_v1. 누적합, 투포인터/슬라이딩 윈도우(성공) -> 추천
+ * [풀이] 2_v2 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/72414">문제</a>
  * @See <a href="https://velog.io/@hoonze/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-LEVEL3-%EA%B4%91%EA%B3%A0-%EC%82%BD%EC%9E%85-JAVA">풀이 참고</a>
  * @See <a href="https://blog.encrypted.gg/995">풀이 참고2</a>
@@ -140,5 +143,38 @@ class Solution72414 {
         return String.format("%02d:%02d:%02d", h, m, s);
     }
 
-    // 2_v2
+    // 2_v2, 3_v1
+    public String solution3(String playTime, String advTime, String[] logs) {
+        int pt = timeToInt(playTime);   // 전체 재생 구간
+        int at = timeToInt(advTime);    // 광고 재생 구간
+        // 1. i초의 시청자수 구하기(누적합)
+        int[] viewers = new int[pt + 1];
+        for(String log : logs) {
+            String[] l = log.split("-");
+            int s = timeToInt(l[0]);
+            int e = timeToInt(l[1]);
+            viewers[s]++;
+            viewers[e]--;
+        }
+        for(int i = 1; i < viewers.length; i++) {
+            viewers[i] += viewers[i - 1];
+        }
+        // 2. [0, at) 구간합 초기화
+        long sum = 0;
+        for(int i = 0; i < at; i++) {
+            sum += viewers[i];
+        }
+        // 3. [0, pt]에서 at 구간합의 최댓값 구하기
+        long max = sum;
+        int maxStart = 0;
+        for(int i = at, j = 0; i < viewers.length; i++, j++) {
+            sum += viewers[i];
+            sum -= viewers[j];
+            if(max < sum) {
+                max = sum;
+                maxStart = j + 1;
+            }
+        }
+        return timeToString(maxStart);
+    }
 }
