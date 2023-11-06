@@ -8,15 +8,18 @@ import java.util.Queue;
 
 /**
  * [문제명] 단어 변환
- * [풀이시간] 30분 / 30분 / 20분
+ * [풀이시간] 30분 / 30분 / 20분 / 25분
  * [한줄평] DFS로 풀 수 있는 간단한 문제였다.
  * / 최단 경로 문제로 생각하고 BFS 로 풀었다. 이론상으로는 2번이 더 효율적이지만 실제 테스트 케이스에서는 1번이 빨랐다.
  * / 아주 기초적인 BFS 문제였다.
+ * / 최단거리를 구하는 기초 BFS 문제였고 다시 복습해봐도 좋을 문제다.
  * 1_v1. DFS(성공)
  * [풀이] 최소 변환 횟수 = target 을 만들 수 있는 모든 경우의 수 중 최소 횟수 -> 모든 경우의 수를 구해봐야 앎
  * 2_v1. BFS(성공)
  * [풀이] 최소 변환 횟수 = 최초로 target 에 도달했을 때 횟수 -> 최초로 찾은 것이 정답
  * 3_v1. BFS(성공) -> 빠름
+ * 4_v1. BFS(성공)
+ * [풀이] 2_v1 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/43163">문제</a>
  * @See <a href="https://real-012.tistory.com/202">DFS BFS 비교</a>
  */
@@ -92,7 +95,7 @@ class Solution43163 {
         return diff == 0  ? false : true;
     }
 
-    // 2_v1
+    // 2_v1, 4_v1
     class Word {
         String name;
         int cnt;
