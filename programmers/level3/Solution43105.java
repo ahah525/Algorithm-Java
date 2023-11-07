@@ -2,10 +2,17 @@ package programmers.level3;
 
 /**
  * [문제명] 정수 삼각형
- * [풀이시간] / 11분
- * [한줄평] / DP 문제인 것을 알고 풀어서 정말 쉽게 풀 수 있었던 문제였다. 1번 풀이가 수행 시간은 조금 더 빨랐다.
+ * [풀이시간] / 11분 / 10분
+ * [한줄평]
+ * / DP 문제인 것을 알고 풀어서 정말 쉽게 풀 수 있었던 문제였다. 1번 풀이가 수행 시간은 조금 더 빨랐다.
+ * / 아주 기초적인 DP 문제라 더 안 풀어봐도 될 것 같다.
  * 1_v1. DP(성공)
+ * [점화식] dp[i][j]: (i,j)에 오기까지 거쳐간 숫자의 최댓값
+ * 1) j == 0, dp[i][j] = dp[i - 1][j] + triangle[i][j]
+ * 2) j == i, dp[i][j] = dp[i - 1][j - 1] + triangle[i][j]
+ * 3) 0 < j < i, dp[i][j] = Math.max(dp[i - 1][j - 1], dp[i - 1][j]) + triangle[i][j]
  * 2_v1. DP(성공)
+ * 3_v1. DP(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/43105">문제</a>
  */
 class Solution43105 {
@@ -15,30 +22,30 @@ class Solution43105 {
         System.out.println(answer);
     }
 
-    public static int solution(int[][] arr) {
+    // 1_v1
+    public static int solution(int[][] triangle) {
         int answer = 0;
-        int n = arr.length;
-        int max = 0;
-        int[][] d = new int[n][n];
-        d[0][0] = arr[0][0];
+        int n = triangle.length;
+        int[][] dp = new int[n][n];
+        dp[0][0] = triangle[0][0];
         for(int i = 1; i < n; i++) {
             for(int j = 0; j <= i; j++) {
                 if(j == 0) {
-                    max = d[i - 1][j];
+                    dp[i][j] = dp[i - 1][j] + triangle[i][j];
                 } else if(j == i) {
-                    max = d[i - 1][j - 1];
+                    dp[i][j] = dp[i - 1][j - 1] + triangle[i][j];
                 } else {
-                    max = Math.max(d[i - 1][j - 1], d[i - 1][j]);
+                    dp[i][j] = Math.max(dp[i - 1][j - 1], dp[i - 1][j]) + triangle[i][j];
                 }
-                d[i][j] = max + arr[i][j];
             }
         }
         for(int i = 0; i < n; i++) {
-            answer = Math.max(answer, d[n - 1][i]);
+            answer = Math.max(answer, dp[n - 1][i]);
         }
         return answer;
     }
 
+    // 2_v1
     public int solution2(int[][] triangle) {
         int answer = 0;
         int n = triangle.length;
@@ -57,4 +64,6 @@ class Solution43105 {
         }
         return answer;
     }
+
+    // 3_v1
 }
