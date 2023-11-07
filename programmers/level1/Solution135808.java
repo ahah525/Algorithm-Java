@@ -1,14 +1,22 @@
 package programmers.level1;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * [문제명] 과일 장수
  * [풀이시간] 12분 / 6분
- * [한줄평] 정렬하는 것만 떠올린다면 쉽게 풀 수 있는 문제였다. / 정렬을 하면 쉽게 풀 수 있는 문제였다.
+ * [한줄평] 정렬하는 것만 떠올린다면 쉽게 풀 수 있는 문제였다.
+ * / 정렬을 하면 쉽게 풀 수 있는 문제였다.
+ * / 아주 기초적인 정렬 문제로 복습할 필요도 없다.
  * 1_v1. 정렬(성공)
+ * [풀이] 배열 오름차순 정렬 후 뒤에서부터 탐색
  * 2_v1. 정렬(성공)
+ * 3_v1. 정렬(성공)
+ * [풀이] 배열을 리스트에 복사하고 내림차순 정렬 후 앞에서부터 탐색
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/135808">문제</a>
  */
 class Solution135808 {
@@ -48,6 +56,21 @@ class Solution135808 {
         while(i >= 0) {
             answer += score[i] * m;
             i -= m;
+        }
+        return answer;
+    }
+
+    // 3_v1
+    public int solution3(int k, int m, int[] score) {
+        int answer = 0;
+        List<Integer> list = new ArrayList<>();
+        for(int n : score) {
+            list.add(n);
+        }
+        Collections.sort(list, Collections.reverseOrder());
+        //
+        for(int i = m - 1; i < score.length; i+=m) {
+            answer += list.get(i) * m;
         }
         return answer;
     }
