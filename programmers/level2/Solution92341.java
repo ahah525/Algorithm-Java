@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  * [문제명] 주차 요금 계산
- * [풀이시간] / 45분 / 35분
+ * [풀이시간] / 45분 / 35분 / (24분+)
  * [한줄평] 처음에 문제 조건을 꼼꼼하게 체크하지 않아 생각보다 시간이 오래걸렸던 문제였다. Map 2개를 쓰는 것과 Map 1개, Car 클래스를 쓰는 것 중 어느 것이 더 좋을지 고민해봐야할 문제
  * / 다시 푸니까 좀 더 쉬웠던 구현 문제였다.
  * / 해시를 이용해 풀 수 있는 쉬운 구현 문제였다. TreeMap 에 대한 복습이 필요하다.
@@ -17,7 +17,10 @@ import java.util.*;
  * [풀이] HashMap(차번호, 누적주차시간 & 출차여부)
  * 3_v1. HashMap, 구현(성공)
  * [풀이] HashMap(차번호, 누적주차시간), LinkedList(출차하지 않은 차번호 목록)
+ * 4_v1. HashMap(실패-런타임 에러)
+ * [반례]
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/92341">문제</a>
+ * @See <a href="https://school.programmers.co.kr/questions/26732">반례</a>
  */
 class Solution92341 {
     public static void main(String[] args) {
@@ -223,5 +226,66 @@ class Solution92341 {
 //        }
 //        q.remove(num);
 //        return time;
+//    }
+
+    // 4_v1
+//    public int[] solution(int[] fees, String[] records) {
+//        int END = 23 * 60 + 59;
+//        int standardTime = fees[0];
+//        int standardFee = fees[1];
+//        int perTime = fees[2];
+//        int perFee = fees[3];
+//        // (차량 번호, 누적 주차 시간)
+//        Map<String, Integer> map1 = new HashMap<>();
+//        // (차량 번호, 입차 시각)
+//        Map<String, Integer> map2 = new HashMap<>();
+//        for(String record : records) {
+//            String[] r = record.split(" ");
+//            int time = timeToInt(r[0]);
+//            String num = r[1];
+//            String type = r[2];
+//            if(type.equals("IN")) {
+//                // 입차
+//                map2.put(num, time);
+//            } else {
+//                // 출차
+//                int parking = time - map2.get(num); // 주차 시간
+//                // 주차시간 합산
+//                map1.put(num, map1.getOrDefault(num, 0) + parking);
+//                map2.remove(num);
+//            }
+//        }
+//        //
+//        for(String num : map2.keySet()) {
+//            // 출차
+//            int parking = END - map2.get(num); // 주차 시간
+//            // 주차시간 합산
+//            map1.put(num, map1.getOrDefault(num, 0) + parking);
+//            map2.remove(num);
+//        }
+//        //
+//        // System.out.println(map1);
+//        //
+//        List<String> keys = new ArrayList<>(map1.keySet());
+//        Collections.sort(keys);
+//        int[] answer = new int[keys.size()];
+//        for(int i = 0; i < keys.size(); i++) {
+//            String num = keys.get(i);
+//            int time = map1.get(num);
+//            int fee = standardFee;
+//            // 기준 시간 초과했으면,
+//            if(time > standardTime) {
+//                fee += Math.ceil((double) (time - standardTime) / perTime) * perFee;
+//            }
+//            answer[i] = fee;
+//        }
+//
+//
+//        return answer;
+//    }
+//
+//    public int timeToInt(String time) {
+//        String[] t = time.split(":");
+//        return Integer.parseInt(t[0]) * 60 + Integer.parseInt(t[1]);
 //    }
 }
