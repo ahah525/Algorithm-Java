@@ -6,25 +6,28 @@ import java.util.Set;
 
 /**
  * [문제명] N으로 표현
- * [풀이시간] 1시간 10분 / 40분(21분 + 19분) / 35분(30분 + 5분) / (15분)
+ * [풀이시간] 1시간 10분 / 40분(21분 + 19분) / 35분(30분 + 5분) / 20분(15분+5분)
  * [한줄평] 풀이를 봐도 이해가 어려웠던 문제였다.
  * / 감을 찾기는 했지만 결국 반례를 해결하지 못해 풀이를 참고했다.
  * / 접근법을 빨리 떠올리기는 했으나 결국 반례를 찾지 못해서 힌트를 얻어서 풀었던 문제다.
  * 1_v1. DP(성공)
- * 2_v1. (실패 - 5~9 실패)
- * [접근법] 하나의 경우만 고려
+ * 2_v1. DP(실패 - 5~9 실패)
+ * [풀이] 하나의 경우만 고려
  * 1) n을 i번 사용해서 만든 수의 집합 = n을 (i - 1)번 사용해서 만든 수의 집합 X n을 1번 사용해서 만든 수의 집합
- * 2_v2. (성공)
- * [해결법] 모든 경우의 수 계산
+ * 2_v2. DP(성공)
+ * [풀이] 모든 경우의 수 계산
  * 1) n을 i번 사용해서 만든 수의 집합 = n을 (i - 1)번 사용해서 만든 수의 집합 X n을 1번 사용해서 만든 수의 집합
  * 2) n을 i번 사용해서 만든 수의 집합 = n을 (i - 2)번 사용해서 만든 수의 집합 X n을 2번 사용해서 만든 수의 집합
  * ...
  * 3) n을 i번 사용해서 만든 수의 집합 = n을 1번 사용해서 만든 수의 집합 X n을 (i - 1)번 사용해서 만든 수의 집합
  * 3_v1. DP(실패 - 8~9 실패)
- * 3_v2. DP(성공)
  * [반례] 5, 5 >> 1
+ * 3_v2. DP(성공)
  * [해결] N == number 인 경우, 답은 항상 1임
  * 4_v1. DP(실패 - 1,5~8 실패)
+ * [풀이] 2_v1 동일
+ * 4_v2. DP(성공)
+ * [풀이] 2_v2 동일
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/42895">문제</a>
  * @See <a href="https://alreadyusedadress.tistory.com/115">풀이</a>
  * @See <a href="https://school.programmers.co.kr/questions/49498">반례</a>
@@ -38,7 +41,7 @@ class Solution42895 {
         System.out.println(solution(2, 11));
     }
 
-    // 1_v1, 2_v2
+    // 1_v1, 2_v2, 4_v2
     /**
      * @param N 숫자(1 이상 9 이하)
      * @param number 숫자(1 이상 32,000 이하)
@@ -104,27 +107,5 @@ class Solution42895 {
                 if(b != 0) sets[n].add(a / b);
             }
         }
-    }
-
-    // 4_v1
-    public int solution3(int N, int number) {
-        Set<Integer>[] sets = new HashSet[9];
-        for(int i = 0; i <= 8; i++) {
-            sets[i] = new HashSet<>();
-        }
-        //
-        int tmp = N;
-        for(int i = 1; i <= 8; i++) {
-            sets[i].add(tmp);
-            for(int num : sets[i - 1]) {
-                sets[i].add(num + N);
-                sets[i].add(num - N);
-                sets[i].add(num * N);
-                sets[i].add(num / N);
-            }
-            if(sets[i].contains(number)) return i;
-            tmp = tmp * 10 + N;
-        }
-        return -1;
     }
 }
