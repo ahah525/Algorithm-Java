@@ -7,15 +7,17 @@ import java.util.Map;
 
 /**
  * [문제명] 다단계 칫솔 판매
- * [풀이시간] 52분(47분 + 5분) / 29분 / 24분
+ * [풀이시간] 52분(47분 + 5분) / 29분 / 24분 / 18분
  * [한줄평] Map 을 이용해서 푸는 구현 문제로 어렵지는 않았으나 반례를 찾지 못해 힌트를 보고 해결했다.
  * / 쉽게 풀 수 있는 구현 문제였다.
  * / DFS 로 풀 수 있는 쉬운 문제였지만 복습해도 좋을 문제다.
+ * / DFS로 쉽게 풀 수 있는 문제였고 더 안풀어봐도 될 것 같다.
  * 1_v1. HashMap 2(실패-11~13 시간초과)
  * 1_v2. 구현(성공)
  * [풀이] 반복문
  * 2_v1. DFS(성공)
  * 3_v1. DFS(성공)
+ * 4_v1. DFS(성공)
  * @See <a href="https://school.programmers.co.kr/learn/courses/30/lessons/77486">문제</a>
  * @See <a href="https://school.programmers.co.kr/questions/29442">반례</a>
  */
@@ -137,5 +139,38 @@ class Solution77486 {
 //        // 부모 이익 정산
 //        if(parentIdx == -1 || profitP == 0) return;
 //        dfs(depth + 1, parentIdx, profitP, referral);
+//    }
+
+    // 4_v1
+//    Map<String, String> parentMap;
+//    Map<String, Integer> resultMap;
+//    public int[] solution(String[] enroll, String[] referral, String[] seller, int[] amount) {
+//        int[] answer = new int[enroll.length];
+//        parentMap = new HashMap<>();
+//        resultMap = new HashMap<>();
+//        for(int i = 0; i < enroll.length; i++) {
+//            parentMap.put(enroll[i], referral[i]);
+//            resultMap.put(enroll[i], 0);
+//        }
+//        //
+//        for(int i = 0; i < seller.length; i++) {
+//            dfs(seller[i], amount[i] * 100);
+//        }
+//        //
+//        for(int i = 0; i < enroll.length; i++) {
+//            answer[i] = resultMap.get(enroll[i]);
+//        }
+//        return answer;
+//    }
+//
+//    public void dfs(String childName, int profit) {
+//        if(profit == 0 || childName.equals("-")) return;
+//        int pp = profit / 10;
+//        int cp = profit - pp;
+//        // 본인 정산
+//        resultMap.put(childName, resultMap.get(childName) + cp);
+//        // 부모 정산
+//        String parentName = parentMap.get(childName);
+//        dfs(parentName, pp);
 //    }
 }
